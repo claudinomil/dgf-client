@@ -7,18 +7,12 @@ use Illuminate\View\Component;
 class TableCrudAjax extends Component
 {
     public $tableNumCols = 0;
-    public $tableClass = '';
     public $tableColsNames = [];
-    public $tableColsFields = [];
-    public $tableColActions = 'yes';
 
-    public function __construct($numCols = [], $class, $colsNames, $colsFields, $colActions)
+    public function __construct($numCols = [], $colsNames)
     {
         $this->tableNumCols = $numCols;
-        $this->tableClass = $class;
         $this->tableColsNames = $colsNames;
-        $this->tableColsFields = $colsFields;
-        $this->tableColActions = $colActions;
     }
 
     public function render()

@@ -22,17 +22,13 @@
                             <div class="row">
                                 <!-- Botões -->
                                 <div class="col-12 col-md-6 pb-2">
-                                    @if (\App\Facades\Permissoes::permissao([$ajaxPrefixPermissaoSubmodulo.'_create'], $userLoggedPermissoes))
-                                        <x-button op="1" id="createNewRecord" />
+                                    @if (\App\Facades\Permissoes::permissao(['create']))
+                                        <x-button-crud op="1" onclick="crudCreate();" />
                                     @endif
                                 </div>
 
                                 <!-- Filtro no Banco -->
                                 <div class="col-12 col-md-6 float-end">
-                                    <input type="hidden" id="filter-crud-filter_crud_tipo_condicao" value="1">
-                                    <input type="hidden" id="filter-crud-filter_crud_campo_pesquisar" value="ressarcimento_configuracoes.referencia">
-                                    <input type="hidden" id="filter-crud-filter_crud_operacao_realizar" value="1">
-
                                     @php
                                         $selectCampoPesquisar = [
                                         ['value' => 'ressarcimento_configuracoes.referencia', 'descricao' => 'Referência']
@@ -46,18 +42,12 @@
                     </div>
 
                     <!-- Tabela (Componente Blade) -->
-                    @php
-                        $colsNames = ['Referência', 'Diretor Geral de Finanças', 'Chefe da DGF/2 - Contabilidade'];
-                        $colsFields = ['referencia', 'diretor_geral_financas', 'chefe_dgf2'];
-                        $colActions = 'yes';
-                    @endphp
-
-                    <x-table-crud-ajax
-                        :numCols="4"
-                        :class="'table table-bordered dt-responsive table-striped w-100 class-datatable-1'"
-                        :colsNames=$colsNames
-                        :colsFields=$colsFields
-                        :colActions=$colActions />
+                    <x-table-crud-ajax :numCols="2" :colsNames="['Referência', 'Diretor Geral de Finanças', 'Chefe da DGF/2 - Contabilidade', 'Ações']" />
+                    <input type="hidden" id="crudPrefixPermissaoSubmodulo" name="crudPrefixPermissaoSubmodulo" value="{{$se_prefixPermissaoSubmodulo}}">
+                    <input type="hidden" id="crudNameSubmodulo" name="crudNameSubmodulo" value="{{$se_nameSubmodulo}}">
+                    <input type="hidden" id="crudNameFormSubmodulo" name="crudNameFormSubmodulo" value="{{$se_nameFormSubmodulo}}">
+                    <input type="hidden" id="crudFieldsFormSubmodulo" name="crudFieldsFormSubmodulo" value="{{$crudFieldsFormSubmodulo}}">
+                    <input type="hidden" id="crudFieldsColumnsTable" name="crudFieldsColumnsTable" value="referencia,diretor_geral_financas,chefe_dgf2,action">
                 </div>
             </div>
         </div>

@@ -55,7 +55,7 @@ class UserController extends Controller
                         return $retorno;
                     })
                     ->addColumn('action', function ($row, Request $request) {
-                        return $this->columnAction($row['id'], $request['ajaxPrefixPermissaoSubmodulo'], $request['userLoggedPermissoes']);
+                        return $this->columnAction($row['id']);
                     })
                     ->rawColumns(['action'])
                     ->escapeColumns([])
@@ -201,7 +201,7 @@ class UserController extends Controller
                         return $retorno;
                     })
                     ->addColumn('action', function ($row, Request $request) {
-                        return $this->columnAction($row['id'], $request['ajaxPrefixPermissaoSubmodulo'], $request['userLoggedPermissoes']);
+                        return $this->columnAction($row['id']);
                     })
                     ->rawColumns(['action'])
                     ->escapeColumns([])
@@ -291,7 +291,7 @@ class UserController extends Controller
                 //Buscando dados Api_Data() - Alterar Registro
                 $data = array();
                 $data['avatar'] = $avatar;
-                $this->responseApi(1, 11, 'users/updateavatar/' . $id, '', '', $data);
+                $this->responseApi(1, 11, 'users/update/avatar/' . $id, '', '', $data);
 
                 echo $this->message;
             } else {
@@ -311,7 +311,7 @@ class UserController extends Controller
             $request['password'] = Hash::make($request['new_password']);
 
             //Buscando dados Api_Data() - Alterar Registro
-            $this->responseApi(1, 11, 'users/editpassword/' . $id, '', '', $request->all());
+            $this->responseApi(1, 11, 'users/edit/password/' . $id, '', '', $request->all());
 
             //Registro alterado com sucesso
             if ($this->code == 2000) {
@@ -339,7 +339,7 @@ class UserController extends Controller
             $request['email'] = $request['new_email'];
 
             //Buscando dados Api_Data() - Alterar Registro
-            $this->responseApi(1, 11, 'users/editemail/' . $id, '', '', $request->all());
+            $this->responseApi(1, 11, 'users/edit/email/' . $id, '', '', $request->all());
 
             //Registro alterado com sucesso
             if ($this->code == 2000) {
@@ -366,7 +366,7 @@ class UserController extends Controller
             $data['layout_style'] = $style;
 
             //Buscando dados Api_Data() - Alterar Registro
-            $this->responseApi(1, 11, 'users/editmodestyle/' . $id, '', '', $data);
+            $this->responseApi(1, 11, 'users/edit/modestyle/' . $id, '', '', $data);
 
             //Registro alterado com sucesso
             if ($this->code == 2000) {

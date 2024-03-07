@@ -4,25 +4,25 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
-                    <div class="modal-buttons" id="crudFormButtons1">
+                    <div class="modal-buttons crudFormButtons1">
                         <!-- update -->
-                    @if(\App\Facades\Permissoes::permissao([$ajaxPrefixPermissaoSubmodulo.'_edit'], $userLoggedPermissoes))
+                    @if(\App\Facades\Permissoes::permissao(['edit']))
                         <!-- Botão Confirnar Operação -->
                             <button type="button" class="btn btn-success waves-effect btn-label waves-light" data-bs-toggle="tooltip" data-bs-placement="top" title="Confirmar Operação" id="re_btn_alterar_registros_confirmar_update"><i class="fa fa-save label-icon"></i> Confirmar</button>
                     @endif
 
                     <!-- Botão Cancelar Operação -->
-                        <button type="button" class="btn btn-secondary waves-effect btn-label waves-light crudFormCancelOperacao" data-bs-toggle="tooltip" data-bs-placement="top" title="Cancelar Operação"><i class="fa fa-arrow-left label-icon"></i> Cancelar</button>
+                        <x-button-crud op="4" onclick="crudCancelOperation();" />
                     </div>
-                    <div class="modal-buttons" id="crudFormButtons2">
+                    <div class="modal-buttons crudFormButtons2">
                         <!-- edit -->
-                    @if(\App\Facades\Permissoes::permissao([$ajaxPrefixPermissaoSubmodulo.'_edit'], $userLoggedPermissoes))
+                    @if(\App\Facades\Permissoes::permissao(['edit']))
                         <!-- Botão Alterar Registro -->
-                            <button type="button" class="btn btn-primary waves-effect btn-label waves-light editRecord" data-bs-toggle="tooltip" data-bs-placement="top" data-id="0" title="Alterar Registro"><i class="fas fa-pencil-alt label-icon"></i> Alterar</button>
+                            <x-button-crud op="2" onclick="crudEdit(0)" />
                     @endif
 
                     <!-- Botão Cancelar Operação -->
-                        <button type="button" class="btn btn-secondary waves-effect btn-label waves-light crudFormCancelOperacao" data-bs-toggle="tooltip" data-bs-placement="top" title="Cancelar Operação"><i class="fa fa-arrow-left label-icon"></i> Cancelar</button>
+                        <x-button-crud op="4" onclick="crudCancelOperation();" />
                     </div>
                     <div class="modal-loading" id="crudFormAjaxLoading" style="display: none;">
                         <div class="spinner-chase">
@@ -36,7 +36,7 @@
                     </div>
 
                     <!-- Formulário - Form -->
-                    <form id="{{$ajaxNameFormSubmodulo}}" name="{{$ajaxNameFormSubmodulo}}">
+                    <form id="{{$se_nameFormSubmodulo}}" name="{{$se_nameFormSubmodulo}}">
                         <fieldset>
                             <input type="hidden" id="frm_operacao" name="frm_operacao">
                             <input type="hidden" id="registro_id" name="registro_id">

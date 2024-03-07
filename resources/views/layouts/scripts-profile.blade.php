@@ -32,7 +32,7 @@
 
             $.ajax({
                 type:'POST',
-                url: '/users/uploadavatar',
+                url: '/users/upload/avatar',
                 data: formData,
                 cache: false,
                 contentType: false,
@@ -109,7 +109,7 @@
 
             $.ajax({
                 type:'POST',
-                url: '/users/editemail',
+                url: '/users/edit/email',
                 data: formData,
                 cache: false,
                 contentType: false,
@@ -191,7 +191,7 @@
 
             $.ajax({
                 type:'POST',
-                url: '/users/editpassword',
+                url: '/users/edit/password',
                 data: formData,
                 cache: false,
                 contentType: false,

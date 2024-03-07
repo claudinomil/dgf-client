@@ -47,19 +47,19 @@
                                                 </div>
                                                 <div class="row" id="modal-profile-botoes">
                                                     <div class="col-4 mt-4 px-0">
-                                                        @if(\App\Facades\Permissoes::permissao(['users_perfil_edit'], $userLoggedPermissoes))
+                                                        @if(\App\Facades\Permissoes::permissao(['users_perfil_edit']))
                                                             <button class="btn btn-success waves-effect btn-label waves-light btn-sm float-end" id="buttonUploadAvatar"><i class="fas fa-address-card label-icon"></i>Avatar</button>
                                                             <button class="btn btn-warning waves-effect btn-label waves-light btn-sm float-end" id="buttonUploadAvatarClose" style="display: none;"><i class="fas fa-address-card label-icon"></i>Fechar</button>
                                                         @endif
                                                     </div>
                                                     <div class="col-4 mt-4 px-0">
-                                                        @if(\App\Facades\Permissoes::permissao(['users_perfil_edit'], $userLoggedPermissoes))
+                                                        @if(\App\Facades\Permissoes::permissao(['users_perfil_edit']))
                                                             <button class="btn btn-primary waves-effect btn-label waves-light btn-sm float-end" id="buttonEditEmail"><i class="fas fa-envelope label-icon"></i>E-mail</button>
                                                             <button class="btn btn-warning waves-effect btn-label waves-light btn-sm float-end" id="buttonEditEmailClose" style="display: none;"><i class="fas fa-address-card label-icon"></i>Fechar</button>
                                                         @endif
                                                     </div>
                                                     <div class="col-4 mt-4 px-0">
-                                                        @if(\App\Facades\Permissoes::permissao(['users_perfil_edit'], $userLoggedPermissoes))
+                                                        @if(\App\Facades\Permissoes::permissao(['users_perfil_edit']))
                                                             <button class="btn btn-danger waves-effect btn-label waves-light btn-sm float-end" id="buttonEditPassword"><i class="fas fa-key label-icon"></i>Senha</button>
                                                             <button class="btn btn-warning waves-effect waves-light btn-label btn-sm float-end" id="buttonEditPasswordClose" style="display: none;"><i class="fas fa-address-card label-icon"></i>Fechar</button>
                                                         @endif

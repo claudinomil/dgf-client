@@ -60,7 +60,7 @@ class RessarcimentoRecebimentoController extends Controller
                         return $retorno;
                     })
                     ->addColumn('action', function ($row, Request $request) {
-                        return $this->columnAction($row['id'], $request['ajaxPrefixPermissaoSubmodulo'], $request['userLoggedPermissoes'], 0);
+                        return $this->columnAction($row['id'], 0);
                     })
                     ->rawColumns(['action'])
                     ->escapeColumns([])
@@ -167,7 +167,7 @@ class RessarcimentoRecebimentoController extends Controller
                         return $retorno;
                     })
                     ->addColumn('action', function ($row, Request $request) {
-                        return $this->columnAction($row['id'], $request['ajaxPrefixPermissaoSubmodulo'], $request['userLoggedPermissoes'], 0);
+                        return $this->columnAction($row['id'], 0);
                     })
                     ->rawColumns(['action'])
                     ->escapeColumns([])

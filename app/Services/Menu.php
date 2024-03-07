@@ -6,21 +6,25 @@ use App\Facades\Permissoes;
 
 class Menu
 {
-    public function getMenu($tp, $userLoggedPermissoes, $userLoggedMenuModulos, $userLoggedMenuSubmodulos)
+    public function getMenu($tp)
     {
         $menu = '';
 
+        //Módulos e Submódulos
+        $modulos = session('se_userLoggedMenuModulos');
+        $submodulos = session('se_userLoggedMenuSubmodulos');
+
         //Pegar Id do Modulo Ativo
         $moduloIdActive = 0;
-
-        foreach ($userLoggedMenuSubmodulos as $key => $dado) {
-            if ($dado['menu_route'].'.index' == session('breadcrumbCurrentPageRoute')) {$moduloIdActive = $dado['modulo_id'];}
+        foreach ($submodulos as $dado) {
+            if ($dado['menu_route'] . '.index' == session('breadcrumbCurrentPageRoute')) {
+                $moduloIdActive = $dado['modulo_id'];
+            }
         }
 
         //Menu Verticarl
         if ($tp == 1) {
-            $menu .= "<ul class='metismenu list-unstyled' id='side-menu'>
-                            <li class='menu-title' key='t-menu'>Menu</li>";
+            $menu .= "<ul class='metismenu list-unstyled' id='side-menu'>";
         }
 
         //Menu Horizontal
@@ -34,12 +38,18 @@ class Menu
                         <div class='row'>";
         }
 
-        foreach ($userLoggedMenuModulos as $key2 => $modulo) {
+        //varrer Módulos
+        foreach ($modulos as $modulo) {
             $modOk = 1;
 
-            foreach ($userLoggedMenuSubmodulos as $key3 => $submodulo) {
+            //Varrer Submódulos
+            foreach ($submodulos as $submodulo) {
                 if ($modulo['id'] == $submodulo['modulo_id']) {
-                    $permitido = Permissoes::permissao([$submodulo['prefix_permissao'] . '_list'], $userLoggedPermissoes);
+                    $permitido = Permissoes::permissao([$submodulo['prefix_permissao'] . '_list']);
+
+                    //negar alguns submodulos para fim de desenvolvimento
+                    //if ($submodulo['id'] == 27) {$permitido = false;}
+                    //'''''''''''''''''''''''''''''''''''''''''''''''''''
 
                     if ($permitido) {
                         if ($modOk == 1) {

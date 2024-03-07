@@ -22,21 +22,17 @@
                             <div class="row">
                                 <!-- Botões -->
                                 <div class="col-12 col-md-6 pb-2">
-                                    @if (\App\Facades\Permissoes::permissao([$ajaxPrefixPermissaoSubmodulo.'_edit'], $userLoggedPermissoes))
+                                    @if (\App\Facades\Permissoes::permissao(['edit']))
                                         <button type="button" class="btn btn-primary waves-effect btn-label waves-light" data-bs-toggle="tooltip" data-bs-placement="top" title="Alterar Registros" id="re_btn_alterar_registros"><i class="bx bx-edit label-icon"></i> Alterar Registros</button>
                                     @endif
                                 </div>
 
                                 <!-- Filtro no Banco -->
                                 <div class="col-12 col-md-6 float-end">
-                                    <input type="hidden" id="filter-crud-filter_crud_tipo_condicao" value="1">
-                                    <input type="hidden" id="filter-crud-filter_crud_campo_pesquisar" value="ressarcimento_cobrancas_dados.militar_nome">
-                                    <input type="hidden" id="filter-crud-filter_crud_operacao_realizar" value="1">
-
                                     @php
                                         $selectCampoPesquisar = [
-                                        ['value' => 'ressarcimento_cobrancas_dados.militar_posto_graduacao', 'descricao' => 'Posto/Grad'],
                                         ['value' => 'ressarcimento_cobrancas_dados.militar_nome', 'descricao' => 'Nome'],
+                                        ['value' => 'ressarcimento_cobrancas_dados.militar_posto_graduacao', 'descricao' => 'Posto/Grad'],
                                         ['value' => 'ressarcimento_cobrancas_dados.militar_rg', 'descricao' => 'RG'],
                                         ['value' => 'ressarcimento_cobrancas_dados.orgao_name', 'descricao' => 'Órgão'],
                                         ['value' => 'ressarcimento_cobrancas_dados.referencia', 'descricao' => 'Referência']
@@ -50,18 +46,12 @@
                     </div>
 
                     <!-- Tabela (Componente Blade) -->
-                    @php
-                        $colsNames = ['Referência', 'Posto/Grad', 'Nome', 'RG', 'Órgão', 'Valor(R$)', 'Recebido(R$)', 'Saldo(R$)'];
-                        $colsFields = ['referencia', 'posto_graduacao', 'nome', 'rg', 'orgao', 'valor', 'valor_recebido', 'saldo_restante'];
-                        $colActions = 'no';
-                    @endphp
-
-                    <x-table-crud-ajax
-                        :numCols="3"
-                        :class="'table table-bordered dt-responsive table-striped w-100 class-datatable-1'"
-                        :colsNames=$colsNames
-                        :colsFields=$colsFields
-                        :colActions=$colActions />
+                    <x-table-crud-ajax :numCols="2" :colsNames="['Referência', 'Posto/Grad', 'Nome', 'RG', 'Órgão', 'Valor(R$)', 'Recebido(R$)', 'Saldo(R$)', 'Ações']" />
+                    <input type="hidden" id="crudPrefixPermissaoSubmodulo" name="crudPrefixPermissaoSubmodulo" value="{{$se_prefixPermissaoSubmodulo}}">
+                    <input type="hidden" id="crudNameSubmodulo" name="crudNameSubmodulo" value="{{$se_nameSubmodulo}}">
+                    <input type="hidden" id="crudNameFormSubmodulo" name="crudNameFormSubmodulo" value="{{$se_nameFormSubmodulo}}">
+                    <input type="hidden" id="crudFieldsFormSubmodulo" name="crudFieldsFormSubmodulo" value="{{$crudFieldsFormSubmodulo}}">
+                    <input type="hidden" id="crudFieldsColumnsTable" name="crudFieldsColumnsTable" value="referencia,posto_graduacao,nome,rg,orgao,valor,valor_recebido,saldo_restante,action">
                 </div>
             </div>
         </div>

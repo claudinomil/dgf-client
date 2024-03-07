@@ -32,7 +32,7 @@
                 </button>
                 <div class="dropdown-menu dropdown-megamenu">
                     <div class="row">
-                        <div class="col-sm-10">@php echo \App\Facades\Menu::getMenu(3, $userLoggedPermissoes, $userLoggedMenuModulos, $userLoggedMenuSubmodulos) @endphp</div>
+                        <div class="col-sm-10">@php echo \App\Facades\Menu::getMenu(3) @endphp</div>
                         <div class="col-sm-2">
                             <img src="{{ asset('build/assets/images/megamenu-img.png') }}" alt="" class="img-fluid mx-auto d-block">
                         </div>
@@ -41,7 +41,7 @@
             </div>
         </div>
         <div class="d-flex">
-            @if (\App\Facades\Permissoes::permissao(['ferramentas_list'], $userLoggedPermissoes))
+            @if (\App\Facades\Permissoes::permissao(['ferramentas_list']))
                 @include('layouts.ferramentas')
             @endif
 
@@ -51,18 +51,18 @@
                 </button>
             </div>
 
-            @if (\App\Facades\Permissoes::permissao(['notificacoes_list'], $userLoggedPermissoes))
+            @if (\App\Facades\Permissoes::permissao(['notificacoes_list']))
                 @include('layouts.notificacoes')
             @endif
 
             <div class="dropdown d-inline-block">
                 <button type="button" class="btn header-item waves-effect" id="page-header-user-dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <img class="rounded-circle header-profile-user" src="{{ isset($userLoggedData['avatar']) ? asset($userLoggedData['avatar']) : asset('build/assets/images/users/avatar-0.png') }}" alt="Header Avatar">
-                    <span class="d-none d-xl-inline-block ms-1" key="t-henry">{{ucfirst($userLoggedData['name'])}}</span>
+                    <img class="rounded-circle header-profile-user" src="{{session('se_userLoggedData.avatar')}}">
+                    <span class="d-none d-xl-inline-block ms-1" key="t-henry">{{ucfirst(session('se_userLoggedData.name'))}}</span>
                     <i class="mdi mdi-chevron-down d-none d-xl-inline-block"></i>
                 </button>
                 <div class="dropdown-menu dropdown-menu-end">
-                    <a href="#" class="dropdown-item" data-bs-toggle="modal" data-bs-target=".modal-profile" onclick="userProfileData(2,{{$userLoggedData['id']}});"><i class="bx bx-user font-size-16 align-middle me-1"></i> <span key="t-profile">Perfil</span></a>
+                    <a href="#" class="dropdown-item" data-bs-toggle="modal" data-bs-target=".modal-profile" onclick="userProfileData(2,{{session('se_userLoggedData.id')}});"><i class="bx bx-user font-size-16 align-middle me-1"></i> <span key="t-profile">Perfil</span></a>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item text-danger" href="javascript:void();" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"><i class="bx bx-power-off font-size-16 align-middle me-1 text-danger"></i> <span key="t-logout">Logout</span></a>
                     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">

@@ -30,13 +30,14 @@ export default defineConfig({
                 {src: 'resources/assets_template/libs/sweetalert2/sweetalert2.min.js', dest: 'assets'},
                 {src: 'resources/assets_template/libs/select2/select2.min.js', dest: 'assets'},
                 {src: 'resources/assets_template/libs/datatables/datatables.min.js', dest: 'assets'},
-                {src: 'resources/assets_template/libs/jquery-repeater/jquery-repeater.js', dest: 'assets'},
                 {src: 'resources/assets_template/libs/apexcharts/apexcharts.min.js', dest: 'assets'},
                 {src: 'resources/assets_template/libs/jszip/jszip.min.js', dest: 'assets'},
                 {src: 'resources/assets_template/libs/pdfmake/pdfmake.min.js', dest: 'assets'},
                 {src: 'resources/assets_template/libs/jquery-mask/jquery.mask.min.js', dest: 'assets'},
 
                 {src: 'resources/assets_template/js/app.min.js', dest: 'assets'},
+                {src: 'resources/assets_template/js/cruds.js', dest: 'assets'},
+                {src: 'resources/assets_template/js/cruds_functions.js', dest: 'assets'},
                 {src: 'resources/assets_template/js/functions.js', dest: 'assets'},
                 {src: 'resources/assets_template/js/functions_graficos.js', dest: 'assets'},
                 {src: 'resources/assets_template/js/jquery-masks.js', dest: 'assets'},
@@ -142,11 +143,6 @@ export default defineConfig({
 //     "isEntry": true,
 //     "src": "resources/assets_template/libs/datatables/datatables.min.js"
 // },
-// "resources/assets_template/libs/jquery-repeater/jquery-repeater.js": {
-//     "file": "assets/jquery-repeater.js",
-//     "isEntry": true,
-//     "src": "resources/assets_template/libs/jquery-repeater/jquery-repeater.js"
-// },
 // "resources/assets_template/libs/jszip/jszip.min.js": {
 //     "file": "assets/jszip.min.js",
 //     "isEntry": true,
@@ -176,6 +172,16 @@ export default defineConfig({
 //     "file": "assets/main.js",
 //     "isEntry": true,
 //     "src": "resources/assets_template/js/main.js"
+// },
+// "resources/assets_template/js/cruds.js": {
+//     "file": "assets/cruds.js",
+//     "isEntry": true,
+//     "src": "resources/assets_template/js/cruds.js"
+// },
+// "resources/assets_template/js/cruds_functions.js": {
+//     "file": "assets/cruds_functions.js",
+//     "isEntry": true,
+//     "src": "resources/assets_template/js/cruds_functions.js"
 // },
 // "resources/assets_template/js/functions.js": {
 //     "file": "assets/functions.js",

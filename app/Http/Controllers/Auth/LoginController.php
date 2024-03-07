@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Facades\SuporteFacade;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
@@ -14,7 +15,7 @@ class LoginController extends Controller
     public $validation;
     public $content;
 
-    public function login(Request $request)
+    public function login()
     {
         return view('auth.login');
     }
@@ -34,17 +35,17 @@ class LoginController extends Controller
             ]
         );
 
-        //Buscando dados Api_Data() - Verificar se email já foi confirmado
-        $this->responseApi(1, 10, 'users/confirm/' . $request->email, '', '', '');
+        //Buscando dados Api_Data() - Confirmar Usuário que está tentando se Logar
+        $this->responseApi(1, 10, 'users/confirm_user_login/' . $request->email, '', '', '');
 
+        //Usuário confirmado
         if ($this->code == 2000) {
             //CHAMADA DO PASSPORT COM 'grant_type' => 'password'''''''''''''''''''''''''''''''''''''''''''''''''''''''''
             /*
              * Criar Client na API: php artisan passport:client --password
              * Não precisa de Authorization, envia direto as credenciais
              * Vai na API e retorna o Access Token
-             */
-
+            */
             $response = Http::post(env('PASSPORT_API_URL') . 'oauth/token', [
                 'grant_type' => 'password',
                 'client_id' => env('PASSPORT_CLIENT_ID'),
@@ -53,42 +54,42 @@ class LoginController extends Controller
                 'password' => $request['password'],
                 'scope' => 'claudino',
             ]);
-            //''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+            //dd($response->json());
 
             //Se o retorno for um Error
             if (isset($response['error'])) {
                 $error = $response['message'];
+
                 return view('auth.login', compact('error'));
             }
 
             //Gravar access_token em ums session
             session(['access_token' => $response['access_token']]);
+            //''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
-            //Gravar dispositivo que usuário acessou de MOBILE TABLE DESKTOP
-            $isMob = is_numeric(strpos(strtolower($_SERVER["HTTP_USER_AGENT"]), "Mobile"));
-            $isTab = is_numeric(strpos(strtolower($_SERVER["HTTP_USER_AGENT"]), "tablet"));
-            $isDesk = !$isMob && !$isTab;
+            //Ver de onde está acessando 'userLogged_access_device' (mobile, tablet, desktop)
+            SuporteFacade::setUserAcessDevice();
 
-            if ($isMob) {session(['access_device' => 'mobile']);}
-            if ($isTab) {session(['access_device' => 'tablet']);}
-            if ($isDesk) {session(['access_device' => 'desktop']);}
+            //Dados do Usuário Logado
+            session(['se_userLoggedData' => $this->content[0]]);
 
-            if ($isMob) {return redirect('dashboards');}
-            if ($isTab) {return redirect('dashboards');}
-            if ($isDesk) {return redirect('dashboards');}
+            //Redirecionar Usuário para início do Sistema
+            return redirect('dashboards');
         }
 
-        if ($this->code == 2004) {
+        //Usuário não confirmado
+        if ($this->code == 2001) {
             $email = $request->email;
 
             //Ir para a view de confirmação
             return redirect('/confirm-email')->with('email', $email);
         }
 
-        if ($this->code == 2005) {
-            $error = 'E-mail não encontrado!';
+        //Erros de Acesso do Usuário
+        if ($this->code == 2002) {
+            $error = $this->message;
 
-            //Retorno para a view
             return view('auth.login', compact('error'));
         }
     }

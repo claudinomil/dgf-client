@@ -25,14 +25,10 @@
 
                                 <!-- Filtro no Banco -->
                                 <div class="col-12 col-md-6 float-end">
-                                    <input type="hidden" id="filter-crud-filter_crud_tipo_condicao" value="1">
-                                    <input type="hidden" id="filter-crud-filter_crud_campo_pesquisar" value="efetivo_militares.rg">
-                                    <input type="hidden" id="filter-crud-filter_crud_operacao_realizar" value="1">
-
                                     @php
                                         $selectCampoPesquisar = [
-                                        ['value' => 'dbu_efetivo.rg', 'descricao' => 'RG'],
                                         ['value' => 'dbu_efetivo.nome', 'descricao' => 'Nome'],
+                                        ['value' => 'dbu_efetivo.rg', 'descricao' => 'RG'],
                                         ['value' => 'dbu_situacoes.situacao', 'descricao' => 'Situação'],
                                         ['value' => 'dbu_graduacoes.graduacao', 'descricao' => 'Posto/Graduação'],
                                         ['value' => 'dbu_quadros.quadro', 'descricao' => 'Quadro'],
@@ -48,18 +44,12 @@
                     </div>
 
                     <!-- Tabela (Componente Blade) -->
-                    @php
-                        $colsNames = ['RG', 'Nome', 'Posto/Graduação', 'Unidade'];
-                        $colsFields = ['rg', 'nome', 'graduacao', 'unidade'];
-                        $colActions = 'yes';
-                    @endphp
-
-                    <x-table-crud-ajax
-                        :numCols="4"
-                        :class="'table table-bordered dt-responsive table-striped w-100 class-datatable-1'"
-                        :colsNames=$colsNames
-                        :colsFields=$colsFields
-                        :colActions=$colActions />
+                    <x-table-crud-ajax :numCols="2" :colsNames="['RG', 'Nome', 'Posto/Graduação', 'Unidade', 'Ações']" />
+                    <input type="hidden" id="crudPrefixPermissaoSubmodulo" name="crudPrefixPermissaoSubmodulo" value="{{$se_prefixPermissaoSubmodulo}}">
+                    <input type="hidden" id="crudNameSubmodulo" name="crudNameSubmodulo" value="{{$se_nameSubmodulo}}">
+                    <input type="hidden" id="crudNameFormSubmodulo" name="crudNameFormSubmodulo" value="{{$se_nameFormSubmodulo}}">
+                    <input type="hidden" id="crudFieldsFormSubmodulo" name="crudFieldsFormSubmodulo" value="{{$crudFieldsFormSubmodulo}}">
+                    <input type="hidden" id="crudFieldsColumnsTable" name="crudFieldsColumnsTable" value="rg,nome,graduacao,unidade,action">
                 </div>
             </div>
         </div>

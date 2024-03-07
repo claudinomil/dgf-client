@@ -38,7 +38,7 @@
                                     </div>
                                 @endif
 
-                                <form method="POST" class="form-horizontal" action="{{ route('login') }}">
+                                <form method="POST" class="form-horizontal" action="{{ url('login') }}">
                                     @csrf
 
                                     <div class="mt-3 mb-3">

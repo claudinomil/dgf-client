@@ -4,30 +4,30 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
-                    <div class="modal-buttons" id="crudFormButtons1">
+                    <div class="modal-buttons crudFormButtons1">
                         <!-- store or update -->
-                        @if(\App\Facades\Permissoes::permissao([$ajaxPrefixPermissaoSubmodulo.'_create', $ajaxPrefixPermissaoSubmodulo.'_edit'], $userLoggedPermissoes))
+                        @if(\App\Facades\Permissoes::permissao(['create', 'edit']))
                             <!-- Botão Confirnar Operação -->
-                                <button type="button" class="btn btn-success waves-effect btn-label waves-light" data-bs-toggle="tooltip" data-bs-placement="top" title="Confirmar Operação" id="crudFormConfirmOperacao"><i class="fa fa-save label-icon"></i> Confirmar</button>
+                                <x-button-crud op="5" onclick="crudConfirmOperation();" />
                         @endif
 
                         <!-- Botão Cancelar Operação -->
-                        <button type="button" class="btn btn-secondary waves-effect btn-label waves-light crudFormCancelOperacao" data-bs-toggle="tooltip" data-bs-placement="top" title="Cancelar Operação"><i class="fa fa-arrow-left label-icon"></i> Cancelar</button>
+                        <x-button-crud op="4" onclick="crudCancelOperation();" />
                     </div>
-                    <div class="modal-buttons" id="crudFormButtons2">
+                    <div class="modal-buttons crudFormButtons2">
                         <!-- edit or delete -->
-                        @if(\App\Facades\Permissoes::permissao([$ajaxPrefixPermissaoSubmodulo.'_edit'], $userLoggedPermissoes))
+                        @if(\App\Facades\Permissoes::permissao(['edit']))
                             <!-- Botão Alterar Registro -->
-                                <button type="button" class="btn btn-primary waves-effect btn-label waves-light editRecord" data-bs-toggle="tooltip" data-bs-placement="top" data-id="0" title="Alterar Registro"><i class="fas fa-pencil-alt label-icon"></i> Alterar</button>
+                                <x-button-crud op="2" onclick="crudEdit(0)" />
                         @endif
 
-                        @if(\App\Facades\Permissoes::permissao([$ajaxPrefixPermissaoSubmodulo.'_destroy'], $userLoggedPermissoes))
+                        @if(\App\Facades\Permissoes::permissao(['destroy']))
                             <!-- Botão Excluir Registro -->
-                                <button type="button" class="btn btn-danger waves-effect btn-label waves-light deleteRecord" data-bs-toggle="tooltip" data-bs-placement="top" data-id="0" title="Excluir Registro"><i class="fa fa-trash-alt label-icon"></i> Excluir</button>
+                                <x-button-crud op="3" onclick="crudDelete(0);" />
                         @endif
 
                         <!-- Botão Cancelar Operação -->
-                        <button type="button" class="btn btn-secondary waves-effect btn-label waves-light crudFormCancelOperacao" data-bs-toggle="tooltip" data-bs-placement="top" title="Cancelar Operação"><i class="fa fa-arrow-left label-icon"></i> Cancelar</button>
+                        <x-button-crud op="4" onclick="crudCancelOperation();" />
                     </div>
                     <div class="modal-loading" id="crudFormAjaxLoading" style="display: none;">
                         <div class="spinner-chase">
@@ -41,7 +41,7 @@
                     </div>
 
                     <!-- Formulário - Form -->
-                    <form id="{{$ajaxNameFormSubmodulo}}" name="{{$ajaxNameFormSubmodulo}}">
+                    <form id="{{$se_nameFormSubmodulo}}" name="{{$se_nameFormSubmodulo}}">
                         <fieldset>
                             <input type="hidden" id="frm_operacao" name="frm_operacao">
                             <input type="hidden" id="registro_id" name="registro_id">
@@ -68,7 +68,7 @@
                                 <div class="form-group col-12 col-md-3 pb-3 fieldsCreate" style="display: none;">
                                     <input type="hidden" id="date" name="date" value="{{ date('Y-m-d') }}">
                                     <input type="hidden" id="time" name="time" value="{{ date('H:i:s') }}">
-                                    <input type="hidden" id="user_id" name="user_id" value="{{ $userLoggedData['id'] }}">
+                                    <input type="hidden" id="user_id" name="user_id" value="{{session('se_userLoggedData.id')}}">
                                 </div>
 
                                 <div class="form-group col-12 col-md-12 pb-3">

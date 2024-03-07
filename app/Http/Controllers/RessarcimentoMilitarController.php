@@ -55,7 +55,7 @@ class RessarcimentoMilitarController extends Controller
                         return $retorno;
                     })
                     ->addColumn('action', function ($row, Request $request) {
-                        return $this->columnAction($row['id'], $request['ajaxPrefixPermissaoSubmodulo'], $request['userLoggedPermissoes']);
+                        return $this->columnAction($row['id']);
                     })
                     ->rawColumns(['action'])
                     ->escapeColumns([])
@@ -143,7 +143,7 @@ class RessarcimentoMilitarController extends Controller
                         return $retorno;
                     })
                     ->addColumn('action', function ($row, Request $request) {
-                        return $this->columnAction($row['id'], $request['ajaxPrefixPermissaoSubmodulo'], $request['userLoggedPermissoes']);
+                        return $this->columnAction($row['id']);
                     })
                     ->rawColumns(['action'])
                     ->escapeColumns([])

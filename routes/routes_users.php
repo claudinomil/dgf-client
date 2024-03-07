@@ -9,15 +9,15 @@ Route::prefix('users')->group(function () {
     Route::post('', [UserController::class, 'store'])->name('users.store');
     Route::get('/{id}', [UserController::class, 'show'])->name('users.show');
     Route::get('/{id}/edit', [UserController::class, 'edit'])->name('users.edit');
-    Route::put('/{id}', [UserController::class, 'update'])->name('users.update');
+    Route::post('/{id}', [UserController::class, 'update'])->name('users.update');
     Route::delete('/{id}', [UserController::class, 'destroy'])->name('users.destroy');
     Route::get('/filter/{array_dados}', [UserController::class, 'filter'])->name('users.filter');
 
-    Route::post('/uploadavatar', [UserController::class, 'uploadavatar'])->name('users.uploadavatar');
-    Route::post('/editpassword', [UserController::class, 'editpassword'])->name('users.editpassword');
-    Route::post('/editemail', [UserController::class, 'editemail'])->name('users.editemail');
+    Route::post('/upload/avatar', [UserController::class, 'uploadavatar'])->name('users.uploadavatar');
+    Route::post('/edit/password', [UserController::class, 'editpassword'])->name('users.editpassword');
+    Route::post('/edit/email', [UserController::class, 'editemail'])->name('users.editemail');
 
-    Route::put('/editmodestyle/{mode}/{style}/{id}', [UserController::class, 'editmodestyle'])->name('users.editmodestyle');
+    Route::post('/edit/modestyle/{mode}/{style}/{id}', [UserController::class, 'editmodestyle'])->name('users.editmodestyle');
 });
 
 Route::get('/profiledata', [UserController::class, 'profiledata']);

@@ -22,26 +22,22 @@
                             <div class="row">
                                 <!-- Botões -->
                                 <div class="col-12 col-md-6 pb-2">
-                                    @if (\App\Facades\Permissoes::permissao([$ajaxPrefixPermissaoSubmodulo.'_create'], $userLoggedPermissoes))
+                                    @if (\App\Facades\Permissoes::permissao(['create']))
                                         <!-- Botão Importar Militares -->
-                                        <x-button op="23" id="btnModalImportarMilitar" />
+                                        <x-button-crud op="99" model="3" bgColor="success" textColor="write" class="waves-effect btn-label waves-light" image="fa fa-file-import label-icon" label="Importar Militares" id="btnModalImportarMilitar" />
                                     @endif
                                 </div>
 
                                 <!-- Filtro no Banco -->
                                 <div class="col-12 col-md-6 float-end">
-                                    <input type="hidden" id="filter-crud-filter_crud_tipo_condicao" value="1">
-                                    <input type="hidden" id="filter-crud-filter_crud_campo_pesquisar" value="ressarcimento_militares.rg">
-                                    <input type="hidden" id="filter-crud-filter_crud_operacao_realizar" value="1">
-
                                     @php
                                         $selectCampoPesquisar = [
+                                        ['value' => 'ressarcimento_militares.nome', 'descricao' => 'Nome'],
                                         ['value' => 'ressarcimento_militares.rg', 'descricao' => 'RG'],
                                         ['value' => 'ressarcimento_militares.referencia', 'descricao' => 'Referência'],
                                         ['value' => 'ressarcimento_militares.identidade_funcional', 'descricao' => 'Identidade Funcional'],
                                         ['value' => 'ressarcimento_militares.posto_graduacao', 'descricao' => 'Posto/Graduação'],
-                                        ['value' => 'ressarcimento_militares.quadro_qbmp', 'descricao' => 'Quadro/QBMP'],
-                                        ['value' => 'ressarcimento_militares.nome', 'descricao' => 'Nome']
+                                        ['value' => 'ressarcimento_militares.quadro_qbmp', 'descricao' => 'Quadro/QBMP']
                                         ];
                                     @endphp
 
@@ -52,18 +48,12 @@
                     </div>
 
                     <!-- Tabela (Componente Blade) -->
-                    @php
-                        $colsNames = ['Referência', 'Militar', 'Lotação'];
-                        $colsFields = ['referencia', 'militar', 'lotacao'];
-                        $colActions = 'yes';
-                    @endphp
-
-                    <x-table-crud-ajax
-                        :numCols="4"
-                        :class="'table table-bordered dt-responsive table-striped w-100 class-datatable-1'"
-                        :colsNames=$colsNames
-                        :colsFields=$colsFields
-                        :colActions=$colActions />
+                    <x-table-crud-ajax :numCols="2" :colsNames="['Referência', 'Militar', 'Lotação', 'Ações']" />
+                    <input type="hidden" id="crudPrefixPermissaoSubmodulo" name="crudPrefixPermissaoSubmodulo" value="{{$se_prefixPermissaoSubmodulo}}">
+                    <input type="hidden" id="crudNameSubmodulo" name="crudNameSubmodulo" value="{{$se_nameSubmodulo}}">
+                    <input type="hidden" id="crudNameFormSubmodulo" name="crudNameFormSubmodulo" value="{{$se_nameFormSubmodulo}}">
+                    <input type="hidden" id="crudFieldsFormSubmodulo" name="crudFieldsFormSubmodulo" value="{{$crudFieldsFormSubmodulo}}">
+                    <input type="hidden" id="crudFieldsColumnsTable" name="crudFieldsColumnsTable" value="referencia,militar,lotacao,action">
                 </div>
             </div>
         </div>

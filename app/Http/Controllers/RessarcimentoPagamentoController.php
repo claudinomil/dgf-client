@@ -58,7 +58,7 @@ class RessarcimentoPagamentoController extends Controller
                         return $retorno;
                     })
                     ->addColumn('action', function ($row, Request $request) {
-                        return $this->columnAction($row['id'], $request['ajaxPrefixPermissaoSubmodulo'], $request['userLoggedPermissoes']);
+                        return $this->columnAction($row['id']);
                     })
                     ->rawColumns(['action'])
                     ->escapeColumns([])
@@ -191,7 +191,7 @@ class RessarcimentoPagamentoController extends Controller
                         return $retorno;
                     })
                     ->addColumn('action', function ($row, Request $request) {
-                        return $this->columnAction($row['id'], $request['ajaxPrefixPermissaoSubmodulo'], $request['userLoggedPermissoes']);
+                        return $this->columnAction($row['id']);
                     })
                     ->rawColumns(['action'])
                     ->escapeColumns([])
@@ -301,7 +301,7 @@ class RessarcimentoPagamentoController extends Controller
 
                                 //API
                                 if ($importar_registro === true) {
-                                    $response = Http::post(env('PASSPORT_API_URL') . 'api/ressarcimento_pagamentos/importar',
+                                    $response = Http::post(env('PASSPORT_API_URL') . 'api/ressarcimento_pagamentos/importar/dados',
                                         [
                                             'ressarcimento_militar_id' => $ressarcimento_militar_id,
                                             'referencia' => $request['ressarcimento_pagamento_referencia'],

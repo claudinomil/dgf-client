@@ -12,6 +12,6 @@ Route::prefix('transacoes')->group(function () {
     Route::post('', [TransacaoController::class, 'store'])->name('transacoes.store');
     //Route::get('/{id}', [TransacaoController::class, 'show'])->name('transacoes.show');
     //Route::get('/{id}/edit', [TransacaoController::class, 'edit'])->name('transacoes.edit');
-    //Route::put('/{id}', [TransacaoController::class, 'update'])->name('transacoes.update');
+    //Route::post('/{id}', [TransacaoController::class, 'update'])->name('transacoes.update');
     //Route::delete('/{id}', [TransacaoController::class, 'destroy'])->name('transacoes.destroy');
 });

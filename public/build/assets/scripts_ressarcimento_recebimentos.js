@@ -157,8 +157,8 @@ $(document).ready(function () {
                 $('select').prop('disabled', false);
                 $('.select2').prop('disabled', false);
 
-                $('#crudFormButtons1').show();
-                $('#crudFormButtons2').hide();
+                $('.crudFormButtons1').show();
+                $('.crudFormButtons2').hide();
 
                 $('#crudTable').hide();
 
@@ -220,11 +220,11 @@ $(document).ready(function () {
             $.ajax({
                 data: $("#frm_ressarcimento_recebimentos").serialize(),
                 url: "ressarcimento_recebimentos",
-                type: "PUT",
+                type: "POST",
                 dataType: "json",
                 beforeSend: function () {
                     //Configuração - Retirar DIV Botões e colocar DIV Loading
-                    $('#crudFormButtons1').hide();
+                    $('.crudFormButtons1').hide();
                     $('#crudFormAjaxLoading').show();
                 },
                 success: function (response) {
@@ -282,7 +282,7 @@ $(document).ready(function () {
                 },
                 complete: function () {
                     //Configuração - Retirar DIV Loading e colocar DIV Botões
-                    $('#crudFormButtons1').show();
+                    $('.crudFormButtons1').show();
                     $('#crudFormAjaxLoading').hide();
                 }
             });

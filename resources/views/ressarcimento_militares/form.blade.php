@@ -4,16 +4,16 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
-                    <div class="modal-buttons" id="crudFormButtons1">&nbsp;</div>
-                    <div class="modal-buttons" id="crudFormButtons2">
+                    <div class="modal-buttons crudFormButtons1">&nbsp;</div>
+                    <div class="modal-buttons crudFormButtons2">
                         <!-- delete -->
-                        @if(\App\Facades\Permissoes::permissao([$ajaxPrefixPermissaoSubmodulo.'_destroy'], $userLoggedPermissoes))
+                        @if(\App\Facades\Permissoes::permissao(['destroy']))
                             <!-- Botão Excluir Registro -->
-                            <button type="button" class="btn btn-danger waves-effect btn-label waves-light deleteRecord" data-bs-toggle="tooltip" data-bs-placement="top" data-id="0" title="Excluir Registro"><i class="fa fa-trash-alt label-icon"></i> Excluir</button>
+                            <x-button-crud op="3" onclick="crudDelete(0);" />
                         @endif
 
                         <!-- Botão Cancelar Operação -->
-                        <button type="button" class="btn btn-secondary waves-effect btn-label waves-light crudFormCancelOperacao" data-bs-toggle="tooltip" data-bs-placement="top" title="Cancelar Operação"><i class="fa fa-arrow-left label-icon"></i> Cancelar</button>
+                        <x-button-crud op="4" onclick="crudCancelOperation();" />
                     </div>
                     <div class="modal-loading" id="crudFormAjaxLoading" style="display: none;">
                         <div class="spinner-chase">
@@ -27,7 +27,7 @@
                     </div>
 
                     <!-- Formulário - Form -->
-                    <form id="{{$ajaxNameFormSubmodulo}}" name="{{$ajaxNameFormSubmodulo}}" enctype="multipart/form-data">
+                    <form id="{{$se_nameFormSubmodulo}}" name="{{$se_nameFormSubmodulo}}" enctype="multipart/form-data">
                         <input type="hidden" id="frm_operacao" name="frm_operacao">
                         <input type="hidden" id="registro_id" name="registro_id">
 

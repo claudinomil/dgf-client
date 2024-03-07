@@ -22,25 +22,21 @@
                             <div class="row">
                                 <!-- Botões -->
                                 <div class="col-12 col-md-6 pb-2">
-                                    @if (\App\Facades\Permissoes::permissao([$ajaxPrefixPermissaoSubmodulo.'_create'], $userLoggedPermissoes))
+                                    @if (\App\Facades\Permissoes::permissao(['create']))
                                         <!-- Botão Importar Pagamento -->
-                                        <x-button op="22" id="btnModalImportarPagamento" />
+                                        <x-button-crud op="99" model="3" bgColor="success" textColor="write" class="waves-effect btn-label waves-light" image="fa fa-file-import label-icon" label="Importar Pagamento" id="btnModalImportarPagamento" />
                                     @endif
                                 </div>
 
                                 <!-- Filtro no Banco -->
                                 <div class="col-12 col-md-6 float-end">
-                                    <input type="hidden" id="filter-crud-filter_crud_tipo_condicao" value="1">
-                                    <input type="hidden" id="filter-crud-filter_crud_campo_pesquisar" value="ressarcimento_pagamentos.nome">
-                                    <input type="hidden" id="filter-crud-filter_crud_operacao_realizar" value="1">
-
                                     @php
                                     $selectCampoPesquisar = [
                                     ['value' => 'ressarcimento_pagamentos.nome', 'descricao' => 'Nome'],
+                                    ['value' => 'ressarcimento_pagamentos.rg', 'descricao' => 'RG'],
                                     ['value' => 'ressarcimento_pagamentos.referencia', 'descricao' => 'Referência'],
                                     ['value' => 'ressarcimento_pagamentos.identidade_funcional', 'descricao' => 'Identidade Funcional'],
                                     ['value' => 'ressarcimento_pagamentos.vinculo', 'descricao' => 'Vínculo'],
-                                    ['value' => 'ressarcimento_pagamentos.rg', 'descricao' => 'RG'],
                                     ['value' => 'ressarcimento_pagamentos.codigo_cargo', 'descricao' => 'Código Cargo'],
                                     ['value' => 'ressarcimento_pagamentos.nome_cargo', 'descricao' => 'Nome Cargo'],
                                     ['value' => 'ressarcimento_pagamentos.posto_graduacao', 'descricao' => 'Posto/Graduação'],
@@ -98,18 +94,12 @@
                     </div>
 
                     <!-- Tabela (Componente Blade) -->
-                    @php
-                        $colsNames = ['Referência', 'Militar', 'Valores'];
-                        $colsFields = ['referencia', 'militar', 'valores'];
-                        $colActions = 'yes';
-                    @endphp
-
-                    <x-table-crud-ajax
-                        :numCols="4"
-                        :class="'table table-bordered dt-responsive table-striped nowrap w-100 class-datatable-1'"
-                        :colsNames=$colsNames
-                        :colsFields=$colsFields
-                        :colActions=$colActions />
+                    <x-table-crud-ajax :numCols="2" :colsNames="['Referência', 'Militar', 'Valores', 'Ações']" />
+                    <input type="hidden" id="crudPrefixPermissaoSubmodulo" name="crudPrefixPermissaoSubmodulo" value="{{$se_prefixPermissaoSubmodulo}}">
+                    <input type="hidden" id="crudNameSubmodulo" name="crudNameSubmodulo" value="{{$se_nameSubmodulo}}">
+                    <input type="hidden" id="crudNameFormSubmodulo" name="crudNameFormSubmodulo" value="{{$se_nameFormSubmodulo}}">
+                    <input type="hidden" id="crudFieldsFormSubmodulo" name="crudFieldsFormSubmodulo" value="{{$crudFieldsFormSubmodulo}}">
+                    <input type="hidden" id="crudFieldsColumnsTable" name="crudFieldsColumnsTable" value="referencia,militar,valores,action">
                 </div>
             </div>
         </div>

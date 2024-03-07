@@ -71,11 +71,11 @@
         <!-- Verificar Mode e Style (Serve para customizar a tela do sistema) -->
         <script>
             //Mode
-            sessionStorage.setItem("is_visited_mode", "{{$userLoggedData['layout_mode']}}");
+            sessionStorage.setItem("is_visited_mode", "{{session('se_userLoggedData.layout_mode')}}");
 
             //Style
             @if(session('access_device') == 'desktop')
-                sessionStorage.setItem("is_visited_style", "{{$userLoggedData['layout_style']}}");
+                sessionStorage.setItem("is_visited_style", "{{session('se_userLoggedData.layout_style')}}");
             @else
                 //se for acesso pelo mobile forçar menu superior
                 sessionStorage.setItem("is_visited_style", "layout_style_horizontal_boxed_width");
@@ -84,7 +84,6 @@
 
         <!-- javascript -->
         @include('layouts.scripts')
-        @include('layouts.scripts-ajax')
         @include('layouts.scripts-profile')
     </body>
 </html>

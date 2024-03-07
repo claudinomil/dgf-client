@@ -24,13 +24,13 @@ class RessarcimentoCobrancaController extends Controller
     public function index(Request $request)
     {
         //Buscando dados Api_Data() - Index
-        $this->responseApi(1, 10, 'ressarcimento_cobrancas/index/'.$request['ajaxPrefixPermissaoSubmodulo'], '', '', '');
+        $this->responseApi(1, 10, 'ressarcimento_cobrancas/index/'.session('se_prefixPermissaoSubmodulo'), '', '', '');
 
         //Dados recebidos com sucesso
         if ($this->code == 2000) {
             //chamar view
             return view('ressarcimento_cobrancas.index', [
-                'prefix_permissao' => $request['ajaxPrefixPermissaoSubmodulo'],
+                'prefix_permissao' => session('se_prefixPermissaoSubmodulo'),
                 'icone' => $this->content['icone'],
                 'referencias' => $this->content['referencias']
             ]);
