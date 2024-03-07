@@ -1,4 +1,8 @@
 $(document).ready(function () {
+    //URL
+    var url = window.location.protocol+'//'+window.location.host+'/';
+    if (window.location.hostname.indexOf('cbmerj.rj.gov') != -1) {url += 'dgf_sistema/';}
+
     //Buscar Dados da Referência
     $('.re_btn_referencia').click(function () {
         //Referência
@@ -23,10 +27,10 @@ $(document).ready(function () {
         var referencia = $('#ctrl_referencia').val();
 
         //Deletar PDFs gerados para a referência
-        $.get("ressarcimento_cobrancas/deletar_pdfs_gerados/"+referencia);
+        $.get(url+'ressarcimento_cobrancas/deletar_pdfs_gerados/'+referencia);
 
         //Gerar Cobrança para o Ressarcimento
-        $.get("ressarcimento_cobrancas/gerar_cobrancas/"+referencia, function (data) {
+        $.get(url+'ressarcimento_cobrancas/gerar_cobrancas/'+referencia, function (data) {
             //Lendo dados
             if (data.success) {
                 limparDadosReferencia();
@@ -61,10 +65,10 @@ $(document).ready(function () {
         var referencia = $('#ctrl_referencia').val();
 
         //Deletar PDFs gerados para a referência
-        $.get("ressarcimento_cobrancas/deletar_pdfs_gerados/"+referencia);
+        $.get(url+'ressarcimento_cobrancas/deletar_pdfs_gerados/'+referencia);
 
         //Gerar PDFs para Cobrança
-        $.get("ressarcimento_cobrancas/gerar_pdfs/"+referencia, function (data) {
+        $.get(url+'ressarcimento_cobrancas/gerar_pdfs/'+referencia, function (data) {
             //Lendo dados
             if (data.success) {
                 limparDadosReferencia();
@@ -88,7 +92,7 @@ $(document).ready(function () {
     $('#re_btn_baixar_pdfs').click(function () {
         var referencia = $('#ctrl_referencia').val();
 
-        $.get("ressarcimento_cobrancas/verificar_existe_zip/"+referencia, function (data) {
+        $.get(url+'ressarcimento_cobrancas/verificar_existe_zip/'+referencia, function (data) {
             if (data.success) {
                 var url_atual = window.location.protocol + '//' + window.location.host + '/';
 
@@ -148,6 +152,10 @@ $(document).ready(function () {
     }
 
     function buscarDadosReferencia(referencia) {
+        //URL
+        var url = window.location.protocol+'//'+window.location.host+'/';
+        if (window.location.hostname.indexOf('cbmerj.rj.gov') != -1) {url += 'dgf_sistema/';}
+
         var re_referencia = getReferencia(1, referencia);
 
         //Campo ctrl_referencia
@@ -157,7 +165,7 @@ $(document).ready(function () {
         $('#re_referencia').html(re_referencia);
 
         //Buscar dados do Ressarcimento
-        $.get("ressarcimento_cobrancas/dados_ressarcimento/" + referencia, function (data) {
+        $.get(url+'ressarcimento_cobrancas/dados_ressarcimento/' + referencia, function (data) {
             //Lendo dados
             if (data.success) {
                 //Status Dados

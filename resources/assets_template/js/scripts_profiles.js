@@ -1,5 +1,7 @@
 function userProfileData(local, id) {
-    var url_atual = window.location.protocol+'//'+window.location.host+'/';
+    //URL
+    var url = window.location.protocol+'//'+window.location.host+'/';
+    if (window.location.hostname.indexOf('cbmerj.rj.gov') != -1) {url += 'dgf_sistema/';}
 
     //verificar local : 1- Grade de Usuários ou 2 - Perfil Usuário Logado
     if (local == 1) {$('#modal-profile-botoes').hide();}
@@ -9,7 +11,7 @@ function userProfileData(local, id) {
         processing: true,
         serverSide: true,
         type: "GET",
-        url: url_atual+"profiledata",
+        url: url+'profiledata',
         data: {id: id},
         datatype: "json",
         success: function (response) {
@@ -20,7 +22,7 @@ function userProfileData(local, id) {
             let user = json.user;
 
             //Passando dados user
-            $('.jsonUserAvatar').attr('src', url_atual+user.avatar);
+            $('.jsonUserAvatar').attr('src', url+user.avatar);
             $('.jsonUserGroup').html(user.grupoName+' Truncate');
             $('.jsonUserSituacao').html(user.situacaoName+' Truncate');
             $('.jsonUserName').html(user.name);

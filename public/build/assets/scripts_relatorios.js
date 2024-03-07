@@ -1,6 +1,10 @@
 $(document).ready(function () {
+    //URL
+    var url = window.location.protocol+'//'+window.location.host+'/';
+    if (window.location.hostname.indexOf('cbmerj.rj.gov') != -1) {url += 'dgf_sistema/';}
+
     //Acessos
-    $.get('relatorios/acessos', function (data) {
+    $.get(url+'relatorios/acessos', function (data) {
         if (data.success) {
             var acessos = data.success;
             acessos.forEach(function (item) {
@@ -91,6 +95,10 @@ function configurar_relatorios(relatorio_id=0, relatorio_name='') {
 }
 
 function executar_relatorio_1() {
+    //URL
+    var url = window.location.protocol+'//'+window.location.host+'/';
+    if (window.location.hostname.indexOf('cbmerj.rj.gov') != -1) {url += 'dgf_sistema/';}
+
     //Variaveis
     let caminho_pdf = '';
 
@@ -100,7 +108,7 @@ function executar_relatorio_1() {
         $('#filtro_relatorio_1_footer_2').show();
 
         //Dados
-        $.get('relatorios/executar_relatorio_1/'+$('#filtro_relatorio_1_grupo_id').val(), function (data) {
+        $.get(url+'relatorios/executar_relatorio_1/'+$('#filtro_relatorio_1_grupo_id').val(), function (data) {
             if (data.success) {
                 caminho_pdf = data.caminho_pdf;
             }
@@ -124,6 +132,10 @@ function executar_relatorio_1() {
 }
 
 function executar_relatorio_2() {
+    //URL
+    var url = window.location.protocol+'//'+window.location.host+'/';
+    if (window.location.hostname.indexOf('cbmerj.rj.gov') != -1) {url += 'dgf_sistema/';}
+
     //Variaveis
     let caminho_pdf = '';
 
@@ -133,7 +145,7 @@ function executar_relatorio_2() {
         $('#filtro_relatorio_2_footer_2').show();
 
         //Dados
-        $.get('relatorios/executar_relatorio_2/'+$('#filtro_relatorio_2_grupo_id').val()+'/'+$('#filtro_relatorio_2_situacao_id').val(), function (data) {
+        $.get(url+'relatorios/executar_relatorio_2/'+$('#filtro_relatorio_2_grupo_id').val()+'/'+$('#filtro_relatorio_2_situacao_id').val(), function (data) {
             if (data.success) {
                 caminho_pdf = data.caminho_pdf;
             }
@@ -157,6 +169,10 @@ function executar_relatorio_2() {
 }
 
 function executar_relatorio_3() {
+    //URL
+    var url = window.location.protocol+'//'+window.location.host+'/';
+    if (window.location.hostname.indexOf('cbmerj.rj.gov') != -1) {url += 'dgf_sistema/';}
+
     //Variaveis
     let caminho_pdf = '';
 
@@ -173,7 +189,7 @@ function executar_relatorio_3() {
         if ($('#filtro_relatorio_3_dado').val() != '') {filtro_relatorio_3_dado = $('#filtro_relatorio_3_dado').val();}
 
         //Dados
-        $.get('relatorios/executar_relatorio_3/'+filtro_relatorio_3_data+'/'+$('#filtro_relatorio_3_user_id').val()+'/'+$('#filtro_relatorio_3_submodulo_id').val()+'/'+$('#filtro_relatorio_3_operacao_id').val()+'/'+filtro_relatorio_3_dado, function (data) {
+        $.get(url+'relatorios/executar_relatorio_3/'+filtro_relatorio_3_data+'/'+$('#filtro_relatorio_3_user_id').val()+'/'+$('#filtro_relatorio_3_submodulo_id').val()+'/'+$('#filtro_relatorio_3_operacao_id').val()+'/'+filtro_relatorio_3_dado, function (data) {
             if (data.success) {
                 caminho_pdf = data.caminho_pdf;
             }
@@ -197,6 +213,10 @@ function executar_relatorio_3() {
 }
 
 function executar_relatorio_4() {
+    //URL
+    var url = window.location.protocol+'//'+window.location.host+'/';
+    if (window.location.hostname.indexOf('cbmerj.rj.gov') != -1) {url += 'dgf_sistema/';}
+
     //Variaveis
     let caminho_pdf = '';
 
@@ -216,7 +236,7 @@ function executar_relatorio_4() {
         if ($('#filtro_relatorio_4_notificacao').val() != '') {filtro_relatorio_4_notificacao = $('#filtro_relatorio_4_notificacao').val();}
 
         //Dados
-        $.get('relatorios/executar_relatorio_4/'+filtro_relatorio_4_data+'/'+filtro_relatorio_4_title+'/'+filtro_relatorio_4_notificacao+'/'+$('#filtro_relatorio_4_user_id').val(), function (data) {
+        $.get(url+'relatorios/executar_relatorio_4/'+filtro_relatorio_4_data+'/'+filtro_relatorio_4_title+'/'+filtro_relatorio_4_notificacao+'/'+$('#filtro_relatorio_4_user_id').val(), function (data) {
             if (data.success) {
                 caminho_pdf = data.caminho_pdf;
             }
@@ -240,6 +260,10 @@ function executar_relatorio_4() {
 }
 
 function executar_relatorio_5() {
+    //URL
+    var url = window.location.protocol+'//'+window.location.host+'/';
+    if (window.location.hostname.indexOf('cbmerj.rj.gov') != -1) {url += 'dgf_sistema/';}
+
     //Variaveis
     let caminho_pdf = '';
 
@@ -259,7 +283,7 @@ function executar_relatorio_5() {
         if ($('#filtro_relatorio_5_url').val() != '') {filtro_relatorio_5_url = $('#filtro_relatorio_5_url').val();}
 
         //Dados
-        $.get('relatorios/executar_relatorio_5/'+filtro_relatorio_5_name+'/'+filtro_relatorio_5_descricao+'/'+filtro_relatorio_5_url+'/'+$('#filtro_relatorio_5_user_id').val(), function (data) {
+        $.get(url+'relatorios/executar_relatorio_5/'+filtro_relatorio_5_name+'/'+filtro_relatorio_5_descricao+'/'+filtro_relatorio_5_url+'/'+$('#filtro_relatorio_5_user_id').val(), function (data) {
             if (data.success) {
                 caminho_pdf = data.caminho_pdf;
             }

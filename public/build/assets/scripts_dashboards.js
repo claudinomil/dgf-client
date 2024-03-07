@@ -1,6 +1,10 @@
 $(document).ready(function () {
+    //URL
+    var url = window.location.protocol+'//'+window.location.host+'/';
+    if (window.location.hostname.indexOf('cbmerj.rj.gov') != -1) {url += 'dgf_sistema/';}
+
     //Acessos
-    $.get('dashboards/acessos', function (data) {
+    $.get(url+'dashboards/acessos', function (data) {
         if (data.success) {
             var classCol = 'col-12 col-md-12';
 
@@ -33,6 +37,10 @@ $(document).ready(function () {
 //Funções de chamada dos Dashboards - Início''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
 function dashboard1() {
+    //URL
+    var url = window.location.protocol+'//'+window.location.host+'/';
+    if (window.location.hostname.indexOf('cbmerj.rj.gov') != -1) {url += 'dgf_sistema/';}
+
     //Iniciando dados
     var dashboard_id = $('#dashboard1_id').val();
     var dashboard_name = $('#dashboard1_name').val();
@@ -46,7 +54,7 @@ function dashboard1() {
 
     //Buscar Dados
     return new Promise(function(resolve, reject) {
-        $.get('dashboards/dashboard1', function (data) {
+        $.get(url+'dashboards/dashboard1', function (data) {
             if (data.success) {
                 gruposQtd = data.success.gruposQtd;
                 usuariosQtd = data.success.usuariosQtd;
@@ -80,6 +88,10 @@ function dashboard1() {
 }
 
 function dashboard2() {
+    //URL
+    var url = window.location.protocol+'//'+window.location.host+'/';
+    if (window.location.hostname.indexOf('cbmerj.rj.gov') != -1) {url += 'dgf_sistema/';}
+
     //Iniciando dados
     var dashboard_id = $('#dashboard2_id').val();
     var dashboard_name = $('#dashboard2_name').val();
@@ -94,7 +106,7 @@ function dashboard2() {
 
     //Buscar Dados
     return new Promise(function(resolve, reject) {
-        $.get('dashboards/dashboard2', function (data) {
+        $.get(url+'dashboards/dashboard2', function (data) {
             if (data.success) {
                 series = data.success.series;
                 usuariosQtd = data.success.usuariosQtd;
@@ -130,6 +142,10 @@ function dashboard2() {
 }
 
 function dashboard3() {
+    //URL
+    var url = window.location.protocol+'//'+window.location.host+'/';
+    if (window.location.hostname.indexOf('cbmerj.rj.gov') != -1) {url += 'dgf_sistema/';}
+
     //Iniciando dados
     var dashboard_id = $('#dashboard3_id').val();
     var dashboard_name = $('#dashboard3_name').val();
@@ -144,7 +160,7 @@ function dashboard3() {
 
     //Buscar Dados
     return new Promise(function(resolve, reject) {
-        $.get('dashboards/dashboard3', function (data) {
+        $.get(url+'dashboards/dashboard3', function (data) {
             if (data.success) {
                 series = data.success.series;
                 usuariosQtd = data.success.usuariosQtd;
@@ -180,6 +196,10 @@ function dashboard3() {
 }
 
 function dashboard4() {
+    //URL
+    var url = window.location.protocol+'//'+window.location.host+'/';
+    if (window.location.hostname.indexOf('cbmerj.rj.gov') != -1) {url += 'dgf_sistema/';}
+
     //Iniciando dados
     var dashboard_id = $('#dashboard4_id').val();
     var dashboard_name = $('#dashboard4_name').val();
@@ -194,7 +214,7 @@ function dashboard4() {
 
     //Buscar Dados
     return new Promise(function(resolve, reject) {
-        $.get('dashboards/dashboard4', function (data) {
+        $.get(url+'dashboards/dashboard4', function (data) {
             if (data.success) {
                 series = data.success.series;
                 usuariosQtd = data.success.usuariosQtd;
@@ -230,6 +250,10 @@ function dashboard4() {
 }
 
 function dashboard5() {
+    //URL
+    var url = window.location.protocol+'//'+window.location.host+'/';
+    if (window.location.hostname.indexOf('cbmerj.rj.gov') != -1) {url += 'dgf_sistema/';}
+
     //Iniciando dados
     var dashboard_id = $('#dashboard5_id').val();
     var dashboard_name = $('#dashboard5_name').val();
@@ -244,7 +268,7 @@ function dashboard5() {
 
     //Buscar Dados
     return new Promise(function(resolve, reject) {
-        $.get('dashboards/dashboard5', function (data) {
+        $.get(url+'dashboards/dashboard5', function (data) {
             if (data.success) {
                 series = data.success.series;
                 transacoesQtd = data.success.transacoesQtd;

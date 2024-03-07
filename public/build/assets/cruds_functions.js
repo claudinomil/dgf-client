@@ -232,30 +232,34 @@ function crudTable(route, fieldsColumns='', pageLength=5) {
 
 //Create
 function crudCreate() {
+    //URL
+    var url = window.location.protocol+'//'+window.location.host+'/';
+    if (window.location.hostname.indexOf('cbmerj.rj.gov') != -1) {url += 'dgf_sistema/';}
+
     //Variáveis
     let prefixPermissaoSubmodulo = document.getElementById('crudPrefixPermissaoSubmodulo').value;
     let nameSubmodulo = document.getElementById('crudNameSubmodulo').value;
     let nameFormSubmodulo = document.getElementById('crudNameFormSubmodulo').value;
 
     //MODELO DE fetch PARA MUDAR OS $.get / $.post / $.ajax ''''''''''''''''''''''''''''''''''
-    fetch(prefixPermissaoSubmodulo+'/create', {
-        method: 'GET',
-        headers: {'Request-Origin': 'fetch'}
-    }).then(response => {
-        return response.json();
-    }).then(data => {
-        if (data.success) {
-            alert(data.success);
-        } else {
-            alert('Mensagem');
-        }
-    }).catch(error => {
-        console.error('Erro:', error);
-    });
+    // fetch(url+prefixPermissaoSubmodulo+'/create', {
+    //     method: 'GET',
+    //     headers: {'Request-Origin': 'fetch'}
+    // }).then(response => {
+    //     return response.json();
+    // }).then(data => {
+    //     if (data.success) {
+    //         alert(data.success);
+    //     } else {
+    //         alert('Mensagem');
+    //     }
+    // }).catch(error => {
+    //     console.error('Erro:', error);
+    // });
     //''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
     //Passar pelo evento create do controller
-    $.get(prefixPermissaoSubmodulo+'/create', function (data) {
+    $.get(url+prefixPermissaoSubmodulo+'/create', function (data) {
         //Lendo dados
         if (data.success) {
             //Limpar Formulario
@@ -302,9 +306,6 @@ function crudCreate() {
             if (prefixPermissaoSubmodulo == 'users') {
                 //voltar configurações de campos apos passar pelo edit
                 document.getElementById('email').readOnly = false;
-
-                //funcionario_id
-                document.getElementById('funcionario_id').disabled = false;
             }
 
             if (prefixPermissaoSubmodulo == 'ferramentas') {
@@ -331,6 +332,10 @@ function crudCreate() {
 
 //View
 function crudView(registro_id) {
+    //URL
+    var url = window.location.protocol+'//'+window.location.host+'/';
+    if (window.location.hostname.indexOf('cbmerj.rj.gov') != -1) {url += 'dgf_sistema/';}
+
     //Campo hidden registro_id
     document.getElementById('registro_id').value = registro_id;
 
@@ -340,7 +345,7 @@ function crudView(registro_id) {
     let nameFormSubmodulo = document.getElementById('crudNameFormSubmodulo').value;
 
     //Buscar dados do Registro
-    $.get(prefixPermissaoSubmodulo+'/'+registro_id, function (data) {
+    $.get(url+prefixPermissaoSubmodulo+'/'+registro_id, function (data) {
         //Lendo dados
         if (data.success) {
             //Limpar Formulario
@@ -370,7 +375,7 @@ function crudView(registro_id) {
                 document.getElementById('fieldUserName').value = data.success['userName'];
 
                 //Marcar notificação como lida
-                $.get('notificacoes/readingNotificacoes/' + registro_id);
+                $.get(url+'notificacoes/readingNotificacoes/' + registro_id);
             }
 
             if (prefixPermissaoSubmodulo == 'grupos') {
@@ -472,6 +477,10 @@ function crudView(registro_id) {
 
 //Edit
 function crudEdit(registro_id) {
+    //URL
+    var url = window.location.protocol+'//'+window.location.host+'/';
+    if (window.location.hostname.indexOf('cbmerj.rj.gov') != -1) {url += 'dgf_sistema/';}
+
     //Variáveis
     if (registro_id == 0) {registro_id = document.getElementById('registro_id').value;}
     let prefixPermissaoSubmodulo = document.getElementById('crudPrefixPermissaoSubmodulo').value;
@@ -479,7 +488,7 @@ function crudEdit(registro_id) {
     let nameFormSubmodulo = document.getElementById('crudNameFormSubmodulo').value;
 
     //Buscar dados do Registro
-    $.get(prefixPermissaoSubmodulo+'/'+registro_id+"/edit", function (data) {
+    $.get(url+prefixPermissaoSubmodulo+'/'+registro_id+"/edit", function (data) {
         //Lendo dados
         if (data.success) {
             //Limpar Formulario
@@ -558,13 +567,6 @@ function crudEdit(registro_id) {
             if (prefixPermissaoSubmodulo == 'users') {
                 //Não deixar alterar E-mail pelo submódulo Users
                 document.getElementById('email').readOnly = true;
-
-                //Verificar se pode alterar campo funcionario_id
-                var user_operacoes_qtd = data.success['user_operacoes_qtd'];
-                if (user_operacoes_qtd > 0) {
-                    //funcionario_id
-                    document.getElementById('funcionario_id').disabled = true;
-                }
             }
 
             if (prefixPermissaoSubmodulo == 'ferramentas') {
@@ -620,6 +622,10 @@ function crudEdit(registro_id) {
 
 //Delete
 function crudDelete(registro_id) {
+    //URL
+    var url = window.location.protocol+'//'+window.location.host+'/';
+    if (window.location.hostname.indexOf('cbmerj.rj.gov') != -1) {url += 'dgf_sistema/';}
+
     //Variáveis
     if (registro_id == 0) {registro_id = document.getElementById('registro_id').value;}
     let prefixPermissaoSubmodulo = document.getElementById('crudPrefixPermissaoSubmodulo').value;
@@ -631,7 +637,7 @@ function crudDelete(registro_id) {
         if (confirmed) {
             $.ajax({
                 type: "DELETE",
-                url: prefixPermissaoSubmodulo+'/'+registro_id,
+                url: url+prefixPermissaoSubmodulo+'/'+registro_id,
                 beforeSend: function () {
                     //Configuração - Retirar DIV Botões e colocar DIV Loading
                     crudConfiguracao({p_crudFormButtons2:'hide', p_crudFormAjaxLoading:'show'});
@@ -674,6 +680,10 @@ function crudDelete(registro_id) {
 
 //Confirm Operacao
 function crudConfirmOperation() {
+    //URL
+    var url = window.location.protocol+'//'+window.location.host+'/';
+    if (window.location.hostname.indexOf('cbmerj.rj.gov') != -1) {url += 'dgf_sistema/';}
+
     //Variáveis
     let registro_id = document.getElementById('registro_id').value;
     let prefixPermissaoSubmodulo = document.getElementById('crudPrefixPermissaoSubmodulo').value;
@@ -709,7 +719,7 @@ function crudConfirmOperation() {
 
                 //Ajax
                 $.ajax({
-                    url: prefixPermissaoSubmodulo,
+                    url: url+prefixPermissaoSubmodulo,
                     type: "POST",
                     dataType: "json",
                     data: formData,
@@ -728,7 +738,7 @@ function crudConfirmOperation() {
                                 email = document.getElementById('email').value;
                                 senha = response.content;
                                 senha = senha.substring(4, 14);
-                                $.get('enviar_email/users/primeiro_acesso/' + email + '/' + senha);
+                                $.get(url+'enviar_email/users/primeiro_acesso/' + email + '/' + senha);
                             }
                             //''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
@@ -790,7 +800,7 @@ function crudConfirmOperation() {
 
                 //Ajax
                 $.ajax({
-                    url: prefixPermissaoSubmodulo+'/'+registro_id,
+                    url: url+prefixPermissaoSubmodulo+'/'+registro_id,
                     type: "POST",
                     dataType: "json",
                     data: formData,
@@ -965,236 +975,3 @@ function crudFilterExecutar(submodulo='') {
     //Table
     crudTable(submodulo+'/filter/'+array_dados);
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// //Configuração
-// function crudConfiguracao({p_frm_operacao=null, p_fieldsDisabled=null, p_crudFormButtons1=null, p_crudFormButtons2=null, p_crudTable=null, p_crudForm=null, p_crudFormAjaxLoading=null, p_removeMask=null, p_putMask=null}) {
-//     //Campo hidden frm_operacao
-//     if (p_frm_operacao !== null) {$('#frm_operacao').val(p_frm_operacao);}
-//
-//     //Campos do Formulário - disabled true/false
-//     if (p_fieldsDisabled !== null) {
-//         $('input').prop('disabled', p_fieldsDisabled);
-//         $('textarea').prop('disabled', p_fieldsDisabled);
-//         $('select').prop('disabled', p_fieldsDisabled);
-//         $('.select2').prop('disabled', p_fieldsDisabled);
-//
-//         //Campos do Formulário - disabled true/false (Campos Padrões)
-//         if (p_fieldsDisabled === true) {
-//             $('#pesquisar_field').prop('disabled', false);
-//             $('#pesquisar_value').prop('disabled', false);
-//             $('.fildFilterTable').prop('disabled', false);
-//             $('.fildLengthTable').prop('disabled', false);
-//         }
-//     }
-//
-//     //Botões do Modal
-//     if (p_crudFormButtons1 == 'show') {$('.crudFormButtons1').show();}
-//
-//     if (p_crudFormButtons1 == 'hide') {$('.crudFormButtons1').hide();}
-//
-//     if (p_crudFormButtons2 == 'show') {$('.crudFormButtons2').show();}
-//
-//     if (p_crudFormButtons2 == 'hide') {$('.crudFormButtons2').hide();}
-//
-//     //Table Show/Hide
-//     if (p_crudTable == 'show') {$('#crudTable').show();}
-//
-//     if (p_crudTable == 'hide') {$('#crudTable').hide();}
-//
-//     //Form Show/Hide
-//     if (p_crudForm == 'show') {$('#crudForm').show();}
-//
-//     if (p_crudForm == 'hide') {$('#crudForm').hide();}
-//
-//     //DIV Loading Show/Hide
-//     if (p_crudFormAjaxLoading == 'show') {$('#crudFormAjaxLoading').show();}
-//
-//     if (p_crudFormAjaxLoading == 'hide') {$('#crudFormAjaxLoading').hide();}
-//
-//     //Removendo Máscaras
-//     if (p_removeMask === true) {removeMask();}
-//
-//     //Restaurando Máscaras
-//     if (p_putMask === true) {putMask();}
-// }
-//
-// //Preencher Formulario
-// function crudPreencherFormulario(campo, dados) {
-//     if (campo == 'id') {
-//         $('#registro_id').val(dados['id']);
-//     } else {
-//         if ($('#'+campo).hasClass('select2')) {
-//             $('#'+campo).val(dados[campo]).trigger('change');
-//         } else {
-//             $('#'+campo).val(dados[campo]);
-//         }
-//     }
-// }
-//
-// //Limpar Formulario
-// function crudLimparFormulario(nomeFormulario) {
-//     $('.is-invalid').removeClass('is-invalid');
-//     $('#'+nomeFormulario).trigger('reset');
-//     $('.select2').val('').trigger('change');
-// }
-//
-// //Montartabela
-// function crudTable(route, fieldsColumns='', pageLength=5) {
-//     if (fieldsColumns == '') {
-//         let crudFieldsColumnsTable = $('#crudFieldsColumnsTable').val();
-//         let camposColunasTabelas = crudFieldsColumnsTable.split(',');
-//         fieldsColumns = [];
-//         camposColunasTabelas.forEach(function (campo) {
-//             fieldsColumns.push({data: campo});
-//         });
-//
-//         fieldsColumns.push({data: 'action'});
-//     }
-//
-//     $('.datatable-crud-ajax').DataTable({
-//         language: {
-//             pageLength: {
-//                 '-1': 'Mostrar todos os registros',
-//                 '_': 'Mostrar %d registros'
-//             },
-//             lengthMenu: 'Exibir _MENU_ resultados por página',
-//             emptyTable: 'Nenhum registro encontrado',
-//             info: 'Mostrando de _START_ até _END_ de _TOTAL_ registros',
-//             infoEmpty: 'Mostrando 0 até 0 de 0 registros',
-//             infoFiltered: '(Filtrados de _MAX_ registros)',
-//             infoThousands: '.',
-//             loadingRecords: 'Carregando...',
-//             processing: 'Processando...',
-//             zeroRecords: 'Nenhum registro encontrado',
-//             search: 'Pesquisar',
-//             paginate: {
-//                 next: 'Próximo',
-//                 previous: 'Anterior',
-//                 first: 'Primeiro',
-//                 last: 'Último'
-//             }
-//         },
-//         bDestroy: true,
-//         responsive: true,
-//         lengthChange: true,
-//         autoWidth: true,
-//         order: [],
-//
-//         processing: true,
-//         serverSide: false,
-//         pageLength: pageLength,
-//         ajax: route,
-//         columns: fieldsColumns
-//     });
-//
-//     //Configuração
-//     crudConfiguracao({p_fieldsDisabled:false});
-// }
-//
-// //Retira a última linha adicionada caso a anterior esteja com o campo dado_pesquisar vazio
-// function crudFilterRetirarLinhaAdicionada() {
-//     //Pegar quantidade de Itens/Filtros
-//     var qtdItens = $('[data-repeater-item]').length;
-//
-//     //Verificar o ajuste necessário
-//     var diminuirItens = 1;
-//
-//     //qtdItens ajustada
-//     qtdItens = qtdItens - diminuirItens;
-//
-//     var ind = 0;
-//     $('[data-repeater-item]').each(function () {
-//         if (ind == qtdItens) {
-//             $(this).remove();
-//         }
-//
-//         ind++;
-//     });
-// }
-//
-// //Executar Filtros
-// function crudFilterExecutar(locale='', submodulo='') {
-//     //Pegar quantidade de Itens/Filtros
-//     var qtdItens = $('[data-repeater-item]').length;
-//
-//     //Verificar o ajuste necessário para mandar somente os filtros que já estavam renderizados
-//     if (locale == '') {var diminuirItens = 1;}
-//     if (locale == 'show') {var diminuirItens = 2;}
-//     if (locale == 'hide') {var diminuirItens = 1;}
-//
-//     //qtdItens ajustada
-//     qtdItens = qtdItens - diminuirItens;
-//
-//     //Arrays
-//     const array_dados = [];
-//
-//     //Varrer filtros para montar array de dados
-//     for(i=0; i<=qtdItens; i++) {
-//         var tipo_condicao = $("select[name='field["+i+"][filter_crud_tipo_condicao]']").val();
-//         var campo_pesquisar = $("select[name='field["+i+"][filter_crud_campo_pesquisar]']").val();
-//         var operacao_realizar = $("select[name='field["+i+"][filter_crud_operacao_realizar]']").val();
-//         var dado_pesquisar = $("input[name='field["+i+"][filter_crud_dado_pesquisar]']").val();
-//
-//         if (dado_pesquisar == '') {
-//             if (locale != 'hide') {
-//                 alert('Digite algo para pesquisar no filtro ' + (i + 1));
-//
-//                 if (locale == 'show') {crudFilterRetirarLinhaAdicionada();}
-//             }
-//
-//             return false;
-//         }
-//
-//         //Populando array_dados
-//         array_dados.push(tipo_condicao);
-//         array_dados.push(campo_pesquisar);
-//         array_dados.push(operacao_realizar);
-//         array_dados.push(dado_pesquisar);
-//     }
-//
-//     //Table
-//     crudTable(submodulo+'/filter/'+array_dados);
-// }
-
-
-

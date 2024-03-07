@@ -60,8 +60,12 @@ function gradeRecebimentosTableConfigurar() {
 //Funções para o Submódulo Ressarcimento Recebimentos - FIM'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
 function notificacaoLerData(id) {
+    //URL
+    var url = window.location.protocol+'//'+window.location.host+'/';
+    if (window.location.hostname.indexOf('cbmerj.rj.gov') != -1) {url += 'dgf_sistema/';}
+
     //Buscar dados do Registro
-    $.get("notificacoes/"+id, function (data) {
+    $.get(url+'notificacoes/'+id, function (data) {
         //Lendo dados
         if (data.success) {
             $('.jsonNotificacaoLerTitulo').html(data.success.title);

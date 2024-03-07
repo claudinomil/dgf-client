@@ -1,9 +1,13 @@
 $(document).ready(function () {
+    //URL
+    var url = window.location.protocol+'//'+window.location.host+'/';
+    if (window.location.hostname.indexOf('cbmerj.rj.gov') != -1) {url += 'dgf_sistema/';}
+
     if ($('#periodo1').val() == '') {
         alert('Não existe Ressarcimento para análise.');
     } else {
         //Acessos
-        $.get('ressarcimento_dashboards/acessos', function (data) {
+        $.get(url+'ressarcimento_dashboards/acessos', function (data) {
             if (data.success) {
                 var classCol = 'col-12 col-md-12';
 
@@ -85,6 +89,10 @@ function montarGraficos() {
 }
 
 function dashboard6() {
+    //URL
+    var url = window.location.protocol+'//'+window.location.host+'/';
+    if (window.location.hostname.indexOf('cbmerj.rj.gov') != -1) {url += 'dgf_sistema/';}
+
     //Iniciando dados
     var dashboard_id = $('#dashboard6_id').val();
     var dashboard_name = $('#dashboard6_name').val();
@@ -98,7 +106,7 @@ function dashboard6() {
 
     //Buscar Dados
     return new Promise(function(resolve, reject) {
-        $.get('ressarcimento_dashboards/dashboard6/'+$('#periodo1').val()+'/'+$('#periodo2').val()+'/'+$('#orgao_id').val(), function (data) {
+        $.get(url+'ressarcimento_dashboards/dashboard6/'+$('#periodo1').val()+'/'+$('#periodo2').val()+'/'+$('#orgao_id').val(), function (data) {
             if (data.success) {
                 orgaosQtd = data.success.orgaosQtd;
                 militaresQtd = data.success.militaresQtd;
@@ -133,6 +141,10 @@ function dashboard6() {
 }
 
 function dashboard7() {
+    //URL
+    var url = window.location.protocol+'//'+window.location.host+'/';
+    if (window.location.hostname.indexOf('cbmerj.rj.gov') != -1) {url += 'dgf_sistema/';}
+
     //Iniciando dados
     var dashboard_id = $('#dashboard7_id').val();
     var dashboard_name = $('#dashboard7_name').val();
@@ -149,7 +161,7 @@ function dashboard7() {
 
     //Buscar Dados
     return new Promise(function(resolve, reject) {
-        $.get('ressarcimento_dashboards/dashboard7/'+$('#periodo1').val()+'/'+$('#periodo2').val()+'/'+$('#orgao_id').val(), function (data) {
+        $.get(url+'ressarcimento_dashboards/dashboard7/'+$('#periodo1').val()+'/'+$('#periodo2').val()+'/'+$('#orgao_id').val(), function (data) {
             if (data.success) {
                 militaresQtd = data.success.militaresQtd;
                 oficiaisQtd = data.success.oficiaisQtd;
@@ -193,6 +205,10 @@ function dashboard7() {
 }
 
 function dashboard8() {
+    //URL
+    var url = window.location.protocol+'//'+window.location.host+'/';
+    if (window.location.hostname.indexOf('cbmerj.rj.gov') != -1) {url += 'dgf_sistema/';}
+
     //Iniciando dados
     var dashboard_id = $('#dashboard8_id').val();
     var dashboard_name = $('#dashboard8_name').val();
@@ -206,7 +222,7 @@ function dashboard8() {
 
     //Buscar Dados
     return new Promise(function(resolve, reject) {
-        $.get('ressarcimento_dashboards/dashboard8/'+$('#periodo1').val()+'/'+$('#periodo2').val()+'/'+$('#orgao_id').val(), function (data) {
+        $.get(url+'ressarcimento_dashboards/dashboard8/'+$('#periodo1').val()+'/'+$('#periodo2').val()+'/'+$('#orgao_id').val(), function (data) {
             if (data.success) {
                 series = data.success.series;
                 yaxis_max = data.success.yaxis_max;
@@ -242,6 +258,10 @@ function dashboard8() {
 }
 
 function dashboard9() {
+    //URL
+    var url = window.location.protocol+'//'+window.location.host+'/';
+    if (window.location.hostname.indexOf('cbmerj.rj.gov') != -1) {url += 'dgf_sistema/';}
+
     //Iniciando dados
     var dashboard_id = $('#dashboard9_id').val();
     var dashboard_name = $('#dashboard9_name').val();
@@ -255,7 +275,7 @@ function dashboard9() {
 
     //Buscar Dados
     return new Promise(function(resolve, reject) {
-        $.get('ressarcimento_dashboards/dashboard9/'+$('#periodo1').val()+'/'+$('#periodo2').val()+'/'+$('#orgao_id').val(), function (data) {
+        $.get(url+'ressarcimento_dashboards/dashboard9/'+$('#periodo1').val()+'/'+$('#periodo2').val()+'/'+$('#orgao_id').val(), function (data) {
             if (data.success) {
                 series = data.success.series;
                 labels = data.success.labels;
@@ -286,6 +306,10 @@ function dashboard9() {
 }
 
 function dashboard10() {
+    //URL
+    var url = window.location.protocol+'//'+window.location.host+'/';
+    if (window.location.hostname.indexOf('cbmerj.rj.gov') != -1) {url += 'dgf_sistema/';}
+
     //Iniciando dados
     var dashboard_id = $('#dashboard10_id').val();
     var dashboard_name = $('#dashboard10_name').val();
@@ -299,7 +323,7 @@ function dashboard10() {
 
     //Buscar Dados
     return new Promise(function(resolve, reject) {
-        $.get('ressarcimento_dashboards/dashboard10/'+$('#periodo1').val()+'/'+$('#periodo2').val()+'/'+$('#orgao_id').val(), function (data) {
+        $.get(url+'ressarcimento_dashboards/dashboard10/'+$('#periodo1').val()+'/'+$('#periodo2').val()+'/'+$('#orgao_id').val(), function (data) {
             if (data.success) {
                 series = data.success.series;
                 labels = data.success.labels;
@@ -330,6 +354,10 @@ function dashboard10() {
 }
 
 function dashboard11() {
+    //URL
+    var url = window.location.protocol+'//'+window.location.host+'/';
+    if (window.location.hostname.indexOf('cbmerj.rj.gov') != -1) {url += 'dgf_sistema/';}
+
     //Iniciando dados
     var dashboard_id = $('#dashboard11_id').val();
     var dashboard_name = $('#dashboard11_name').val();
@@ -347,7 +375,7 @@ function dashboard11() {
 
     //Buscar Dados
     return new Promise(function(resolve, reject) {
-        $.get('ressarcimento_dashboards/dashboard11/'+$('#periodo1').val()+'/'+$('#periodo2').val()+'/'+$('#orgao_id').val(), function (data) {
+        $.get(url+'ressarcimento_dashboards/dashboard11/'+$('#periodo1').val()+'/'+$('#periodo2').val()+'/'+$('#orgao_id').val(), function (data) {
             if (data.success) {
                 series = data.success.series;
                 colors = data.success.colors;

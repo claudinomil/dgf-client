@@ -36,8 +36,12 @@ $(document).ready(function () {
         });
     }
 
+    //URL
+    var url = window.location.protocol+'//'+window.location.host+'/';
+    if (window.location.hostname.indexOf('cbmerj.rj.gov') != -1) {url += 'dgf_sistema/';}
+
     $('#militar_rg').keyup(function () {
-        $.get('webservices/militar/rg/'+$('#militar_rg').val(), function( data ) {
+        $.get(url+'webservices/militar/rg/'+$('#militar_rg').val(), function( data ) {
             //Lendo dados
             if (data.success) {
                 var militar = data.success;

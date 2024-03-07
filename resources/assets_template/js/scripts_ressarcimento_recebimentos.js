@@ -1,4 +1,8 @@
 $(document).ready(function () {
+    //URL
+    var url = window.location.protocol+'//'+window.location.host+'/';
+    if (window.location.hostname.indexOf('cbmerj.rj.gov') != -1) {url += 'dgf_sistema/';}
+
     //Alterar Registros
     $('#re_btn_alterar_registros').click(function () {
         preencherCamposModal();
@@ -16,7 +20,7 @@ $(document).ready(function () {
         var referencia = $('#ar_referencia').val();
         var orgao_id = $('#ar_orgao').val();
 
-        $.get("ressarcimento_recebimentos/registros_alterar/"+referencia+"/"+orgao_id, function (data) {
+        $.get(url+'ressarcimento_recebimentos/registros_alterar/'+referencia+'/'+orgao_id, function (data) {
             if (data.success) {
                 //Dados para montar a grade de registros
                 var dados = data.success;
@@ -219,7 +223,7 @@ $(document).ready(function () {
             //Ajax
             $.ajax({
                 data: $("#frm_ressarcimento_recebimentos").serialize(),
-                url: "ressarcimento_recebimentos",
+                url: url+'ressarcimento_recebimentos',
                 type: "POST",
                 dataType: "json",
                 beforeSend: function () {
@@ -337,12 +341,16 @@ $(document).ready(function () {
 });
 
 function preencherCamposModal() {
+    //URL
+    var url = window.location.protocol+'//'+window.location.host+'/';
+    if (window.location.hostname.indexOf('cbmerj.rj.gov') != -1) {url += 'dgf_sistema/';}
+
     //Verificar se tem referência escolhida
     var referencia_escolhida = 'ref';
     if ($("#ar_referencia").val() !== null && $("#ar_referencia").val() !== undefined && $("#ar_referencia").val() != '') {referencia_escolhida = $("#ar_referencia").val();}
 
     //Buscar dados
-    $.get("ressarcimento_recebimentos/dados/modal/"+referencia_escolhida, function (data) {
+    $.get(url+'ressarcimento_recebimentos/dados/modal/'+referencia_escolhida, function (data) {
         if (data.success) {
             if (referencia_escolhida == 'ref') {
                 //Select ar_referencia

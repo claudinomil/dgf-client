@@ -20,6 +20,10 @@ $(document).ready(function () {
         });
     }
 
+    //URL
+    var url = window.location.protocol+'//'+window.location.host+'/';
+    if (window.location.hostname.indexOf('cbmerj.rj.gov') != -1) {url += 'dgf_sistema/';}
+
     //Importar Pagamento''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
     //Botão Modal Importar Pagamento
     $('#btnModalImportarPagamento').click(function () {
@@ -80,7 +84,7 @@ $(document).ready(function () {
 
         $.ajax({
             type:'POST',
-            url: '/ressarcimento_pagamentos/importar/dados',
+            url: url+'/ressarcimento_pagamentos/importar/dados',
             data: formData,
             cache: false,
             contentType: false,
