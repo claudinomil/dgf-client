@@ -153,44 +153,14 @@
     "src": "resources/css/app.css"
   },
   "resources/js/app.css": {
-    "file": "assets/app-c2b4d327.css",
+    "file": "assets/app-2253b19d.css",
     "src": "resources/js/app.css"
   },
   "resources/js/app.js": {
-    "assets": [
-      "assets/materialdesignicons-webfont-e1ad5120.eot",
-      "assets/materialdesignicons-webfont-34845bb6.woff2",
-      "assets/materialdesignicons-webfont-7b7ee7a1.woff",
-      "assets/materialdesignicons-webfont-4045a75f.ttf",
-      "assets/boxicons-802c3564.eot",
-      "assets/boxicons-79f14604.woff2",
-      "assets/boxicons-77e1b957.woff",
-      "assets/boxicons-ac7dcf49.ttf",
-      "assets/boxicons-809f57f0.svg",
-      "assets/fa-brands-400-811e1577.eot",
-      "assets/fa-brands-400-5d919029.woff2",
-      "assets/fa-brands-400-e836c5d5.woff",
-      "assets/fa-brands-400-a0c14538.ttf",
-      "assets/fa-brands-400-02340ba1.svg",
-      "assets/fa-regular-400-01f4416f.eot",
-      "assets/fa-regular-400-6a8c8e9e.woff2",
-      "assets/fa-regular-400-8e2d9619.woff",
-      "assets/fa-regular-400-f32b94a2.ttf",
-      "assets/fa-regular-400-865fd23d.svg",
-      "assets/fa-solid-900-32501727.eot",
-      "assets/fa-solid-900-7f4d3fd0.woff2",
-      "assets/fa-solid-900-352f8ead.woff",
-      "assets/fa-solid-900-231d68ce.ttf",
-      "assets/fa-solid-900-e7685398.svg",
-      "assets/dripicons-v2-4551d45f.eot",
-      "assets/dripicons-v2-e87a09ce.woff",
-      "assets/dripicons-v2-d8c798b5.ttf",
-      "assets/dripicons-v2-2c1ce9e2.svg"
-    ],
     "css": [
-      "assets/app-c2b4d327.css"
+      "assets/app-2253b19d.css"
     ],
-    "file": "assets/app-790d1fc0.js",
+    "file": "assets/app-2ee89ef4.js",
     "isEntry": true,
     "src": "resources/js/app.js"
   },
