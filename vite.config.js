@@ -80,7 +80,39 @@ export default defineConfig({
                 {src: 'resources/assets_template/images/logo_governo_rj.png', dest: 'assets/images'},
 
                 {src: 'resources/assets_template/pdfs/cobrancas/pdf.pdf', dest: 'assets/pdfs/cobrancas'},
-                {src: 'resources/assets_template/pdfs/relatorios/pdf.pdf', dest: 'assets/pdfs/relatorios'}
+                {src: 'resources/assets_template/pdfs/relatorios/pdf.pdf', dest: 'assets/pdfs/relatorios'},
+
+                {src: 'resources/assets_template/fonts/boxicons.eot', dest: 'fonts'},
+                {src: 'resources/assets_template/fonts/boxicons.svg', dest: 'fonts'},
+                {src: 'resources/assets_template/fonts/boxicons.ttf', dest: 'fonts'},
+                {src: 'resources/assets_template/fonts/boxicons.ttf', dest: 'fonts'},
+                {src: 'resources/assets_template/fonts/boxicons.woff2', dest: 'fonts'},
+                {src: 'resources/assets_template/fonts/dripicons-v2.eot', dest: 'fonts'},
+                {src: 'resources/assets_template/fonts/dripicons-v2.svg', dest: 'fonts'},
+                {src: 'resources/assets_template/fonts/dripicons-v2.ttf', dest: 'fonts'},
+                {src: 'resources/assets_template/fonts/dripicons-v2.woff', dest: 'fonts'},
+                {src: 'resources/assets_template/fonts/fa-brands-400.eot', dest: 'fonts'},
+                {src: 'resources/assets_template/fonts/fa-brands-400.svg', dest: 'fonts'},
+                {src: 'resources/assets_template/fonts/fa-brands-400.ttf', dest: 'fonts'},
+                {src: 'resources/assets_template/fonts/fa-brands-400.woff', dest: 'fonts'},
+                {src: 'resources/assets_template/fonts/fa-brands-400.woff2', dest: 'fonts'},
+                {src: 'resources/assets_template/fonts/fa-regular-400.eot', dest: 'fonts'},
+                {src: 'resources/assets_template/fonts/fa-regular-400.svg', dest: 'fonts'},
+                {src: 'resources/assets_template/fonts/fa-regular-400.ttf', dest: 'fonts'},
+                {src: 'resources/assets_template/fonts/fa-regular-400.woff', dest: 'fonts'},
+                {src: 'resources/assets_template/fonts/fa-regular-400.woff2', dest: 'fonts'},
+                {src: 'resources/assets_template/fonts/fa-solid-900.eot', dest: 'fonts'},
+                {src: 'resources/assets_template/fonts/fa-solid-900.svg', dest: 'fonts'},
+                {src: 'resources/assets_template/fonts/fa-solid-900.ttf', dest: 'fonts'},
+                {src: 'resources/assets_template/fonts/fa-solid-900.woff', dest: 'fonts'},
+                {src: 'resources/assets_template/fonts/fa-solid-900.woff2', dest: 'fonts'},
+                {src: 'resources/assets_template/fonts/materialdesignicons-webfont.eot', dest: 'fonts'},
+                {src: 'resources/assets_template/fonts/materialdesignicons-webfont.ttf', dest: 'fonts'},
+                {src: 'resources/assets_template/fonts/materialdesignicons-webfont.woff', dest: 'fonts'},
+                {src: 'resources/assets_template/fonts/materialdesignicons-webfont.woff2', dest: 'fonts'},
+                {src: 'resources/assets_template/fonts/summernote.eot', dest: 'fonts'},
+                {src: 'resources/assets_template/fonts/summernote.ttf', dest: 'fonts'},
+                {src: 'resources/assets_template/fonts/summernote.woff', dest: 'fonts'}
             ]
         })
     ]

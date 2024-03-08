@@ -37,5 +37,5 @@ import '../assets_template/libs/datatables/datatables.min.css'
 //Images
 import.meta.glob([
     // '../assets_template/images/**',
-    '../assets_template/fonts/**',
+    //'../assets_template/fonts/**',
 ]);
