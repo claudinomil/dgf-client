@@ -17,6 +17,7 @@ export default defineConfig({
             targets: [
                 {src: 'resources/assets_template/css/bootstrap.css', dest: 'assets'},
                 {src: 'resources/assets_template/css/app.css', dest: 'assets'},
+                {src: 'resources/assets_template/css/icons.css', dest: 'assets'},
                 {src: 'resources/assets_template/css/bootstrap-dark.css', dest: 'assets'},
                 {src: 'resources/assets_template/css/app-dark.css', dest: 'assets'},
 

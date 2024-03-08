@@ -153,14 +153,14 @@
     "src": "resources/css/app.css"
   },
   "resources/js/app.css": {
-    "file": "assets/app-2253b19d.css",
+    "file": "assets/app-45c12cad.css",
     "src": "resources/js/app.css"
   },
   "resources/js/app.js": {
     "css": [
-      "assets/app-2253b19d.css"
+      "assets/app-45c12cad.css"
     ],
-    "file": "assets/app-2ee89ef4.js",
+    "file": "assets/app-b5b11922.js",
     "isEntry": true,
     "src": "resources/js/app.js"
   },
