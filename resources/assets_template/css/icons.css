@@ -8,10 +8,12 @@ Contact: themesbrand@gmail.com
 File: Icons Css File
 */
 /* MaterialDesignIcons.com */
+
+
 @font-face {
   font-family: "Material Design Icons";
-  src: url("../fonts/materialdesignicons-webfont.eot?v=5.8.55");
-  src: url("../fonts/materialdesignicons-webfont.eot?#iefix&v=5.8.55") format("embedded-opentype"), url("../fonts/materialdesignicons-webfont.woff2?v=5.8.55") format("woff2"), url("../fonts/materialdesignicons-webfont.woff?v=5.8.55") format("woff"), url("../fonts/materialdesignicons-webfont.ttf?v=5.8.55") format("truetype");
+  src: url("../dgf_sistema/fonts/materialdesignicons-webfont.eot?v=5.8.55");
+  src: url("../dgf_sistema/fonts/materialdesignicons-webfont.eot?#iefix&v=5.8.55") format("embedded-opentype"), url("../dgf_sistema/fonts/materialdesignicons-webfont.woff2?v=5.8.55") format("woff2"), url("../dgf_sistema/fonts/materialdesignicons-webfont.woff?v=5.8.55") format("woff"), url("../dgf_sistema/fonts/materialdesignicons-webfont.ttf?v=5.8.55") format("truetype");
   font-weight: normal;
   font-style: normal;
 }
@@ -23696,8 +23698,8 @@ File: Icons Css File
   font-family: "boxicons";
   font-weight: normal;
   font-style: normal;
-  src: url("../fonts/boxicons.eot");
-  src: url("../fonts/boxicons.eot") format("embedded-opentype"), url("../fonts/boxicons.woff2") format("woff2"), url("../fonts/boxicons.woff") format("woff"), url("../fonts/boxicons.ttf") format("truetype"), url("../fonts/boxicons.svg?#boxicons") format("svg");
+  src: url("../dgf_sistema/fonts/boxicons.eot");
+  src: url("../dgf_sistema/fonts/boxicons.eot") format("embedded-opentype"), url("../dgf_sistema/fonts/boxicons.woff2") format("woff2"), url("../dgf_sistema/fonts/boxicons.woff") format("woff"), url("../dgf_sistema/fonts/boxicons.ttf") format("truetype"), url("../dgf_sistema/fonts/boxicons.svg?#boxicons") format("svg");
 }
 .bx {
   font-family: "boxicons" !important;
@@ -34664,8 +34666,8 @@ readers do not read off random characters that represent icons */
   font-style: normal;
   font-weight: 400;
   font-display: block;
-  src: url("../fonts/fa-brands-400.eot");
-  src: url("../fonts/fa-brands-400.eot?#iefix") format("embedded-opentype"), url("../fonts/fa-brands-400.woff2") format("woff2"), url("../fonts/fa-brands-400.woff") format("woff"), url("../fonts/fa-brands-400.ttf") format("truetype"), url("../fonts/fa-brands-400.svg#fontawesome") format("svg");
+  src: url("../dgf_sistema/fonts/fa-brands-400.eot");
+  src: url("../dgf_sistema/fonts/fa-brands-400.eot?#iefix") format("embedded-opentype"), url("../dgf_sistema/fonts/fa-brands-400.woff2") format("woff2"), url("../dgf_sistema/fonts/fa-brands-400.woff") format("woff"), url("../dgf_sistema/fonts/fa-brands-400.ttf") format("truetype"), url("../dgf_sistema/fonts/fa-brands-400.svg#fontawesome") format("svg");
 }
 .fab {
   font-family: "Font Awesome 5 Brands";
@@ -34677,8 +34679,8 @@ readers do not read off random characters that represent icons */
   font-style: normal;
   font-weight: 400;
   font-display: block;
-  src: url("../fonts/fa-regular-400.eot");
-  src: url("../fonts/fa-regular-400.eot?#iefix") format("embedded-opentype"), url("../fonts/fa-regular-400.woff2") format("woff2"), url("../fonts/fa-regular-400.woff") format("woff"), url("../fonts/fa-regular-400.ttf") format("truetype"), url("../fonts/fa-regular-400.svg#fontawesome") format("svg");
+  src: url("../dgf_sistema/fonts/fa-regular-400.eot");
+  src: url("../dgf_sistema/fonts/fa-regular-400.eot?#iefix") format("embedded-opentype"), url("../dgf_sistema/fonts/fa-regular-400.woff2") format("woff2"), url("../dgf_sistema/fonts/fa-regular-400.woff") format("woff"), url("../dgf_sistema/fonts/fa-regular-400.ttf") format("truetype"), url("../dgf_sistema/fonts/fa-regular-400.svg#fontawesome") format("svg");
 }
 .far {
   font-family: "Font Awesome 5 Free";
@@ -34690,8 +34692,8 @@ readers do not read off random characters that represent icons */
   font-style: normal;
   font-weight: 900;
   font-display: block;
-  src: url("../fonts/fa-solid-900.eot");
-  src: url("../fonts/fa-solid-900.eot?#iefix") format("embedded-opentype"), url("../fonts/fa-solid-900.woff2") format("woff2"), url("../fonts/fa-solid-900.woff") format("woff"), url("../fonts/fa-solid-900.ttf") format("truetype"), url("../fonts/fa-solid-900.svg#fontawesome") format("svg");
+  src: url("../dgf_sistema/fonts/fa-solid-900.eot");
+  src: url("../dgf_sistema/fonts/fa-solid-900.eot?#iefix") format("embedded-opentype"), url("../dgf_sistema/fonts/fa-solid-900.woff2") format("woff2"), url("../dgf_sistema/fonts/fa-solid-900.woff") format("woff"), url("../dgf_sistema/fonts/fa-solid-900.ttf") format("truetype"), url("../dgf_sistema/fonts/fa-solid-900.svg#fontawesome") format("svg");
 }
 .fa,
 .fas {
@@ -34701,8 +34703,8 @@ readers do not read off random characters that represent icons */
 
 @font-face {
   font-family: "dripicons-v2";
-  src: url("../fonts/dripicons-v2.eot");
-  src: url("../fonts/dripicons-v2.eot?#iefix") format("embedded-opentype"), url("../fonts/dripicons-v2.woff") format("woff"), url("../fonts/dripicons-v2.ttf") format("truetype"), url("../fonts/dripicons-v2.svg#dripicons-v2") format("svg");
+  src: url("../dgf_sistema/fonts/dripicons-v2.eot");
+  src: url("../dgf_sistema/fonts/dripicons-v2.eot?#iefix") format("embedded-opentype"), url("../dgf_sistema/fonts/dripicons-v2.woff") format("woff"), url("../dgf_sistema/fonts/dripicons-v2.ttf") format("truetype"), url("../dgf_sistema/fonts/dripicons-v2.svg#dripicons-v2") format("svg");
   font-weight: normal;
   font-style: normal;
 }
