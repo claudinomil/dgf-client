@@ -44,7 +44,7 @@
                     <form id="{{$se_nameFormSubmodulo}}" name="{{$se_nameFormSubmodulo}}">
                         <fieldset>
                             <input type="hidden" id="frm_operacao" name="frm_operacao">
-                            <input type="hiddenx" id="registro_id" name="registro_id">
+                            <input type="hidden" id="registro_id" name="registro_id">
 
                             <div class="row pt-4">
                                 <h5 class="pb-4 text-primary"><i class="fas fa-user"></i> Informações Gerais</h5>

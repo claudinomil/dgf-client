@@ -84,7 +84,7 @@ $(document).ready(function () {
 
         $.ajax({
             type:'POST',
-            url: url+'/ressarcimento_militares/importar',
+            url: url+'ressarcimento_militares/importar',
             data: formData,
             cache: false,
             contentType: false,

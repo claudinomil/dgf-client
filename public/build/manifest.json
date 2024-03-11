@@ -201,11 +201,6 @@
         "isEntry": true,
         "src": "resources/assets_template/js/scripts_ressarcimento_militares.js"
     },
-    "resources/assets_template/js/scripts_ressarcimento_dashboards.js": {
-        "file": "assets/scripts_ressarcimento_dashboards.js",
-        "isEntry": true,
-        "src": "resources/assets_template/js/scripts_ressarcimento_dashboards.js"
-    },
     "resources/assets_template/js/scripts_ressarcimento_cobrancas.js": {
         "file": "assets/scripts_ressarcimento_cobrancas.js",
         "isEntry": true,

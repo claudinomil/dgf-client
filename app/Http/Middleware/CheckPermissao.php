@@ -37,8 +37,6 @@ class CheckPermissao
         if (isset($response['content'])) {
             session(['se_userLoggedData' => $response['content']['userData']]); //Dados do Usuário Logado
             session(['se_userLoggedPermissoes' => $response['content']['userPermissoes']]); //Permissões do Usuário Logado
-            session(['se_userLoggedDashboards' => $response['content']['userDashboards']]); //Dashboards do Usuário Logado
-            session(['se_userLoggedRelatorios' => $response['content']['userRelatorios']]); //Dashboards do Usuário Logado
             session(['se_userLoggedMenuModulos' => $response['content']['menuModulos']]); //Módulos Menu
             session(['se_userLoggedMenuSubmodulos' => $response['content']['menuSubmodulos']]); //Submódulos Menu
             session(['se_userLoggedFerramentas' => $response['content']['ferramentas']]); //Ferramentas

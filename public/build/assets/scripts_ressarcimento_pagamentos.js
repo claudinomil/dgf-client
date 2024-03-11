@@ -84,7 +84,7 @@ $(document).ready(function () {
 
         $.ajax({
             type:'POST',
-            url: url+'/ressarcimento_pagamentos/importar/dados',
+            url: url+'ressarcimento_pagamentos/importar/dados',
             data: formData,
             cache: false,
             contentType: false,

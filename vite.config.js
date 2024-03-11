@@ -54,7 +54,6 @@ export default defineConfig({
                 {src: 'resources/assets_template/js/scripts_relatorios.js', dest: 'assets'},
                 {src: 'resources/assets_template/js/scripts_ressarcimento_cobrancas.js', dest: 'assets'},
                 {src: 'resources/assets_template/js/scripts_ressarcimento_configuracoes.js', dest: 'assets'},
-                {src: 'resources/assets_template/js/scripts_ressarcimento_dashboards.js', dest: 'assets'},
                 {src: 'resources/assets_template/js/scripts_ressarcimento_militares.js', dest: 'assets'},
                 {src: 'resources/assets_template/js/scripts_ressarcimento_orgaos.js', dest: 'assets'},
                 {src: 'resources/assets_template/js/scripts_ressarcimento_pagamentos.js', dest: 'assets'},
@@ -305,11 +304,6 @@ export default defineConfig({
 //     "file": "assets/scripts_ressarcimento_militares.js",
 //     "isEntry": true,
 //     "src": "resources/assets_template/js/scripts_ressarcimento_militares.js"
-// },
-// "resources/assets_template/js/scripts_ressarcimento_dashboards.js": {
-//     "file": "assets/scripts_ressarcimento_dashboards.js",
-//     "isEntry": true,
-//     "src": "resources/assets_template/js/scripts_ressarcimento_dashboards.js"
 // },
 // "resources/assets_template/js/scripts_ressarcimento_cobrancas.js": {
 //     "file": "assets/scripts_ressarcimento_cobrancas.js",

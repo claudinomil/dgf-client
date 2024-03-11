@@ -191,7 +191,7 @@
                                         <div class="col-12">
                                             <div class="form-check form-checkbox-outline form-check-success mb-3">
                                                 <input class="form-check-input grupo_dashboards" type="checkbox" id="dashboard_{{ $dashboard['id'] }}" name="dashboard_{{ $dashboard['id'] }}" value="{{ $dashboard['id'] }}">
-                                                <label class="form-check-label" for="dashboard_{{ $dashboard['id'] }}">{{ $dashboard['name'].$descricao }}</label>
+                                                <label class="form-check-label" for="dashboard_{{ $dashboard['id'] }}">{{ $dashboard['modulo_name'].' - '.$dashboard['name'].$descricao }}</label>
                                             </div>
                                         </div>
                                     @endforeach
@@ -208,7 +208,7 @@
                                         <div class="col-12">
                                             <div class="form-check form-checkbox-outline form-check-success mb-3">
                                                 <input class="form-check-input grupo_relatorios" type="checkbox" id="relatorio_{{ $relatorio['id'] }}" name="relatorio_{{ $relatorio['id'] }}" value="{{ $relatorio['id'] }}">
-                                                <label class="form-check-label" for="relatorio_{{ $relatorio['id'] }}">{{ $relatorio['name'].$descricao }}</label>
+                                                <label class="form-check-label" for="relatorio_{{ $relatorio['id'] }}">{{ $relatorio['modulo_name'].' - '.$relatorio['name'].$descricao }}</label>
                                             </div>
                                         </div>
                                     @endforeach

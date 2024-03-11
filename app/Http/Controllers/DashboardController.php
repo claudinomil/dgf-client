@@ -19,24 +19,28 @@ class DashboardController extends Controller
 
     public function index(Request $request)
     {
+        //Buscando dados Api_Data() - Lista de Registros
+        $this->responseApi(1, 1, 'dashboards', '', '', '');
 
-        return view('dashboards.index');
-    }
-
-    public function acessos(Request $request)
-    {
-        //Requisição Ajax
-        if ($request->ajax()) {
-            //Buscando dados Api_Data()
-            $this->responseApi(1, 10, 'dashboards/acessos', '', '', '');
-
-            //Registro recebido com sucesso
-            if ($this->code == 2000) {
-                return response()->json(['success' => $this->content]);
-            } else {
-                return response()->json(['success' => []]);
-            }
+        //Dados recebidos com sucesso
+        if ($this->code == 2000) {
+            $ressarcimento_referencias = $this->content['ressarcimento_referencias'];
+            $ressarcimento_periodo1 = $this->content['ressarcimento_periodo1'];
+            $ressarcimento_periodo2 = $this->content['ressarcimento_periodo2'];
+            $ressarcimento_orgaos = $this->content['ressarcimento_orgaos'];
+        } else {
+            $ressarcimento_referencias = [];
+            $ressarcimento_periodo1 = '';
+            $ressarcimento_periodo2 = '';
+            $ressarcimento_orgaos = [];
         }
+
+        return view('dashboards.index', [
+            'ressarcimento_referencias' => $ressarcimento_referencias,
+            'ressarcimento_periodo1' => $ressarcimento_periodo1,
+            'ressarcimento_periodo2' => $ressarcimento_periodo2,
+            'ressarcimento_orgaos' => $ressarcimento_orgaos
+        ]);
     }
 
     public function dashboard1(Request $request)
@@ -115,6 +119,134 @@ class DashboardController extends Controller
                 return response()->json(['success' => $this->content]);
             } else {
                 return response()->json(['success' => []]);
+            }
+        }
+    }
+
+    public function dashboard6(Request $request, $periodo1, $periodo2, $orgao_id)
+    {
+        //Requisição Ajax
+        if ($request->ajax()) {
+            //Buscando dados Api_Data()
+            $this->responseApi(1, 10, 'dashboards/dashboard6/'.$periodo1.'/'.$periodo2.'/'.$orgao_id, '', '', '');
+
+            //Registro recebido com sucesso
+            if ($this->code == 2000) {
+                return response()->json(['success' => $this->content]);
+            } else {
+                return response()->json(['success' => []]);
+            }
+        }
+    }
+
+    public function dashboard7(Request $request, $periodo1, $periodo2, $orgao_id)
+    {
+        //Requisição Ajax
+        if ($request->ajax()) {
+            //Buscando dados Api_Data()
+            $this->responseApi(1, 10, 'dashboards/dashboard7/'.$periodo1.'/'.$periodo2.'/'.$orgao_id, '', '', '');
+
+            //Registro recebido com sucesso
+            if ($this->code == 2000) {
+                return response()->json(['success' => $this->content]);
+            } else {
+                return response()->json(['success' => []]);
+            }
+        }
+    }
+
+    public function dashboard8(Request $request, $periodo1, $periodo2, $orgao_id)
+    {
+        //Requisição Ajax
+        if ($request->ajax()) {
+            //Buscando dados Api_Data()
+            $this->responseApi(1, 10, 'dashboards/dashboard8/'.$periodo1.'/'.$periodo2.'/'.$orgao_id, '', '', '');
+
+            //Registro recebido com sucesso
+            if ($this->code == 2000) {
+                return response()->json(['success' => $this->content]);
+            } else {
+                return response()->json(['success' => []]);
+            }
+        }
+    }
+
+    public function dashboard9(Request $request, $periodo1, $periodo2, $orgao_id)
+    {
+        //Requisição Ajax
+        if ($request->ajax()) {
+            //Buscando dados Api_Data()
+            $this->responseApi(1, 10, 'dashboards/dashboard9/'.$periodo1.'/'.$periodo2.'/'.$orgao_id, '', '', '');
+
+            //Registro recebido com sucesso
+            if ($this->code == 2000) {
+                return response()->json(['success' => $this->content]);
+            } else {
+                return response()->json(['success' => []]);
+            }
+        }
+    }
+
+    public function dashboard10(Request $request, $periodo1, $periodo2, $orgao_id)
+    {
+        //Requisição Ajax
+        if ($request->ajax()) {
+            //Buscando dados Api_Data()
+            $this->responseApi(1, 10, 'dashboards/dashboard10/'.$periodo1.'/'.$periodo2.'/'.$orgao_id, '', '', '');
+
+            //Registro recebido com sucesso
+            if ($this->code == 2000) {
+                return response()->json(['success' => $this->content]);
+            } else {
+                return response()->json(['success' => []]);
+            }
+        }
+    }
+
+    public function dashboard11(Request $request, $periodo1, $periodo2, $orgao_id)
+    {
+        //Requisição Ajax
+        if ($request->ajax()) {
+            //Buscando dados Api_Data()
+            $this->responseApi(1, 10, 'dashboards/dashboard11/'.$periodo1.'/'.$periodo2.'/'.$orgao_id, '', '', '');
+
+            //Registro recebido com sucesso
+            if ($this->code == 2000) {
+                return response()->json(['success' => $this->content]);
+            } else {
+                return response()->json(['success' => []]);
+            }
+        }
+    }
+
+    public function dashboards_views(Request $request)
+    {
+        //Requisição Ajax
+        if ($request->ajax()) {
+            //Buscando dados Api_Data()
+            $this->responseApi(1, 10, 'dashboards/dashboards_views', '', '', '');
+
+            //Registro recebido com sucesso
+            if ($this->code == 2000) {
+                return response()->json(['success' => $this->content]);
+            } else {
+                return response()->json(['success' => []]);
+            }
+        }
+    }
+
+    public function dashboards_views_salvar(Request $request)
+    {
+        //Requisição Ajax
+        if ($request->ajax()) {
+            //Buscando dados Api_Data() - Alterar Registro
+            $this->responseApi(1, 12, 'dashboards/dashboards_views_salvar', '', '', $request->all());
+
+            //Registro alterado com sucesso
+            if ($this->code == 2000) {
+                return response()->json(['success' => $this->message]);
+            } else {
+                return response()->json(['error' => 'Erro Interno']);
             }
         }
     }

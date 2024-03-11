@@ -737,7 +737,6 @@ function crudConfirmOperation() {
                             if (prefixPermissaoSubmodulo == 'users') {
                                 email = document.getElementById('email').value;
                                 senha = response.content;
-                                senha = senha.substring(4, 14);
                                 $.get(url+'enviar_email/users/primeiro_acesso/' + email + '/' + senha);
                             }
                             //''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
