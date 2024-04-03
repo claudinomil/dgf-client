@@ -172,14 +172,18 @@ class RessarcimentoMilitarController extends Controller
                 if ($request->hasFile('ressarcimento_militar_file')) {
                     //Detalhes do arquivo (Crítica)
                     $extensao = "csv";
-                    $tamanho_maximo = 6000000;
-                    $tamanho_maximo_extenso = '6MB';
+                    $tamanho_maximo = 60000000000000;
+                    $tamanho_maximo_extenso = '12MB';
 
                     //Buscando arquivo
                     $file = $request->file('ressarcimento_militar_file');
 
                     $arquivoExtensao = $file->getClientOriginalExtension();
                     $arquivoTamanho = $file->getSize();
+
+
+                    //return response()->json(['eduardo' => $arquivoExtensao.' ## '.$arquivoTamanho]);
+
 
                     //Verifique a extensão do arquivo
                     if ($arquivoExtensao == $extensao) {
