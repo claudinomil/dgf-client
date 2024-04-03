@@ -12,10 +12,60 @@
     "css": [
       "assets/app-45c12cad.css"
     ],
-    "file": "assets/app-b5b11922.js",
+    "file": "assets/app-81f491aa.js",
     "isEntry": true,
     "src": "resources/js/app.js"
   },
+    "resources/assets_template/css/welcome_styles.css": {
+        "file": "assets/welcome_styles.css",
+        "isEntry": true,
+        "src": "resources/assets_template/css/welcome_styles.css"
+    },
+    "resources/assets_template/css/bootstrap.css": {
+        "file": "assets/bootstrap.css",
+        "isEntry": true,
+        "src": "resources/assets_template/css/bootstrap.css"
+    },
+    "resources/assets_template/libs/aos/aos.css": {
+        "file": "assets/aos.css",
+        "isEntry": true,
+        "src": "resources/assets_template/libs/aos/aos.css"
+    },
+    "resources/assets_template/libs/aos/aos.js": {
+        "file": "assets/aos.js",
+        "isEntry": true,
+        "src": "resources/assets_template/libs/aos/aos.js"
+    },
+    "resources/assets_template/libs/boxicons/css/boxicons.css": {
+        "file": "assets/boxicons.css",
+        "isEntry": true,
+        "src": "resources/assets_template/libs/boxicons/css/boxicons.css"
+    },
+    "resources/assets_template/libs/glightbox/css/glightbox.css": {
+        "file": "assets/glightbox.css",
+        "isEntry": true,
+        "src": "resources/assets_template/libs/glightbox/css/glightbox.css"
+    },
+    "resources/assets_template/libs/glightbox/js/glightbox.js": {
+        "file": "assets/glightbox.js",
+        "isEntry": true,
+        "src": "resources/assets_template/libs/glightbox/js/glightbox.js"
+    },
+    "resources/assets_template/js/welcome_main.js": {
+        "file": "assets/welcome_main.js",
+        "isEntry": true,
+        "src": "resources/assets_template/js/welcome_main.js"
+    },
+    "resources/assets_template/libs/swiper/swiper-bundle.min.css": {
+        "file": "assets/swiper-bundle.min.css",
+        "isEntry": true,
+        "src": "resources/assets_template/libs/swiper/swiper-bundle.min.css"
+    },
+    "resources/assets_template/libs/swiper/swiper-bundle.min.js": {
+        "file": "assets/swiper-bundle.min.js",
+        "isEntry": true,
+        "src": "resources/assets_template/libs/swiper/swiper-bundle.min.js"
+    },
     "resources/assets_template/libs/jquery/jquery.min.js": {
         "file": "assets/jquery.min.js",
         "isEntry": true,
@@ -175,11 +225,6 @@
         "file": "assets/scripts_ressarcimento_referencias.js",
         "isEntry": true,
         "src": "resources/assets_template/js/scripts_ressarcimento_referencias.js"
-    },
-    "resources/assets_template/js/scripts_ressarcimento_relatorios.js": {
-        "file": "assets/scripts_ressarcimento_relatorios.js",
-        "isEntry": true,
-        "src": "resources/assets_template/js/scripts_ressarcimento_relatorios.js"
     },
     "resources/assets_template/js/scripts_relatorios.js": {
         "file": "assets/scripts_relatorios.js",

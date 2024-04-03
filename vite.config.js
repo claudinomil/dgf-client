@@ -5,6 +5,9 @@ import laravel from 'laravel-vite-plugin';
 import path from 'path';
 
 export default defineConfig({
+    optimizeDeps: {
+        exclude: ['jspdf']
+    },
     plugins: [
         laravel({
             input: [
@@ -15,6 +18,17 @@ export default defineConfig({
         }),
         viteStaticCopy({
             targets: [
+                //Welcome
+                {src: 'resources/assets_template/css/welcome_styles.css', dest: 'assets'},
+                {src: 'resources/assets_template/libs/aos/aos.css', dest: 'assets'},
+                {src: 'resources/assets_template/libs/aos/aos.js', dest: 'assets'},
+                {src: 'resources/assets_template/libs/boxicons/css/boxicons.css', dest: 'assets'},
+                {src: 'resources/assets_template/libs/glightbox/css/glightbox.css', dest: 'assets'},
+                {src: 'resources/assets_template/libs/glightbox/js/glightbox.js', dest: 'assets'},
+                {src: 'resources/assets_template/js/welcome_main.js', dest: 'assets'},
+                {src: 'resources/assets_template/libs/swiper/swiper-bundle.min.css', dest: 'assets'},
+                {src: 'resources/assets_template/libs/swiper/swiper-bundle.min.js', dest: 'assets'},
+
                 {src: 'resources/assets_template/css/bootstrap.css', dest: 'assets'},
                 {src: 'resources/assets_template/css/app.css', dest: 'assets'},
                 {src: 'resources/assets_template/css/icons.css', dest: 'assets'},
@@ -59,7 +73,6 @@ export default defineConfig({
                 {src: 'resources/assets_template/js/scripts_ressarcimento_pagamentos.js', dest: 'assets'},
                 {src: 'resources/assets_template/js/scripts_ressarcimento_recebimentos.js', dest: 'assets'},
                 {src: 'resources/assets_template/js/scripts_ressarcimento_referencias.js', dest: 'assets'},
-                {src: 'resources/assets_template/js/scripts_ressarcimento_relatorios.js', dest: 'assets'},
                 {src: 'resources/assets_template/js/scripts_template_init.js', dest: 'assets'},
                 {src: 'resources/assets_template/js/scripts_users.js', dest: 'assets'},
 
@@ -72,9 +85,12 @@ export default defineConfig({
                 {src: 'resources/assets_template/images/image_logo_layout_light_menu_min.png', dest: 'assets/images'},
                 {src: 'resources/assets_template/images/image_logo_login.png', dest: 'assets/images'},
                 {src: 'resources/assets_template/images/image_logo_relatorio.png', dest: 'assets/images'},
-                {src: 'resources/assets_template/images/megamenu-img.png', dest: 'assets/images'},
                 {src: 'resources/assets_template/images/profile-img.png', dest: 'assets/images'},
                 {src: 'resources/assets_template/images/welcome_logo.png', dest: 'assets/images'},
+                {src: 'resources/assets_template/images/welcome_logo_topo.png', dest: 'assets/images'},
+                {src: 'resources/assets_template/images/welcome_login.png', dest: 'assets/images'},
+                {src: 'resources/assets_template/images/welcome_home_preto.png', dest: 'assets/images'},
+                {src: 'resources/assets_template/images/welcome_home_branco.png', dest: 'assets/images'},
                 {src: 'resources/assets_template/images/image_logo_email.png', dest: 'assets/images'},
                 {src: 'resources/assets_template/images/logo_governo_rj.png', dest: 'assets/images'},
 
@@ -86,6 +102,7 @@ export default defineConfig({
                 {src: 'resources/assets_template/fonts/boxicons.ttf', dest: 'fonts'},
                 {src: 'resources/assets_template/fonts/boxicons.ttf', dest: 'fonts'},
                 {src: 'resources/assets_template/fonts/boxicons.woff2', dest: 'fonts'},
+                {src: 'resources/assets_template/fonts/boxicons.woff', dest: 'fonts'},
                 {src: 'resources/assets_template/fonts/dripicons-v2.eot', dest: 'fonts'},
                 {src: 'resources/assets_template/fonts/dripicons-v2.svg', dest: 'fonts'},
                 {src: 'resources/assets_template/fonts/dripicons-v2.ttf', dest: 'fonts'},
@@ -120,6 +137,60 @@ export default defineConfig({
 
 // *** Colocar no manifest.json ***
 //
+
+
+
+
+// "resources/assets_template/css/welcome_styles.css": {
+//     "file": "assets/welcome_styles.css",
+//     "isEntry": true,
+//     "src": "resources/assets_template/css/welcome_styles.css"
+// },
+// "resources/assets_template/css/bootstrap.css": {
+//     "file": "assets/bootstrap.css",
+//     "isEntry": true,
+//     "src": "resources/assets_template/css/bootstrap.css"
+// },
+// "resources/assets_template/libs/aos/aos.css": {
+//     "file": "assets/aos.css",
+//     "isEntry": true,
+//     "src": "resources/assets_template/libs/aos/aos.css"
+// },
+// "resources/assets_template/libs/aos/aos.js": {
+//     "file": "assets/aos.js",
+//     "isEntry": true,
+//     "src": "resources/assets_template/libs/aos/aos.js"
+// },
+// "resources/assets_template/libs/boxicons/css/boxicons.css": {
+//     "file": "assets/boxicons.css",
+//     "isEntry": true,
+//     "src": "resources/assets_template/libs/boxicons/css/boxicons.css"
+// },
+// "resources/assets_template/libs/glightbox/css/glightbox.css": {
+//     "file": "assets/glightbox.css",
+//     "isEntry": true,
+//     "src": "resources/assets_template/libs/glightbox/css/glightbox.css"
+// },
+// "resources/assets_template/libs/glightbox/js/glightbox.js": {
+//     "file": "assets/glightbox.js",
+//     "isEntry": true,
+//     "src": "resources/assets_template/libs/glightbox/js/glightbox.js"
+// },
+// "resources/assets_template/js/welcome_main.js": {
+//     "file": "assets/welcome_main.js",
+//     "isEntry": true,
+//     "src": "resources/assets_template/js/welcome_main.js"
+// },
+// "resources/assets_template/libs/swiper/swiper-bundle.min.css": {
+//     "file": "assets/swiper-bundle.min.css",
+//     "isEntry": true,
+//     "src": "resources/assets_template/libs/swiper/swiper-bundle.min.css"
+// },
+// "resources/assets_template/libs/swiper/swiper-bundle.min.js": {
+//     "file": "assets/swiper-bundle.min.js",
+//     "isEntry": true,
+//     "src": "resources/assets_template/libs/swiper/swiper-bundle.min.js"
+// },
 // "resources/assets_template/libs/jquery/jquery.min.js": {
 //     "file": "assets/jquery.min.js",
 //     "isEntry": true,
@@ -279,11 +350,6 @@ export default defineConfig({
 //     "file": "assets/scripts_ressarcimento_referencias.js",
 //     "isEntry": true,
 //     "src": "resources/assets_template/js/scripts_ressarcimento_referencias.js"
-// },
-// "resources/assets_template/js/scripts_ressarcimento_relatorios.js": {
-//     "file": "assets/scripts_ressarcimento_relatorios.js",
-//     "isEntry": true,
-//     "src": "resources/assets_template/js/scripts_ressarcimento_relatorios.js"
 // },
 // "resources/assets_template/js/scripts_relatorios.js": {
 //     "file": "assets/scripts_relatorios.js",

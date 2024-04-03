@@ -121,7 +121,7 @@ class RessarcimentoMilitarController extends Controller
         if ($request->ajax()) {
             //Buscando dados Api_Data() - Pesquisar Registros
             $this->responseApi(1, 3, 'ressarcimento_militares', '', $array_dados, '');
-
+//dd($this->content);
             //Dados recebidos com sucesso
             if ($this->code == 2000) {
                 $allData = DataTables::of($this->content)
@@ -167,171 +167,179 @@ class RessarcimentoMilitarController extends Controller
     {
         //Requisição Ajax
         if ($request->ajax()) {
-            //Verificando se campo existe
-            if ($request->hasFile('ressarcimento_militar_file')) {
-                //Detalhes do arquivo (Crítica)
-                $extensao = "csv";
-                $tamanho_maximo = 6000000;
-                $tamanho_maximo_extenso = '6MB';
+            try {
+                //Verificando se campo existe
+                if ($request->hasFile('ressarcimento_militar_file')) {
+                    //Detalhes do arquivo (Crítica)
+                    $extensao = "csv";
+                    $tamanho_maximo = 6000000;
+                    $tamanho_maximo_extenso = '6MB';
 
-                //Buscando arquivo
-                $file = $request->file('ressarcimento_militar_file');
+                    //Buscando arquivo
+                    $file = $request->file('ressarcimento_militar_file');
 
-                $arquivoExtensao = $file->getClientOriginalExtension();
-                $arquivoTamanho = $file->getSize();
+                    $arquivoExtensao = $file->getClientOriginalExtension();
+                    $arquivoTamanho = $file->getSize();
 
-                //Verifique a extensão do arquivo
-                if ($arquivoExtensao == $extensao) {
-                    //Verifique o tamanho do arquivo
-                    if ($arquivoTamanho <= $tamanho_maximo) {
-                        //Configurações do PHP INI (Alterando temporariamente)
-                        ini_set('max_execution_time', 1200);
-                        ini_set('memory_limit', '1024M');
+                    //Verifique a extensão do arquivo
+                    if ($arquivoExtensao == $extensao) {
+                        //Verifique o tamanho do arquivo
+                        if ($arquivoTamanho <= $tamanho_maximo) {
+                            //Configurações do PHP INI (Alterando temporariamente)
+                            ini_set('max_execution_time', 1200);
+                            ini_set('memory_limit', '1024M');
 
-                        //Verificar a quantidade de orgaos antes da Importação
-                        $this->responseApi(1, 10, 'ressarcimento_orgaos/quantidade_registros', '', '', '');
-                        $qtd_orgaos_antes = $this->content;
+                            //Verificar a quantidade de orgaos antes da Importação
+                            $this->responseApi(1, 10, 'ressarcimento_orgaos/quantidade_registros', '', '', '');
+                            $qtd_orgaos_antes = $this->content;
 
-                        //Verificar a quantidade de configuracoes antes da Importação
-                        $this->responseApi(1, 10, 'ressarcimento_configuracoes/quantidade_registros', '', '', '');
-                        $qtd_configuracoes_antes = $this->content;
+                            //Verificar a quantidade de configuracoes antes da Importação
+                            $this->responseApi(1, 10, 'ressarcimento_configuracoes/quantidade_registros', '', '', '');
+                            $qtd_configuracoes_antes = $this->content;
 
-                        //Lendo arquivo
-                        $excelData = IOFactory::load($file)->getActiveSheet()->toArray();
+                            //Lendo arquivo
+                            $excelData = IOFactory::load($file)->getActiveSheet()->toArray();
 
-                        //Ctrl
-                        $linha = 0;
-                        $registros_importados = 0;
-                        $registros_erros = array();
-                        $registros_importados_anteriormente = array();
-                        $planilha_error = array();
+                            //Ctrl
+                            $linha = 0;
+                            $registros_importados = 0;
+                            $registros_erros = array();
+                            $registros_importados_anteriormente = array();
+                            $planilha_error = array();
 
-                        //Varrer o arquivo Excel
-                        foreach ($excelData as $registro) {
-                            //Linha Cabeçalho
-                            if ($linha == 0) {
-                                $cabecalho = $registro;
-                            }
+                            //Varrer o arquivo Excel
+                            foreach ($excelData as $registro) {
+                                //Linha Cabeçalho
+                                if ($linha == 0) {
+                                    $cabecalho = $registro;
+                                }
 
-                            //Verificar se é a planilha correta (nome das colunas comparado com cabecalho)
-                            if ($linha == 0) { //fazer uma única vez
-                                $colunas_planilha_correta = ['ID FUNC', 'RG', 'NOME', 'POSTO/GRAD', 'QUADRO/QBM', 'BOLETIM', 'ID LOT', 'LOTACAO'];
+                                //Verificar se é a planilha correta (nome das colunas comparado com cabecalho)
+                                if ($linha == 0) { //fazer uma única vez
+                                    $colunas_planilha_correta = ['ID FUNC', 'RG', 'NOME', 'POSTO/GRAD', 'QUADRO/QBM', 'BOLETIM', 'ID LOT', 'LOTACAO'];
 
-                                foreach ($colunas_planilha_correta as $coluna) {
-                                    $coluna_ok = false;
+                                    foreach ($colunas_planilha_correta as $coluna) {
+                                        $coluna_ok = false;
 
-                                    foreach ($cabecalho as $cabecalho_coluna) {
-                                        if ($cabecalho_coluna == $coluna) {$coluna_ok = true;}
+                                        foreach ($cabecalho as $cabecalho_coluna) {
+                                            if ($cabecalho_coluna == $coluna) {$coluna_ok = true;}
+                                        }
+
+                                        if ($coluna_ok === false) {$planilha_error[] = 'Não existe coluna "'.$coluna.'".';}
                                     }
 
-                                    if ($coluna_ok === false) {$planilha_error[] = 'Não existe coluna "'.$coluna.'".';}
+                                    if (count($planilha_error) > 0) {break;}
                                 }
 
-                                if (count($planilha_error) > 0) {break;}
+                                //Linhas de dados
+                                if ($linha > 0) {
+                                    //Colocando títulos no Array
+                                    $linhaDados = array_combine($cabecalho, $registro);
+
+                                    //Verificar se é Oficial ou Praça
+                                    $oficial_praca = 2;
+                                    $pos_gra = mb_strtolower(utf8_encode($linhaDados['POSTO/GRAD']));
+
+                                    if ($pos_gra == 'cel' or $pos_gra == 'coronel') {$oficial_praca = 1;}
+                                    if ($pos_gra == 'ten cel' or $pos_gra == 'tenente coronel') {$oficial_praca = 1;}
+                                    if ($pos_gra == 'maj' or $pos_gra == 'major') {$oficial_praca = 1;}
+                                    if ($pos_gra == 'cap' or $pos_gra == 'capitão') {$oficial_praca = 1;}
+                                    if ($pos_gra == '1º ten' or $pos_gra == '1º tenente') {$oficial_praca = 1;}
+                                    if ($pos_gra == '2º ten' or $pos_gra == '2º tenente') {$oficial_praca = 1;}
+
+                                    //API
+                                    $response = Http::post(env('PASSPORT_API_URL') . 'api/ressarcimento_militares/importar',
+                                        [
+                                            'referencia' => $request['ressarcimento_militar_referencia'],
+                                            'identidade_funcional' => $linhaDados['ID FUNC'],
+                                            'rg' => $linhaDados['RG'],
+                                            'nome' => utf8_encode($linhaDados['NOME']),
+                                            'oficial_praca' => $oficial_praca,
+                                            'posto_graduacao' => utf8_encode($linhaDados['POSTO/GRAD']),
+                                            'quadro_qbmp' => utf8_encode($linhaDados['QUADRO/QBM']),
+                                            'boletim' => $linhaDados['BOLETIM'],
+                                            'lotacao_id' => utf8_encode($linhaDados['ID LOT']),
+                                            'lotacao' => utf8_encode($linhaDados['LOTACAO'])
+                                        ]
+                                    );
+
+                                    //Registro incluído
+                                    if ($response->json('code') == 2000) {
+                                        $registros_importados++;
+                                    }
+
+                                    //Registro não incluído por error
+                                    if ($response->json('code') == 2005) {
+                                        $registros_erros[] = $linhaDados['NOME'];
+                                    }
+
+                                    //Registro não incluído por já constar na tabela para a referência
+                                    if ($response->json('code') == 2006) {
+                                        $registros_importados_anteriormente[] = $linhaDados['NOME'];
+                                    }
+
+                                    //Cobrança Fechada
+                                    if ($response->json('code') == 2040) {
+                                        return response()->json(['error' => $response->json('message')]);
+                                    }
+                                }
+
+                                $linha++;
                             }
 
-                            //Linhas de dados
-                            if ($linha > 0) {
-                                //Colocando títulos no Array
-                                $linhaDados = array_combine($cabecalho, $registro);
+                            //Buscando dados Api_Data() - Incluir Registro de Transação'''''''''''''''''''''''''''''''''''''
+                            $transacao = Array();
+                            $transacao['operacao_id'] = 1;
+                            $transacao['submodulo'] = 'ressarcimento_militares';
 
-                                //Verificar se é Oficial ou Praça
-                                $oficial_praca = 2;
-                                $pos_gra = mb_strtolower(utf8_encode($linhaDados['POSTO/GRAD']));
+                            //Montando Dados''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+                            $dados = '<b>Importação de Militares, Órgãos e Configurações</b>'.'<br>';
+                            $dados .= '<b class="text-success">'.SuporteFacade::getReferencia(1, $request['ressarcimento_militar_referencia']).'</b>'.'<br><br>';
 
-                                if ($pos_gra == 'cel' or $pos_gra == 'coronel') {$oficial_praca = 1;}
-                                if ($pos_gra == 'ten cel' or $pos_gra == 'tenente coronel') {$oficial_praca = 1;}
-                                if ($pos_gra == 'maj' or $pos_gra == 'major') {$oficial_praca = 1;}
-                                if ($pos_gra == 'cap' or $pos_gra == 'capitão') {$oficial_praca = 1;}
-                                if ($pos_gra == '1º ten' or $pos_gra == '1º tenente') {$oficial_praca = 1;}
-                                if ($pos_gra == '2º ten' or $pos_gra == '2º tenente') {$oficial_praca = 1;}
+                            $dados .= 'Militares Importados: ' . $registros_importados.'<br>';
 
-                                //API
-                                $response = Http::post(env('PASSPORT_API_URL') . 'api/ressarcimento_militares/importar',
-                                    [
-                                        'referencia' => $request['ressarcimento_militar_referencia'],
-                                        'identidade_funcional' => $linhaDados['ID FUNC'],
-                                        'rg' => $linhaDados['RG'],
-                                        'nome' => utf8_encode($linhaDados['NOME']),
-                                        'oficial_praca' => $oficial_praca,
-                                        'posto_graduacao' => utf8_encode($linhaDados['POSTO/GRAD']),
-                                        'quadro_qbmp' => utf8_encode($linhaDados['QUADRO/QBM']),
-                                        'boletim' => $linhaDados['BOLETIM'],
-                                        'lotacao_id' => utf8_encode($linhaDados['ID LOT']),
-                                        'lotacao' => utf8_encode($linhaDados['LOTACAO'])
-                                    ]
-                                );
+                            //Verificar a quantidade de orgaos depois da Importação
+                            $this->responseApi(1, 10, 'ressarcimento_orgaos/quantidade_registros', '', '', '');
+                            $qtd_orgaos_depois = $this->content;
 
-                                //Registro incluído
-                                if ($response->json('code') == 2000) {
-                                    $registros_importados++;
-                                }
+                            $dados .= 'Órgãos Importados: ' . $qtd_orgaos_depois - $qtd_orgaos_antes.'<br>';
 
-                                //Registro não incluído por error
-                                if ($response->json('code') == 2005) {
-                                    $registros_erros[] = $linhaDados['NOME'];
-                                }
+                            //Verificar a quantidade de configuracoes depois da Importação
+                            $this->responseApi(1, 10, 'ressarcimento_configuracoes/quantidade_registros', '', '', '');
+                            $qtd_configuracoes_depois = $this->content;
 
-                                //Registro não incluído por já constar na tabela para a referência
-                                if ($response->json('code') == 2006) {
-                                    $registros_importados_anteriormente[] = $linhaDados['NOME'];
-                                }
+                            $dados .= 'Configurações Importadas: ' . $qtd_configuracoes_depois - $qtd_configuracoes_antes;
 
-                                //Cobrança Fechada
-                                if ($response->json('code') == 2040) {
-                                    return response()->json(['error' => $response->json('message')]);
-                                }
-                            }
+                            $transacao['dados'] = $dados;
+                            //''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
-                            $linha++;
+                            $this->responseApi(1, 4, 'transacoes', '', '', $transacao);
+                            //''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+                            //Retorno
+                            return response()->json(['success' =>
+                                [
+                                    'registros_importados' => $registros_importados,
+                                    'registros_erros' => $registros_erros,
+                                    'registros_importados_anteriormente' => $registros_importados_anteriormente,
+                                    'planilha_error' => $planilha_error
+                                ]
+                            ]);
+                        } else {
+                            return response()->json(['error' => 'Arquivo muito grande. O arquivo deve ter menos de '.$tamanho_maximo_extenso.'.']);
                         }
-
-                        //Buscando dados Api_Data() - Incluir Registro de Transação'''''''''''''''''''''''''''''''''''''
-                        $transacao = Array();
-                        $transacao['operacao_id'] = 1;
-                        $transacao['submodulo'] = 'ressarcimento_militares';
-
-                        //Montando Dados''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-                        $dados = '<b>Importação de Militares, Órgãos e Configurações</b>'.'<br>';
-                        $dados .= '<b class="text-success">'.SuporteFacade::getReferencia(1, $request['ressarcimento_militar_referencia']).'</b>'.'<br><br>';
-
-                        $dados .= 'Militares Importados: ' . $registros_importados.'<br>';
-
-                        //Verificar a quantidade de orgaos depois da Importação
-                        $this->responseApi(1, 10, 'ressarcimento_orgaos/quantidade_registros', '', '', '');
-                        $qtd_orgaos_depois = $this->content;
-
-                        $dados .= 'Órgãos Importados: ' . $qtd_orgaos_depois - $qtd_orgaos_antes.'<br>';
-
-                        //Verificar a quantidade de configuracoes depois da Importação
-                        $this->responseApi(1, 10, 'ressarcimento_configuracoes/quantidade_registros', '', '', '');
-                        $qtd_configuracoes_depois = $this->content;
-
-                        $dados .= 'Configurações Importadas: ' . $qtd_configuracoes_depois - $qtd_configuracoes_antes;
-
-                        $transacao['dados'] = $dados;
-                        //''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-
-                        $this->responseApi(1, 4, 'transacoes', '', '', $transacao);
-                        //''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-
-                        //Retorno
-                        return response()->json(['success' =>
-                            [
-                                'registros_importados' => $registros_importados,
-                                'registros_erros' => $registros_erros,
-                                'registros_importados_anteriormente' => $registros_importados_anteriormente,
-                                'planilha_error' => $planilha_error
-                            ]
-                        ]);
                     } else {
-                        return response()->json(['error' => 'Arquivo muito grande. O arquivo deve ter menos de '.$tamanho_maximo_extenso.'.']);
+                        return response()->json(['error' => 'Extensão de arquivo inválida, não é CSV.']);
                     }
                 } else {
-                    return response()->json(['error' => 'Extensão de arquivo inválida, não é CSV.']);
+                    return response()->json(['error' => 'Selecione um  arquivo CSV.']);
                 }
-            } else {
-                return response()->json(['error' => 'Arquivo CSV não encontrado.']);
+            } catch (\Exception $e) {
+                if (config('app.debug')) {
+                    return response()->json(['error' => $e->getMessage()]);
+                }
+
+                return response()->json(['error' => 'Erro Interno.']);
             }
         }
     }

@@ -1,6 +1,202 @@
-//Funções para o Submódulo Ressarcimento Recebimentos - INÍCIO''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-//Funções para o Submódulo Ressarcimento Recebimentos - INÍCIO''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+/*
+* Função para Gerar PDF com a Biblioteca jsPDF
+* Gera Pdf com Tabela de Registros
+* @PARAM p_orientation (p = Retrato / l = Paisagem)
+* @PARAM p_header (true = Vai ter Cabeçalho / false = Não vai ter Cabeçalho)
+* @PARAM p_topo_1 (true = Vai usar o Topo 1 / false = Não vai usar o Topo 1)
+* @PARAM p_topo_2 (true = Vai usar o Topo 2 / false = Não vai usar o Topo 2)
+* @PARAM p_nome='Relatório (Nome do Relatório)
+* @PARAM p_parametros (true = Vai usar Parâmetros / false = Não vai usar Parâmetros)
+* @PARAM p_parametros_texto (Parâmetros)
+* @PARAM p_dadosTableCabecalho (Array com Nomes das Colunas)
+* @PARAM p_dadosTableLinhas (Array com Dados)
+* @PARAM p_columnStyles (Styles para cada Coluna individualmente)
+* @PARAM p_footer (true = Vai usar Rodapé / false = Não vai usar Rodapé)
+* @PARAM p_data (Data da Geração do Relatório)
+* @PARAM p_hora (Hora da Geração do Relatório)
+ */
+function gerarPdfTabela({p_orientation='p', p_header=true, p_topo_1=false, p_topo_2=true, p_nome='Relatório', p_parametros=true, p_parametros_texto='Parâmetros aqui...', p_dadosTableCabecalho=[], p_dadosTableLinhas=[], p_columnStyles={}, p_footer=true, p_data='', p_hora=''}) {
+    //Configurações
+    if (!window.jsPDF) window.jsPDF = window.jspdf.jsPDF;
+    if (!window.autoTable) window.autoTable = window.jspdf.autoTable;
 
+    //Iniciando jsPDF
+    var doc = new jsPDF({orientation: p_orientation});
+
+    //Variáveis
+    var pageHeight = doc.internal.pageSize.height || doc.internal.pageSize.getHeight();
+    var pageWidth = doc.internal.pageSize.width || doc.internal.pageSize.getWidth();
+    var totalPagesExp = '{total_pages_count_string}';
+
+    //Margens Topo 1
+    var topo_1_image_margin_left = 81;
+    var topo_1_image_margin_top = 10;
+    var topo_1_image_width = 50;
+    var topo_1_image_height = 32;
+    var topo_1_text_1_margin_top = topo_1_image_margin_top + topo_1_image_height + 5;
+    var topo_1_text_2_margin_top = topo_1_image_margin_top + topo_1_image_height + 10;
+    var topo_1_text_3_margin_top = topo_1_image_margin_top + topo_1_image_height + 15;
+
+    //Margens Topo 2
+    var topo_2_image_margin_left = 10;
+    var topo_2_image_margin_top = 10;
+    var topo_2_image_width = 27;
+    var topo_2_image_height = 30;
+    var topo_2_text_1_margin_left = topo_2_image_width + 20;
+    var topo_2_text_2_margin_left = topo_2_image_width + 20;
+    var topo_2_text_3_margin_left = topo_2_image_width + 20;
+    var topo_2_text_1_margin_top = topo_2_image_margin_top + 10;
+    var topo_2_text_2_margin_top = topo_2_image_margin_top + 17;
+    var topo_2_text_3_margin_top = topo_2_image_margin_top + 24;
+
+    //Margens Nome
+    var nome_margin_top = 10;
+
+    if (p_topo_1 === true) {
+        nome_margin_top = nome_margin_top + topo_1_text_3_margin_top;
+    }
+
+    if (p_topo_2 === true) {
+        nome_margin_top = nome_margin_top + topo_2_image_margin_top + topo_2_image_height;
+    }
+
+    //Margens Parâmetros
+    var parametros_margin_top = nome_margin_top + 10;
+
+    //Margens Table
+    var table_margin_horizontal = 10;
+    var table_margin_top = 10;
+    var table_margin_bottom = 10;
+
+    if (p_topo_1 === true) {
+        table_margin_top = topo_1_text_3_margin_top + 10;
+    }
+
+    if (p_topo_2 === true) {
+        table_margin_top = topo_2_text_3_margin_top + 10;
+    }
+
+    if (p_parametros === true) {
+        var p_parametros_total_caracteres = p_parametros_texto.length;
+
+        if (p_parametros_total_caracteres <= 80) {
+            table_margin_top = parametros_margin_top + 4;
+        } else if (p_parametros_total_caracteres > 80 && p_parametros_total_caracteres <= 160) {
+            table_margin_top = parametros_margin_top + 8;
+        } else if (p_parametros_total_caracteres > 160 && p_parametros_total_caracteres <= 240) {
+            table_margin_top = parametros_margin_top + 12;
+        } else if (p_parametros_total_caracteres > 240 && p_parametros_total_caracteres <= 320) {
+            table_margin_top = parametros_margin_top + 16;
+        } else if (p_parametros_total_caracteres > 320) {
+            table_margin_top = parametros_margin_top + 20;
+        }
+
+        table_margin_bottom = 30;
+    }
+
+    //AutoTable
+    doc.autoTable({
+        //Table
+        head: [p_dadosTableCabecalho[0]],
+        body: p_dadosTableLinhas.slice(0),
+
+        //Configurações
+        theme: 'striped',
+        margin: {horizontal: table_margin_horizontal, top: table_margin_top, bottom: table_margin_bottom},
+        columnStyles: p_columnStyles,
+
+        //Antes de começar a desenhar a página
+        willDrawPage: function (data) {
+            //Header
+            if (p_header === true) {
+                //Topo 1
+                if (p_topo_1 === true) {
+                    doc.setFontSize(11);
+                    doc.addImage('build/assets/images/logo_governo_rj.png', 'PNG', topo_1_image_margin_left, topo_1_image_margin_top, topo_1_image_width, topo_1_image_height);
+                    doc.text('Secretaria de Estado de Defesa Civil', pageWidth / 2, topo_1_text_1_margin_top, {align: 'center'});
+                    doc.text('Corpo de Bombeiros Militar do Estado do Rio de Janeiro', pageWidth / 2, topo_1_text_2_margin_top, {align: 'center'});
+                    doc.text('Diretoria Geral de Finanças', pageWidth / 2, topo_1_text_3_margin_top, {align: 'center'});
+                }
+
+                //Topo 2
+                if (p_topo_2 === true) {
+                    doc.setFontSize(11);
+                    doc.addImage('build/assets/images/image_logo_relatorio.png', 'PNG', topo_2_image_margin_left, topo_2_image_margin_top, topo_2_image_width, topo_2_image_height);
+                    doc.text('Secretaria de Estado de Defesa Civil', topo_2_text_1_margin_left, topo_2_text_1_margin_top);
+                    doc.text('Corpo de Bombeiros Militar do Estado do Rio de Janeiro', topo_2_text_1_margin_left, topo_2_text_2_margin_top);
+                    doc.text('Diretoria Geral de Finanças', topo_2_text_1_margin_left, topo_2_text_3_margin_top);
+                }
+            }
+
+            //Nome
+            if (doc.internal.getNumberOfPages() == 1) {
+                doc.setFontSize(16);
+                doc.text(p_nome, pageWidth / 2, nome_margin_top, {align: 'center'});
+            }
+
+            //Parâmetros
+            if (doc.internal.getNumberOfPages() == 1) {
+                if (p_parametros === true) {
+                    doc.setFontSize(10);
+                    doc.text(p_parametros_texto, 10, parametros_margin_top, {maxWidth: 180, align: 'justify'});
+                }
+            }
+        },
+
+        //Depois de desenhar a página
+        didDrawPage: function (data) {
+            //Footer
+            if (p_footer === true) {
+                var text = 'Página ' + doc.internal.getNumberOfPages();
+
+                if (typeof doc.putTotalPages === 'function') {
+                    text = text + ' de ' + totalPagesExp;
+                }
+
+                if (p_data != '') {text = text + '  -  '+ p_data;}
+
+                if (p_hora != '') {text = text + ' às '+ p_hora;}
+
+                //Margens
+                if (p_orientation == 'p') {
+                    var footer_text_1_margin_left = 105;
+                    var footer_text_2_margin_left = 125;
+                }
+
+                if (p_orientation == 'l') {
+                    var footer_text_1_margin_left = 150;
+                    var footer_text_2_margin_left = 170;
+                }
+
+                doc.setFontSize(10);
+                doc.text('Gerado pelo Sistema SAC - DGF', footer_text_1_margin_left, pageHeight - 15, {align: 'center'});
+                doc.text(text, footer_text_2_margin_left, pageHeight - 10, {align: 'center'});
+            }
+
+            //Alterar variáveis a partir da página 2
+            if (doc.internal.getNumberOfPages() >= 1) {
+                data.settings.margin.top = nome_margin_top;
+            }
+        }
+    });
+
+    //Total page number
+    if (typeof doc.putTotalPages === 'function') {
+        doc.putTotalPages(totalPagesExp);
+    }
+
+    //Salvar o PDF gerado no lado do Cliente
+    //doc.save('relatorio_pdf.pdf');
+
+    //Converter o PDF para uma string de dados
+    const pdfData = doc.output('datauristring');
+
+    //Abra uma nova janela do navegador para visualizar o PDF
+    window.open(pdfData, '_blank');
+}
+
+//Funções para o Submódulo Ressarcimento Recebimentos - INÍCIO''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+//Funções para o Submódulo Ressarcimento Recebimentos - INÍCIO''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
 //Configurar tabela gradeRecebimentosTable
 function gradeRecebimentosTableConfigurar() {

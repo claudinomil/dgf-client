@@ -968,7 +968,10 @@ function crudFilterExecutar(submodulo='') {
         array_dados.push(tipo_condicao.value);
         array_dados.push(campo_pesquisar.value);
         array_dados.push(operacao_realizar.value);
-        array_dados.push(dado_pesquisar.value);
+
+        var dado_pesquisar_formatado = dado_pesquisar.value;
+        dado_pesquisar_formatado = dado_pesquisar_formatado.replaceAll('/', 'xxbarrayy');
+        array_dados.push(dado_pesquisar_formatado);
     }
 
     //Table

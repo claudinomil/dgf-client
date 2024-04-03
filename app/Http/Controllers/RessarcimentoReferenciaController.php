@@ -21,8 +21,10 @@ class RessarcimentoReferenciaController extends Controller
     public function __construct()
     {
         $this->middleware('check-permissao:ressarcimento_referencias_list', ['only' => ['index', 'filter']]);
+        $this->middleware('check-permissao:ressarcimento_referencias_create', ['only' => ['create', 'store']]);
         $this->middleware('check-permissao:ressarcimento_referencias_show', ['only' => ['show']]);
         $this->middleware('check-permissao:ressarcimento_referencias_edit', ['only' => ['edit', 'update']]);
+        $this->middleware('check-permissao:ressarcimento_referencias_destroy', ['only' => ['destroy']]);
     }
 
     public function index(Request $request)

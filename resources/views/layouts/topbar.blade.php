@@ -25,20 +25,7 @@
                 <i class="fa fa-fw fa-bars"></i>
             </button>
 
-            <div class="dropdown dropdown-mega d-none d-lg-block ms-2">
-                <button type="button" class="btn header-item waves-effect" data-bs-toggle="dropdown" aria-haspopup="false" aria-expanded="false">
-                    <span key="t-megamenu">Mega Menu</span>
-                    <i class="mdi mdi-chevron-down"></i>
-                </button>
-                <div class="dropdown-menu dropdown-megamenu">
-                    <div class="row">
-                        <div class="col-sm-10">@php echo \App\Facades\Menu::getMenu(3) @endphp</div>
-                        <div class="col-sm-2">
-                            <img src="{{ asset('build/assets/images/megamenu-img.png') }}" alt="" class="img-fluid mx-auto d-block">
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <div class="d-none d-lg-block ms-2">&nbsp;</div>
         </div>
         <div class="d-flex">
             @if (\App\Facades\Permissoes::permissao(['ferramentas_list']))

@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
         var prefixPermissaoSubmodulo = document.getElementById('crudPrefixPermissaoSubmodulo').value;
 
         if (typeof prefixPermissaoSubmodulo !== "undefined" && prefixPermissaoSubmodulo != '') {
-            if (prefixPermissaoSubmodulo != 'dashboards' && prefixPermissaoSubmodulo != 'logos' && prefixPermissaoSubmodulo != 'ressarcimento_cobrancas' && prefixPermissaoSubmodulo != 'relatorios' && prefixPermissaoSubmodulo != 'ressarcimento_relatorios') {
+            if (prefixPermissaoSubmodulo != 'dashboards' && prefixPermissaoSubmodulo != 'logos' && prefixPermissaoSubmodulo != 'ressarcimento_cobrancas' && prefixPermissaoSubmodulo != 'relatorios') {
                 //Header
                 $.ajaxSetup({
                     headers: {

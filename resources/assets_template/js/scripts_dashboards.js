@@ -9,34 +9,43 @@ document.addEventListener("DOMContentLoaded", function(event) {
         montar_offcanvasDashboardsViews();
     });
 
-    //Ressarcimento - Início''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-    //Ressarcimento - Início''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-
-    //Botão Filtrar Periodos Órgãos
-    document.getElementById('btnFiltrarPeriodosOrgaos').addEventListener("click", function(e) {
+    //Botão Filtrar : dashboards_modal_filtro_1
+    document.getElementById('btnDashboardsModalFiltro1Executar').addEventListener("click", function(e) {
         e.preventDefault();
 
         //Colocar Processando...
-        document.getElementById('ressarcimento-modal-filtro-footer-1').style.display = 'none';
-        document.getElementById('ressarcimento-modal-filtro-footer-2').style.display = 'block';
-
-        //Trocar inputs
-        document.getElementById('ressarcimento_periodo1').value = document.getElementById('ressarcimento-modal-filtro_periodo1').value;
-        document.getElementById('ressarcimento_periodo2').value = document.getElementById('ressarcimento-modal-filtro_periodo2').value;
-        document.getElementById('ressarcimento_orgao_id').value = document.getElementById('ressarcimento-modal-filtro_orgao').value;
+        document.getElementById('dashboards_modal_filtro_1-footer-1').style.display = 'none';
+        document.getElementById('dashboards_modal_filtro_1-footer-2').style.display = 'block';
 
         //Chamar funções para atualizar gráficos
-        dashboards();
+        atualizarDashboardsAgrupamentos(2);
 
         //Retirar Processando...
-        document.getElementById('ressarcimento-modal-filtro-footer-1').style.display = 'block';
-        document.getElementById('ressarcimento-modal-filtro-footer-2').style.display = 'none';
+        document.getElementById('dashboards_modal_filtro_1-footer-1').style.display = 'block';
+        document.getElementById('dashboards_modal_filtro_1-footer-2').style.display = 'none';
 
         //Fechando Modal
-        $('.ressarcimento-modal-filtro').modal('hide');
+        $('.dashboards_modal_filtro_1').modal('hide');
     });
-    //Ressarcimento - Fim'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-    //Ressarcimento - Fim'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+    //Botão Filtrar : dashboards_modal_filtro_2
+    document.getElementById('btnDashboardsModalFiltro2Executar').addEventListener("click", function(e) {
+        e.preventDefault();
+
+        //Colocar Processando...
+        document.getElementById('dashboards_modal_filtro_2-footer-1').style.display = 'none';
+        document.getElementById('dashboards_modal_filtro_2-footer-2').style.display = 'block';
+
+        //Chamar funções para atualizar gráficos
+        atualizarDashboardsAgrupamentos(3);
+
+        //Retirar Processando...
+        document.getElementById('dashboards_modal_filtro_2-footer-1').style.display = 'block';
+        document.getElementById('dashboards_modal_filtro_2-footer-2').style.display = 'none';
+
+        //Fechando Modal
+        $('.dashboards_modal_filtro_2').modal('hide');
+    });
 
     //Iniciando
     iniciando();
@@ -48,7 +57,11 @@ async function iniciando() {
     await montar_offcanvasDashboardsViews();
 
     //Gerar os Dashboards depois
-    setTimeout(() => {dashboards();}, 2000);
+    setTimeout(() => {
+        atualizarDashboardsAgrupamentos(1);
+        atualizarDashboardsAgrupamentos(2);
+        atualizarDashboardsAgrupamentos(3);
+    }, 2000);
 }
 
 //Montar o formulário no offcanvasDashboardsViews
@@ -83,20 +96,23 @@ function montar_offcanvasDashboardsViews() {
 
                 //ForEach
                 grupo_dashboards.forEach(function (grupo_dashboard) {
-                    var grupo_dashboard_id = grupo_dashboard['grupo_dashboard_id'];
                     var dashboard_id = grupo_dashboard['dashboard_id'];
-                    var dashboard_modulo = grupo_dashboard['dashboard_modulo'];
+                    var dashboard_agrupamento_id = grupo_dashboard['dashboard_agrupamento_id'];
+                    var dashboard_agrupamento = grupo_dashboard['dashboard_agrupamento'];
                     var dashboard_name = grupo_dashboard['dashboard_name'];
                     var dashboard_descricao = grupo_dashboard['dashboard_descricao'];
                     var dashboard_icone = grupo_dashboard['dashboard_icone'];
+                    var dashboard_principal_dashboard_id = grupo_dashboard['dashboard_principal_dashboard_id'];
                     var dashboard_view_id = 0;
+                    var largura = 4;
                     var ordem_visualizacao = 1;
                     var input_checked = '';
 
                     //ForEach
                     dashboards_views.forEach(function (dashboard_view) {
-                        if (dashboard_view['grupo_dashboard_id'] == grupo_dashboard['grupo_dashboard_id']) {
+                        if (dashboard_view['dashboard_id'] == grupo_dashboard['dashboard_id']) {
                             dashboard_view_id = dashboard_view['id'];
+                            largura = dashboard_view['largura'];
                             ordem_visualizacao = dashboard_view['ordem_visualizacao'];
                             input_checked = 'checked';
                         }
@@ -104,27 +120,52 @@ function montar_offcanvasDashboardsViews() {
 
                     //Formulário
                     offcanvasDashboardsViewsBody += '   <div class="row pe-3 pb-2">';
-                    offcanvasDashboardsViewsBody += '       <div class="col-10">';
+                    offcanvasDashboardsViewsBody += '       <div class="col-8" title="Dashboard">';
                     offcanvasDashboardsViewsBody += '           <div class="form-check custom-checkbox">';
-                    offcanvasDashboardsViewsBody += '               <input type="checkbox" class="form-check-input" id="grupo_dashboard_id_' + grupo_dashboard_id + '" name="grupo_dashboard_id_' + grupo_dashboard_id + '" value="'+grupo_dashboard_id+'" '+input_checked+'>';
-                    offcanvasDashboardsViewsBody += '               <input type="hidden" id="dashboard_id_' + grupo_dashboard_id + '" name="dashboard_id_' + grupo_dashboard_id + '" value="'+dashboard_id+'">';
-                    offcanvasDashboardsViewsBody += '               <input type="hidden" id="dashboard_name_' + grupo_dashboard_id + '" name="dashboard_name_' + grupo_dashboard_id + '" value="'+dashboard_name+'">';
-                    offcanvasDashboardsViewsBody += '               <input type="hidden" id="dashboard_descricao_' + grupo_dashboard_id + '" name="dashboard_descricao_' + grupo_dashboard_id + '" value="'+dashboard_descricao+'">';
-                    offcanvasDashboardsViewsBody += '               <input type="hidden" id="dashboard_icone_' + grupo_dashboard_id + '" name="dashboard_icone_' + grupo_dashboard_id + '" value="'+dashboard_icone+'">';
-                    offcanvasDashboardsViewsBody += '               <input type="hidden" id="dashboard_modulo_' + grupo_dashboard_id + '" name="dashboard_modulo_' + grupo_dashboard_id + '" value="'+dashboard_modulo+'">';
-                    offcanvasDashboardsViewsBody += '               <label class="form-check-label" for="grupo_dashboard_id_' + grupo_dashboard_id + '">' + dashboard_modulo + ' - ' + dashboard_name + '</label>';
+                    offcanvasDashboardsViewsBody += '               <input type="checkbox" class="form-check-input" id="dashboard_id_' + dashboard_id + '" name="dashboard_id_' + dashboard_id + '" value="'+dashboard_id+'" '+input_checked+'>';
+                    offcanvasDashboardsViewsBody += '               <input type="hidden" id="dashboard_name_' + dashboard_id + '" name="dashboard_name_' + dashboard_id + '" value="'+dashboard_name+'">';
+                    offcanvasDashboardsViewsBody += '               <input type="hidden" id="dashboard_descricao_' + dashboard_id + '" name="dashboard_descricao_' + dashboard_id + '" value="'+dashboard_descricao+'">';
+                    offcanvasDashboardsViewsBody += '               <input type="hidden" id="dashboard_icone_' + dashboard_id + '" name="dashboard_icone_' + dashboard_id + '" value="'+dashboard_icone+'">';
+                    offcanvasDashboardsViewsBody += '               <input type="hidden" id="dashboard_agrupamento_id_' + dashboard_id + '" name="dashboard_agrupamento_id_' + dashboard_id + '" value="'+dashboard_agrupamento_id+'">';
+                    offcanvasDashboardsViewsBody += '               <input type="hidden" id="dashboard_agrupamento_' + dashboard_id + '" name="dashboard_agrupamento_' + dashboard_id + '" value="'+dashboard_agrupamento+'">';
+                    offcanvasDashboardsViewsBody += '               <input type="hidden" id="dashboard_principal_dashboard_id_' + dashboard_id + '" name="dashboard_principal_dashboard_id_' + dashboard_id + '" value="'+dashboard_principal_dashboard_id+'">';
+                    offcanvasDashboardsViewsBody += '               <label class="form-check-label" for="dashboard_id_' + dashboard_id + '">' + dashboard_agrupamento + ' - ' + dashboard_name + '</label>';
                     offcanvasDashboardsViewsBody += '           </div>';
                     offcanvasDashboardsViewsBody += '       </div>';
-                    offcanvasDashboardsViewsBody += '       <div class="col-2 px-0 py-0">';
-                    offcanvasDashboardsViewsBody += '           <select class="form-control form-control-sm text-center" id="ordem_visualizacao_' + grupo_dashboard_id + '" name="ordem_visualizacao_' + grupo_dashboard_id + '">';
+                    offcanvasDashboardsViewsBody += '       <div class="col-2 px-0 py-0" title="Largura">';
+                    offcanvasDashboardsViewsBody += '           <select class="form-control form-control-sm text-center" id="largura_' + dashboard_id + '" name="largura_' + dashboard_id + '">';
 
-                    var select_selected;
-                    for (i = 1; i <= 30; i++) {
-                        select_selected = '';
+                    //Verificar se campo "principal_dashboard_id" está como 0 e deixar somente a largura 12
+                    if (dashboard_principal_dashboard_id == 0) {
+                        offcanvasDashboardsViewsBody += '           <option value="12" selected>12</option>';
+                    } else {
+                        var select_selected;
+                        for (i = 1; i <= 12; i++) {
+                            select_selected = '';
 
-                        if (ordem_visualizacao == i) {select_selected = 'selected';}
+                            if (largura == i) {select_selected = 'selected';}
 
-                        offcanvasDashboardsViewsBody += '           <option value="'+i+'" '+select_selected+'>'+i+'</option>';
+                            offcanvasDashboardsViewsBody += '           <option value="'+i+'" '+select_selected+'>'+i+'</option>';
+                        }
+                    }
+
+                    offcanvasDashboardsViewsBody += '           </select>';
+                    offcanvasDashboardsViewsBody += '       </div>';
+                    offcanvasDashboardsViewsBody += '       <div class="col-2 px-0 py-0" title="Ordem de Visualização">';
+                    offcanvasDashboardsViewsBody += '           <select class="form-control form-control-sm text-center" id="ordem_visualizacao_' + dashboard_id + '" name="ordem_visualizacao_' + dashboard_id + '">';
+
+                    //Verificar se campo "principal_dashboard_id" está como 0 e deixar somente a ordem_visualizacao 1
+                    if (dashboard_principal_dashboard_id == 0) {
+                        offcanvasDashboardsViewsBody += '           <option value="1" selected>1</option>';
+                    } else {
+                        var select_selected;
+                        for (i = 1; i <=30; i++) {
+                            select_selected = '';
+
+                            if (ordem_visualizacao == i) {select_selected = 'selected';}
+
+                            offcanvasDashboardsViewsBody += '           <option value="'+i+'" '+select_selected+'>'+i+'</option>';
+                        }
                     }
 
                     offcanvasDashboardsViewsBody += '           </select>';
@@ -144,6 +185,20 @@ function montar_offcanvasDashboardsViews() {
 
 //Salvar Dashboards escolhidos e as ordens de visualizações
 function dashboards_salvar() {
+    //Fazer acertos nas Larguras e Ordem de Visualização dos Dashboards Principal'''''''''''''''''''''''''''''''''''''''
+    for(i=1; i<=50; i++) {
+        if (document.getElementById('dashboard_id_' + i)) {
+            if (document.getElementById('dashboard_id_' + i).checked) {
+                if (document.getElementById('dashboard_principal_dashboard_id_' + i).value != 0) {
+                    document.getElementById('dashboard_id_'+document.getElementById('dashboard_principal_dashboard_id_' + i).value).checked = true;
+                    document.getElementById('largura_'+document.getElementById('dashboard_principal_dashboard_id_' + i).value).value = 12;
+                    document.getElementById('ordem_visualizacao_'+document.getElementById('dashboard_principal_dashboard_id_' + i).value).value = 1;
+                }
+            }
+        }
+    }
+    //''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
     //URL
     var url = window.location.protocol+'//'+window.location.host+'/';
     if (window.location.hostname.indexOf('cbmerj.rj.gov') != -1) {url += 'dgf_sistema/';}
@@ -170,7 +225,9 @@ function dashboards_salvar() {
             //Lendo dados
             if (response.success) {
                 //Montar dashboards
-                dashboards();
+                atualizarDashboardsAgrupamentos(1);
+                atualizarDashboardsAgrupamentos(2);
+                atualizarDashboardsAgrupamentos(3);
 
                 //Fechar offcanvasDashboardsViews
                 document.getElementById('btnDashboardsViewsClose').click();
@@ -189,85 +246,119 @@ function dashboards_salvar() {
     });
 }
 
-function abrirModalPeriodosOrgaos() {
-    //Repassando valores
-    document.getElementById('ressarcimento-modal-filtro_periodo1').value = document.getElementById('ressarcimento_periodo1').value;
-    document.getElementById('ressarcimento-modal-filtro_periodo2').value = document.getElementById('ressarcimento_periodo2').value;
-    document.getElementById('ressarcimento-modal-filtro_orgao').value = document.getElementById('ressarcimento_orgao_id').value;
-
+function abrirDashboardsModalFiltro1() {
     //Abrir Modal
-    $('.ressarcimento-modal-filtro').modal('show');
+    $('.dashboards_modal_filtro_1').modal('show');
 }
 
-//Funções de chamada dos Dashboards - Início''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-//Funções de chamada dos Dashboards - Início''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+function abrirDashboardsModalFiltro2() {
+    //Abrir Modal
+    $('.dashboards_modal_filtro_2').modal('show');
+}
 
-function dashboards() {
+/*
+* Refazer Dashboards por Agrupamento
+ */
+function atualizarDashboardsAgrupamentos(agrupamento_id) {
+    //URL
+    var url = window.location.protocol+'//'+window.location.host+'/';
+    if (window.location.hostname.indexOf('cbmerj.rj.gov') != -1) {url += 'dgf_sistema/';}
+
+    var ids = [];
+
+    //Pegar ids dos Dashboards do Agrupamento
+    return new Promise(function(resolve, reject) {
+        $.get(url+'dashboards/dashboards_ids/'+agrupamento_id, function (data) {
+            if (data.success) {
+                var dashboards_ids = data.success.dashboards_ids;
+
+                dashboards_ids.forEach(function (item) {
+                    ids.push(item.id);
+                });
+            }
+
+            resolve();
+        });
+    }).then(function () {
+        //Chamar Dashboards
+        dashboards(ids);
+    });
+}
+
+/*
+* CHAMAR ATRAVES DA FUNÇÃO atualizarDashboardsAgrupamentos
+* Montar Html/Div para cada Dashboard e Chamar as Funções correspondentes
+* @PARAM dashboard_ids : Id's dos Dashboards que quer Criar/Atualizar
+ */
+function dashboards(dashboard_ids=[]) {
     return new Promise(resolve => {
         //Criar array
         let dados = [];
 
         //Adicionar
-        for (i = 1; i <= 50; i++) {
+        dashboard_ids.forEach(function (value) {
+            i = value;
+
             //Verifica se o elemento existe
-            let dashboard_checkbox = document.getElementById('grupo_dashboard_id_' + i);
+            let dashboard_checkbox = document.getElementById('dashboard_id_' + i);
             if (dashboard_checkbox) {
                 //Verifica se a caixa de seleção está marcada
                 if (dashboard_checkbox.checked) {
-                    let grupo_dashboard_id = i;
+                    let largura = document.getElementById('largura_' + i).value;
                     let ordem_visualizacao = document.getElementById('ordem_visualizacao_' + i).value;
                     let dashboard_id = document.getElementById('dashboard_id_' + i).value;
                     let dashboard_name = document.getElementById('dashboard_name_' + i).value;
                     let dashboard_descricao = document.getElementById('dashboard_descricao_' + i).value;
-                    let dashboard_modulo = document.getElementById('dashboard_modulo_' + i).value;
+                    let dashboard_agrupamento_id = document.getElementById('dashboard_agrupamento_id_' + i).value;
+                    let dashboard_agrupamento = document.getElementById('dashboard_agrupamento_' + i).value;
+                    let dashboard_principal_dashboard_id = document.getElementById('dashboard_principal_dashboard_id_' + i).value;
                     let dashboard_icone = document.getElementById('dashboard_icone_' + i).value;
 
+                    //Limpar divDashboards'''''''''''''''''''''''''''''''''''''
+                    if (dashboard_principal_dashboard_id == 0) {
+                        document.getElementById('divDashboardsAgrupamentoId_'+dashboard_agrupamento_id).innerHTML = '';
+                    }
+                    //'''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
                     dados.push({
+                        largura: parseInt(largura),
                         ordem_visualizacao: parseInt(ordem_visualizacao),
-                        dashboard_modulo: dashboard_modulo,
+                        dashboard_agrupamento_id: dashboard_agrupamento_id,
+                        dashboard_agrupamento: dashboard_agrupamento,
                         dashboard_name: dashboard_name,
                         dashboard_id: parseInt(dashboard_id),
                         dashboard_descricao: dashboard_descricao,
-                        dashboard_icone: dashboard_icone,
-                        grupo_dashboard_id: parseInt(grupo_dashboard_id)
+                        dashboard_icone: dashboard_icone
                     });
                 }
             }
-        }
+        });
 
         //Ordenar array
         dados.sort((a, b) => a.ordem_visualizacao - b.ordem_visualizacao || a.dashboard_name - b.dashboard_name || a.dashboard_id - b.dashboard_id);
 
-        //Limpar divDashboards
-        document.getElementById('divDashboards').innerHTML = '';
-
         //Ler array
         dados.forEach(function (item) {
+            var largura = item.largura;
             var ordem_visualizacao = item.ordem_visualizacao;
-            var dashboard_modulo = item.dashboard_modulo;
+            var dashboard_agrupamento_id = item.dashboard_agrupamento_id;
+            var dashboard_agrupamento = item.dashboard_agrupamento;
             var dashboard_name = item.dashboard_name;
             var dashboard_id = item.dashboard_id;
             var dashboard_descricao = item.dashboard_descricao;
             var dashboard_icone = item.dashboard_icone;
-            var grupo_dashboard_id = item.grupo_dashboard_id;
 
             //Chamar Dashboards
-            var classCol = 'col-12 col-md-12';
-
-            if (dashboard_id == 4) {classCol = 'col-12 col-md-6';}
-            if (dashboard_id == 5) {classCol = 'col-12 col-md-6';}
-            if (dashboard_id == 7) {classCol = 'col-12 col-md-6';}
-            if (dashboard_id == 8) {classCol = 'col-12 col-md-6';}
-            if (dashboard_id == 9) {classCol = 'col-12 col-md-6';}
-            if (dashboard_id == 10) {classCol = 'col-12 col-md-6';}
+            var classCol = 'col-12 col-md-'+largura;
 
             //Montando HTML e chamando a função correspondente dinamicamente
-            var divDashboardsHtml = document.getElementById('divDashboards');
-            divDashboardsHtml.innerHTML += '<div class="' + classCol + '" id="divDashboard' + dashboard_id + '"></div>';
+            var divDashboardsHtml = document.getElementById('divDashboardsAgrupamentoId_'+dashboard_agrupamento_id);
+            divDashboardsHtml.innerHTML += '<div class="' + classCol + ' pb-5" id="divDashboard' + dashboard_id + '"></div>';
             divDashboardsHtml.innerHTML += '<input type="hidden" id="dashboard' + dashboard_id + '_id" name="dashboard' + dashboard_id + '_id" value="' + dashboard_id + '">';
             divDashboardsHtml.innerHTML += '<input type="hidden" id="dashboard' + dashboard_id + '_name" name="dashboard' + dashboard_id + '_name" value="' + dashboard_name + '">';
             divDashboardsHtml.innerHTML += '<input type="hidden" id="dashboard' + dashboard_id + '_descricao" name="dashboard' + dashboard_id + '_descricao" value="' + dashboard_descricao + '">';
-            divDashboardsHtml.innerHTML += '<input type="hidden" id="dashboard' + dashboard_id + '_modulo" name="dashboard' + dashboard_id + '_modulo" value="' + dashboard_modulo + '">';
+            divDashboardsHtml.innerHTML += '<input type="hidden" id="dashboard' + dashboard_id + '_agrupamento_id" name="dashboard' + dashboard_id + '_agrupamento_id" value="' + dashboard_agrupamento_id + '">';
+            divDashboardsHtml.innerHTML += '<input type="hidden" id="dashboard' + dashboard_id + '_agrupamento" name="dashboard' + dashboard_id + '_agrupamento" value="' + dashboard_agrupamento + '">';
             divDashboardsHtml.innerHTML += '<input type="hidden" id="dashboard' + dashboard_id + '_icone" name="dashboard' + dashboard_id + '_icone" value="' + dashboard_icone + '">';
 
             //Nome da Função que vai ser chamada
@@ -282,627 +373,909 @@ function dashboards() {
 }
 
 function dashboard1() {
-    //URL
-    var url = window.location.protocol+'//'+window.location.host+'/';
-    if (window.location.hostname.indexOf('cbmerj.rj.gov') != -1) {url += 'dgf_sistema/';}
+    //Verifica se o elemento existe
+    let dashboard_checkbox = document.getElementById('dashboard1_id');
+    if (dashboard_checkbox) {
+        //URL
+        var url = window.location.protocol+'//'+window.location.host+'/';
+        if (window.location.hostname.indexOf('cbmerj.rj.gov') != -1) {url += 'dgf_sistema/';}
 
-    //Iniciando dados
-    var dashboard_id = document.getElementById('dashboard1_id').value;
-    var dashboard_name = document.getElementById('dashboard1_name').value;
-    var dashboard_descricao = document.getElementById('dashboard1_descricao').value;
-    var dashboard_modulo = document.getElementById('dashboard1_modulo').value;
-    var dashboard_icone = document.getElementById('dashboard1_icone').value;
+        //Iniciando dados
+        var dashboard_id = document.getElementById('dashboard1_id').value;
+        var dashboard_name = document.getElementById('dashboard1_name').value;
+        var dashboard_descricao = document.getElementById('dashboard1_descricao').value;
+        var dashboard_agrupamento = document.getElementById('dashboard1_agrupamento').value;
+        var dashboard_icone = document.getElementById('dashboard1_icone').value;
 
-    var gruposQtd = 0;
-    var usuariosQtd = 0;
-    var transacoesQtd = 0;
+        var quantidade_grupos = 0;
+        var quantidade_usuarios = 0;
+        var quantidade_transacoes = 0;
 
-    //Buscar Dados
-    return new Promise(function(resolve, reject) {
-        $.get(url+'dashboards/dashboard1', function (data) {
-            if (data.success) {
-                gruposQtd = data.success.gruposQtd;
-                usuariosQtd = data.success.usuariosQtd;
-                transacoesQtd = data.success.transacoesQtd;
-            }
+        //Buscar Dados
+        return new Promise(function(resolve, reject) {
+            $.get(url+'dashboards/dashboard1', function (data) {
+                if (data.success) {
+                    quantidade_grupos = data.success.quantidade_grupos;
+                    quantidade_usuarios = data.success.quantidade_usuarios;
+                    quantidade_transacoes = data.success.quantidade_transacoes;
+                }
 
-            resolve();
+                resolve();
+            });
+        }).then(function () {
+            //Dados
+            var dados = [];
+            dados.push({col:'col-4', titulo:'Grupos', valor:quantidade_grupos});
+            dados.push({col:'col-4', titulo:'Usuários', valor:quantidade_usuarios});
+            dados.push({col:'col-4', titulo:'Transações', valor:quantidade_transacoes});
+
+            //Menu
+            var menu = [];
+            menu.push({onclick:'atualizarDashboardsAgrupamentos(1)', nome:'Atualizar'});
+
+            cardPrincipalAgrupamento({icone:dashboard_icone, texto_1:dashboard_agrupamento, dados:dados, menu:menu, divId:'divDashboard1'});
         });
-    }).then(function () {
-        var menu = [{onclick: 'dashboard1()', nome: 'Atualizar'}];
-
-        var dados = [
-            {descricao: 'Grupos', valor: gruposQtd},
-            {descricao: 'Usuários', valor: usuariosQtd},
-            {descricao: 'Transações', valor: transacoesQtd}
-        ];
-
-        var imagem = dashboard_icone;
-
-        var texto_1 = dashboard_modulo;
-        var texto_2 = dashboard_name;
-        var texto_3 = '';
-
-        cg_card_modelo_5({col_1:true, imagem:imagem, texto_1:texto_1, texto_2:texto_2, texto_3:texto_3, col_2:true, col_3:true, dados:dados, menu:menu, div_id:'divDashboard1'}).then(function() {
-            showTooltips();
-        });
-    });
+    }
 }
 
 function dashboard2() {
-    //URL
-    var url = window.location.protocol+'//'+window.location.host+'/';
-    if (window.location.hostname.indexOf('cbmerj.rj.gov') != -1) {url += 'dgf_sistema/';}
+    //Verifica se o elemento existe
+    let dashboard_checkbox = document.getElementById('dashboard2_id');
+    if (dashboard_checkbox) {
+        //URL
+        var url = window.location.protocol+'//'+window.location.host+'/';
+        if (window.location.hostname.indexOf('cbmerj.rj.gov') != -1) {url += 'dgf_sistema/';}
 
-    //Iniciando dados
-    var dashboard_id = document.getElementById('dashboard2_id').value;
-    var dashboard_name = document.getElementById('dashboard2_name').value;
-    var dashboard_descricao = document.getElementById('dashboard2_descricao').value;
-    var dashboard_modulo = document.getElementById('dashboard2_modulo').value;
-    var dashboard_icone = document.getElementById('dashboard2_icone').value;
+        //Iniciando dados
+        var dashboard_id = document.getElementById('dashboard2_id').value;
+        var dashboard_name = document.getElementById('dashboard2_name').value;
+        var dashboard_descricao = document.getElementById('dashboard2_descricao').value;
+        var dashboard_agrupamento = document.getElementById('dashboard2_agrupamento').value;
+        var dashboard_icone = document.getElementById('dashboard2_icone').value;
 
-    var series = [];
-    var usuariosQtd = 0;
-    var yaxis_min = 0;
-    var yaxis_max = 0;
+        var quantidade_usuarios = 0;
+        var series_data = [];
+        var xaxis_categories = [];
 
-    //Buscar Dados
-    return new Promise(function(resolve, reject) {
-        $.get(url+'dashboards/dashboard2', function (data) {
-            if (data.success) {
-                series = data.success.series;
-                usuariosQtd = data.success.usuariosQtd;
-                yaxis_max = data.success.yaxis_max;
+        //Buscar Dados
+        return new Promise(function(resolve, reject) {
+            $.get(url+'dashboards/dashboard2', function (data) {
+                if (data.success) {
+                    quantidade_usuarios = data.success.quantidade_usuarios;
+                    series_data = data.success.series_data;
+                    xaxis_categories = data.success.xaxis_categories;
+                }
+
+                resolve();
+            });
+        }).then(function () {
+            //Títulos
+            var title = dashboard_name;
+            var subtitle = 'Usuários: '+quantidade_usuarios;
+
+            //Series Name
+            var series_name = 'Qtd Usuários';
+
+            //Colors
+            var colors = new Array();
+            for(i=1; i<=series_data.length; i++) {
+                colors.push(gerarCor(i));
             }
 
-            resolve();
+            //Gráfico
+            apexchartsBar({title:title, subtitle:subtitle, series_name:series_name, series_data:series_data, colors:colors, height:330, xaxis_categories:xaxis_categories, valor_tipo:3, divId:'divDashboard2'});
         });
-    }).then(function () {
-        var menu = [{onclick: 'dashboard2();', nome: 'Atualizar'}];
-
-        series = series;
-
-        //Colors
-        var colors = new Array();
-        for(i=1; i<=series.length; i++) {
-            colors.push(gerarCor(i));
-        }
-
-        var xaxis_categories = [''];
-
-        var title = 'Usuários: '+usuariosQtd;
-
-        cg_graf_modelo_1({titulo_tooltip:dashboard_name+'<br>'+dashboard_descricao, titulo:dashboard_name, height:350, menu:menu, graf_id:'grafDashboard2', div_id:'divDashboard2'}).then(function() {
-            cg_graf_modelo_1_render({chart_height:285, plotOptions_columnWidth:70, plotOptions_columnWidth_formatter:'', plotOptions_dataLabels_position:'top', dataLabels_enabled:true, dataLabels_formatter:'', dataLabels_offsetY:-22, dataLabels_style_fontSize:'10', dataLabels_style_colors:'#304758', stroke_show:false, stroke_width:3, series:series, colors:colors, xaxis:true, xaxis_categories:xaxis_categories, xaxis_position:'top', yaxis:true, yaxis_labels_formatter:'', yaxis_min:yaxis_min, yaxis_max:yaxis_max, title:title, graf_id:'grafDashboard2'});
-            showTooltips();
-        });
-    });
+    }
 }
 
 function dashboard3() {
-    //URL
-    var url = window.location.protocol+'//'+window.location.host+'/';
-    if (window.location.hostname.indexOf('cbmerj.rj.gov') != -1) {url += 'dgf_sistema/';}
+    //Verifica se o elemento existe
+    let dashboard_checkbox = document.getElementById('dashboard3_id');
+    if (dashboard_checkbox) {
+        //URL
+        var url = window.location.protocol+'//'+window.location.host+'/';
+        if (window.location.hostname.indexOf('cbmerj.rj.gov') != -1) {url += 'dgf_sistema/';}
 
-    //Iniciando dados
-    var dashboard_id = document.getElementById('dashboard3_id').value;
-    var dashboard_name = document.getElementById('dashboard3_name').value;
-    var dashboard_descricao = document.getElementById('dashboard3_descricao').value;
-    var dashboard_modulo = document.getElementById('dashboard3_modulo').value;
-    var dashboard_icone = document.getElementById('dashboard3_icone').value;
+        //Iniciando dados
+        var dashboard_id = document.getElementById('dashboard3_id').value;
+        var dashboard_name = document.getElementById('dashboard3_name').value;
+        var dashboard_descricao = document.getElementById('dashboard3_descricao').value;
+        var dashboard_agrupamento = document.getElementById('dashboard3_agrupamento').value;
+        var dashboard_icone = document.getElementById('dashboard3_icone').value;
 
-    var series = [];
-    var usuariosQtd = 0;
-    var yaxis_min = 0;
-    var yaxis_max = 0;
+        var quantidade_usuarios = 0;
+        var series_data = [];
+        var xaxis_categories = [];
 
-    //Buscar Dados
-    return new Promise(function(resolve, reject) {
-        $.get(url+'dashboards/dashboard3', function (data) {
-            if (data.success) {
-                series = data.success.series;
-                usuariosQtd = data.success.usuariosQtd;
-                yaxis_max = data.success.yaxis_max;
+        //Buscar Dados
+        return new Promise(function(resolve, reject) {
+            $.get(url+'dashboards/dashboard3', function (data) {
+                if (data.success) {
+                    quantidade_usuarios = data.success.quantidade_usuarios;
+                    series_data = data.success.series_data;
+                    xaxis_categories = data.success.xaxis_categories;
+                }
+
+                resolve();
+            });
+        }).then(function () {
+            //Títulos
+            var title = dashboard_name;
+            var subtitle = 'Usuários: '+quantidade_usuarios;
+
+            //Series Name
+            var series_name = 'Qtd Usuários';
+
+            //Colors
+            var colors = new Array();
+            for(i=1; i<=series_data.length; i++) {
+                colors.push(gerarCor(i));
             }
 
-            resolve();
+            //Gráfico
+            apexchartsBar({title:title, subtitle:subtitle, series_name:series_name, series_data:series_data, colors:colors, height:330, xaxis_categories:xaxis_categories, valor_tipo:3, divId:'divDashboard3'});
         });
-    }).then(function () {
-        var menu = [{onclick: 'dashboard3();', nome: 'Atualizar'}];
-
-        series = series;
-
-        //Colors
-        var colors = new Array();
-        for(i=1; i<=series.length; i++) {
-            colors.push(gerarCor(i));
-        }
-
-        var xaxis_categories = [''];
-
-        var title = 'Usuários: '+usuariosQtd;
-
-        cg_graf_modelo_1({titulo_tooltip:dashboard_name+'<br>'+dashboard_descricao, titulo:dashboard_name, height:350, menu:menu, graf_id:'grafDashboard3', div_id:'divDashboard3'}).then(function() {
-            cg_graf_modelo_1_render({chart_height:285, plotOptions_columnWidth:70, plotOptions_columnWidth_formatter:'', plotOptions_dataLabels_position:'top', dataLabels_enabled:true, dataLabels_formatter:'', dataLabels_offsetY:-22, dataLabels_style_fontSize:'10', dataLabels_style_colors:'#304758', stroke_show:false, stroke_width:3, series:series, colors:colors, xaxis:true, xaxis_categories:xaxis_categories, xaxis_position:'top', yaxis:true, yaxis_labels_formatter:'', yaxis_min:yaxis_min, yaxis_max:yaxis_max, title:title, graf_id:'grafDashboard3'});
-            showTooltips();
-        });
-    });
+    }
 }
 
 function dashboard4() {
-    //URL
-    var url = window.location.protocol+'//'+window.location.host+'/';
-    if (window.location.hostname.indexOf('cbmerj.rj.gov') != -1) {url += 'dgf_sistema/';}
+    //Verifica se o elemento existe
+    let dashboard_checkbox = document.getElementById('dashboard4_id');
+    if (dashboard_checkbox) {
+        //URL
+        var url = window.location.protocol+'//'+window.location.host+'/';
+        if (window.location.hostname.indexOf('cbmerj.rj.gov') != -1) {url += 'dgf_sistema/';}
 
-    //Iniciando dados
-    var dashboard_id = document.getElementById('dashboard4_id').value;
-    var dashboard_name = document.getElementById('dashboard4_name').value;
-    var dashboard_descricao = document.getElementById('dashboard4_descricao').value;
-    var dashboard_modulo = document.getElementById('dashboard4_modulo').value;
-    var dashboard_icone = document.getElementById('dashboard4_icone').value;
+        //Iniciando dados
+        var dashboard_id = document.getElementById('dashboard4_id').value;
+        var dashboard_name = document.getElementById('dashboard4_name').value;
+        var dashboard_descricao = document.getElementById('dashboard4_descricao').value;
+        var dashboard_agrupamento = document.getElementById('dashboard4_agrupamento').value;
+        var dashboard_icone = document.getElementById('dashboard4_icone').value;
 
-    var series = [];
-    var usuariosQtd = 0;
-    var yaxis_min = 0;
-    var yaxis_max = 0;
+        var quantidade_usuarios = 0;
+        var series = [];
+        var labels = [];
 
-    //Buscar Dados
-    return new Promise(function(resolve, reject) {
-        $.get(url+'dashboards/dashboard4', function (data) {
-            if (data.success) {
-                series = data.success.series;
-                usuariosQtd = data.success.usuariosQtd;
-                yaxis_max = data.success.yaxis_max;
-            }
+        //Buscar Dados
+        return new Promise(function(resolve, reject) {
+            $.get(url+'dashboards/dashboard4', function (data) {
+                if (data.success) {
+                    quantidade_usuarios = data.success.quantidade_usuarios;
+                    series = data.success.series;
+                    labels = data.success.labels;
+                }
 
-            resolve();
+                resolve();
+            });
+        }).then(function () {
+            //Títulos
+            var title = dashboard_name;
+            var subtitle = 'Usuários: '+quantidade_usuarios;
+
+            //Gráfico
+            apexchartsPie({title:title, subtitle:subtitle, series:series, height:330, labels:labels, valor_tipo:3, divId:'divDashboard4'});
         });
-    }).then(function () {
-        var menu = [{onclick: 'dashboard4();', nome: 'Atualizar'}];
-
-        series = series;
-
-        //Colors
-        var colors = new Array();
-        for(i=1; i<=series.length; i++) {
-            colors.push(gerarCor(0));
-        }
-
-        var xaxis_categories = [''];
-
-        var title = 'Usuários: '+usuariosQtd;
-
-        cg_graf_modelo_1({titulo_tooltip:dashboard_name+'<br>'+dashboard_descricao, titulo:dashboard_name, height:350, menu:menu, graf_id:'grafDashboard4', div_id:'divDashboard4'}).then(function() {
-            cg_graf_modelo_1_render({chart_height:285, plotOptions_columnWidth:70, plotOptions_columnWidth_formatter:'', plotOptions_dataLabels_position:'top', dataLabels_enabled:true, dataLabels_formatter:'', dataLabels_offsetY:-22, dataLabels_style_fontSize:'10', dataLabels_style_colors:'#304758', stroke_show:false, stroke_width:3, series:series, colors:colors, xaxis:true, xaxis_categories:xaxis_categories, xaxis_position:'top', yaxis:true, yaxis_labels_formatter:'', yaxis_min:yaxis_min, yaxis_max:yaxis_max, title:title, graf_id:'grafDashboard4'});
-            showTooltips();
-        });
-    });
+    }
 }
 
 function dashboard5() {
-    //URL
-    var url = window.location.protocol+'//'+window.location.host+'/';
-    if (window.location.hostname.indexOf('cbmerj.rj.gov') != -1) {url += 'dgf_sistema/';}
+    //Verifica se o elemento existe
+    let dashboard_checkbox = document.getElementById('dashboard5_id');
+    if (dashboard_checkbox) {
+        //URL
+        var url = window.location.protocol+'//'+window.location.host+'/';
+        if (window.location.hostname.indexOf('cbmerj.rj.gov') != -1) {url += 'dgf_sistema/';}
 
-    //Iniciando dados
-    var dashboard_id = document.getElementById('dashboard5_id').value;
-    var dashboard_name = document.getElementById('dashboard5_name').value;
-    var dashboard_descricao = document.getElementById('dashboard5_descricao').value;
-    var dashboard_modulo = document.getElementById('dashboard5_modulo').value;
-    var dashboard_icone = document.getElementById('dashboard5_icone').value;
+        //Iniciando dados
+        var dashboard_id = document.getElementById('dashboard5_id').value;
+        var dashboard_name = document.getElementById('dashboard5_name').value;
+        var dashboard_descricao = document.getElementById('dashboard5_descricao').value;
+        var dashboard_agrupamento = document.getElementById('dashboard5_agrupamento').value;
+        var dashboard_icone = document.getElementById('dashboard5_icone').value;
 
-    var series = [];
-    var transacoesQtd = 0;
-    var yaxis_min = 0;
-    var yaxis_max = 0;
+        var quantidade_transacoes = 0;
+        var series = [];
+        var labels = [];
 
-    //Buscar Dados
-    return new Promise(function(resolve, reject) {
-        $.get(url+'dashboards/dashboard5', function (data) {
-            if (data.success) {
-                series = data.success.series;
-                transacoesQtd = data.success.transacoesQtd;
-                yaxis_max = data.success.yaxis_max;
-            }
+        //Buscar Dados
+        return new Promise(function(resolve, reject) {
+            $.get(url+'dashboards/dashboard5', function (data) {
+                if (data.success) {
+                    quantidade_transacoes = data.success.quantidade_transacoes;
+                    series = data.success.series;
+                    labels = data.success.labels;
+                }
 
-            resolve();
+                resolve();
+            });
+        }).then(function () {
+            //Títulos
+            var title = dashboard_name;
+            var subtitle = 'Transações: '+quantidade_transacoes;
+
+            //Gráfico
+            apexchartsPie({title:title, subtitle:subtitle, series:series, height:330, labels:labels, valor_tipo:3, divId:'divDashboard5'});
         });
-    }).then(function () {
-        var menu = [{onclick: 'dashboard5();', nome: 'Atualizar'}];
-
-        series = series;
-
-        //Colors
-        var colors = new Array();
-        for(i=1; i<=series.length; i++) {
-            colors.push(gerarCor(0));
-        }
-
-        var xaxis_categories = [''];
-
-        var title = 'Transações: '+transacoesQtd;
-
-        cg_graf_modelo_1({titulo_tooltip:dashboard_name+'<br>'+dashboard_descricao, titulo:dashboard_name, height:350, menu:menu, graf_id:'grafDashboard5', div_id:'divDashboard5'}).then(function() {
-            cg_graf_modelo_1_render({chart_height:285, plotOptions_columnWidth:70, plotOptions_columnWidth_formatter:'', plotOptions_dataLabels_position:'top', dataLabels_enabled:true, dataLabels_formatter:'', dataLabels_offsetY:-22, dataLabels_style_fontSize:'10', dataLabels_style_colors:'#304758', stroke_show:false, stroke_width:3, series:series, colors:colors, xaxis:true, xaxis_categories:xaxis_categories, xaxis_position:'top', yaxis:true, yaxis_labels_formatter:'', yaxis_min:yaxis_min, yaxis_max:yaxis_max, title:title, graf_id:'grafDashboard5'});
-            showTooltips();
-        });
-    });
+    }
 }
 
 function dashboard6() {
-    //URL
-    var url = window.location.protocol+'//'+window.location.host+'/';
-    if (window.location.hostname.indexOf('cbmerj.rj.gov') != -1) {url += 'dgf_sistema/';}
+    //Verifica se o elemento existe
+    let dashboard_checkbox = document.getElementById('dashboard6_id');
+    if (dashboard_checkbox) {
+        //URL
+        var url = window.location.protocol+'//'+window.location.host+'/';
+        if (window.location.hostname.indexOf('cbmerj.rj.gov') != -1) {url += 'dgf_sistema/';}
 
-    //Iniciando dados
-    var dashboard_id = document.getElementById('dashboard6_id').value;
-    var dashboard_name = document.getElementById('dashboard6_name').value;
-    var dashboard_descricao = document.getElementById('dashboard6_descricao').value;
-    var dashboard_modulo = document.getElementById('dashboard6_modulo').value;
-    var dashboard_icone = document.getElementById('dashboard6_icone').value;
+        //Iniciando dados
+        var dashboard_id = document.getElementById('dashboard6_id').value;
+        var dashboard_name = document.getElementById('dashboard6_name').value;
+        var dashboard_descricao = document.getElementById('dashboard6_descricao').value;
+        var dashboard_agrupamento = document.getElementById('dashboard6_agrupamento').value;
+        var dashboard_icone = document.getElementById('dashboard6_icone').value;
 
-    var orgaosQtd = 0;
-    var militaresQtd = 0;
-    var valorRessarcimento = 0;
+        var quantidade_orgaos = 0;
+        var quantidade_militares = 0;
+        var valor_ressarcimento = 0;
 
-    //Valores hiddens
-    var ressarcimento_periodo1 = document.getElementById('ressarcimento_periodo1').value;
-    var ressarcimento_periodo2 = document.getElementById('ressarcimento_periodo2').value;
-    var ressarcimento_orgao_id = document.getElementById('ressarcimento_orgao_id').value;
+        //Valores hiddens
+        var dashboards_modal_filtro_1_periodo1 = document.getElementById('dashboards_modal_filtro_1_periodo1').value;
+        var dashboards_modal_filtro_1_periodo2 = document.getElementById('dashboards_modal_filtro_1_periodo2').value;
+        var dashboards_modal_filtro_1_orgao_id = document.getElementById('dashboards_modal_filtro_1_orgao_id').value;
 
-    //Return
-    if (ressarcimento_periodo1 == '' || ressarcimento_periodo2) {return false;}
+        //Obter o Órgão escolhido
+        var selectElement = document.getElementById('dashboards_modal_filtro_1_orgao_id');
+        var selectedIndex = selectElement.selectedIndex;
+        var selectedOption = selectElement.options[selectedIndex];
+        var orgao_escolhido = selectedOption.innerHTML;
 
-    //Buscar Dados
-    return new Promise(function(resolve, reject) {
-        $.get(url+'dashboards/dashboard6/'+ressarcimento_periodo1+'/'+ressarcimento_periodo2+'/'+ressarcimento_orgao_id, function (data) {
-            if (data.success) {
-                orgaosQtd = data.success.orgaosQtd;
-                militaresQtd = data.success.militaresQtd;
-                valorRessarcimento = data.success.valorRessarcimento;
-            }
+        //Return
+        if (dashboards_modal_filtro_1_periodo1 == '' || dashboards_modal_filtro_1_periodo2 == '') {return false;}
 
-            resolve();
+        //Buscar Dados
+        return new Promise(function(resolve, reject) {
+            $.get(url+'dashboards/dashboard6/'+dashboards_modal_filtro_1_periodo1+'/'+dashboards_modal_filtro_1_periodo2+'/'+dashboards_modal_filtro_1_orgao_id, function (data) {
+                if (data.success) {
+                    quantidade_orgaos = data.success.quantidade_orgaos;
+                    quantidade_militares = data.success.quantidade_militares;
+                    valor_ressarcimento = data.success.valor_ressarcimento;
+                }
+
+                resolve();
+            });
+        }).then(function () {
+            //Dados
+            var dados = [];
+            dados.push({col:'col-4', titulo:'Órgãos', valor:quantidade_orgaos});
+            dados.push({col:'col-4', titulo:'Militares', valor:quantidade_militares});
+            dados.push({col:'col-4', titulo:'Ressarcimento', valor:'R$ '+float2moeda(valor_ressarcimento)});
+
+            //Menu
+            var menu = [];
+            menu.push({onclick:'abrirDashboardsModalFiltro1()', nome:'Filtro'});
+
+            cardPrincipalAgrupamento({icone:dashboard_icone, texto_1:dashboard_agrupamento, texto_2:getReferencia(1, dashboards_modal_filtro_1_periodo1)+' até '+getReferencia(1, dashboards_modal_filtro_1_periodo2), texto_3:orgao_escolhido, dados:dados, menu:menu, divId:'divDashboard6'});
         });
-    }).then(function () {
-        var menu = [
-            {onclick: 'abrirModalPeriodosOrgaos()', nome: 'Filtro'},
-            {onclick: 'dashboard6()', nome: 'Atualizar'}
-            ];
-
-        var dados = [
-            {descricao: 'Órgãos', valor: orgaosQtd},
-            {descricao: 'Militares', valor: militaresQtd},
-            {descricao: 'Ressarcimento', valor: 'R$ '+float2moeda(valorRessarcimento)}
-        ];
-
-        var imagem = dashboard_icone;
-
-        var texto_1 = dashboard_modulo;
-        var texto_2 = dashboard_name;
-        var texto_3 = getReferencia(1, ressarcimento_periodo1)+' até '+getReferencia(1, ressarcimento_periodo2);
-
-        cg_card_modelo_5({col_1:true, imagem:imagem, texto_1:texto_1, texto_2:texto_2, texto_3:texto_3, col_2:true, col_3:true, dados:dados, menu:menu, div_id:'divDashboard6'}).then(function() {
-            showTooltips();
-        });
-    });
+    }
 }
 
 function dashboard7() {
-    //URL
-    var url = window.location.protocol+'//'+window.location.host+'/';
-    if (window.location.hostname.indexOf('cbmerj.rj.gov') != -1) {url += 'dgf_sistema/';}
+    //Verifica se o elemento existe
+    let dashboard_checkbox = document.getElementById('dashboard7_id');
+    if (dashboard_checkbox) {
+        //URL
+        var url = window.location.protocol+'//'+window.location.host+'/';
+        if (window.location.hostname.indexOf('cbmerj.rj.gov') != -1) {url += 'dgf_sistema/';}
 
-    //Iniciando dados
-    var dashboard_id = document.getElementById('dashboard7_id').value;
-    var dashboard_name = document.getElementById('dashboard7_name').value;
-    var dashboard_descricao = document.getElementById('dashboard7_descricao').value;
-    var dashboard_modulo = document.getElementById('dashboard7_modulo').value;
-    var dashboard_icone = document.getElementById('dashboard7_icone').value;
+        //Iniciando dados
+        var dashboard_id = document.getElementById('dashboard7_id').value;
+        var dashboard_name = document.getElementById('dashboard7_name').value;
+        var dashboard_descricao = document.getElementById('dashboard7_descricao').value;
+        var dashboard_agrupamento = document.getElementById('dashboard7_agrupamento').value;
+        var dashboard_icone = document.getElementById('dashboard7_icone').value;
 
-    var militaresQtd = 0;
-    var oficiaisQtd = 0;
-    var pracasQtd = 0;
-    var porcentagem_militares = 0;
-    var porcentagem_oficiais = 0;
-    var porcentagem_pracas = 0;
+        var quantidade_militares = 0;
+        var quantidade_oficiais = 0;
+        var quantidade_pracas = 0;
+        var porcentagem_militares = 0;
+        var porcentagem_oficiais = 0;
+        var porcentagem_pracas = 0;
 
-    //Valores hiddens
-    var ressarcimento_periodo1 = document.getElementById('ressarcimento_periodo1').value;
-    var ressarcimento_periodo2 = document.getElementById('ressarcimento_periodo2').value;
-    var ressarcimento_orgao_id = document.getElementById('ressarcimento_orgao_id').value;
+        //Valores hiddens
+        var dashboards_modal_filtro_1_periodo1 = document.getElementById('dashboards_modal_filtro_1_periodo1').value;
+        var dashboards_modal_filtro_1_periodo2 = document.getElementById('dashboards_modal_filtro_1_periodo2').value;
+        var dashboards_modal_filtro_1_orgao_id = document.getElementById('dashboards_modal_filtro_1_orgao_id').value;
 
-    //Return
-    if (ressarcimento_periodo1 == '' || ressarcimento_periodo2) {return false;}
+        //Return
+        if (dashboards_modal_filtro_1_periodo1 == '' || dashboards_modal_filtro_1_periodo2 == '') {return false;}
 
-    //Buscar Dados
-    return new Promise(function(resolve, reject) {
-        $.get(url+'dashboards/dashboard7/'+ressarcimento_periodo1+'/'+ressarcimento_periodo2+'/'+ressarcimento_orgao_id, function (data) {
-            if (data.success) {
-                militaresQtd = data.success.militaresQtd;
-                oficiaisQtd = data.success.oficiaisQtd;
-                pracasQtd = data.success.pracasQtd;
+        //Buscar Dados
+        return new Promise(function(resolve, reject) {
+            $.get(url+'dashboards/dashboard7/'+dashboards_modal_filtro_1_periodo1+'/'+dashboards_modal_filtro_1_periodo2+'/'+dashboards_modal_filtro_1_orgao_id, function (data) {
+                if (data.success) {
+                    quantidade_militares = data.success.quantidade_militares;
+                    quantidade_oficiais = data.success.quantidade_oficiais;
+                    quantidade_pracas = data.success.quantidade_pracas;
 
-                //Calcular porcentagens
-                porcentagem_militares = 100;
-                if (oficiaisQtd > 0) {
-                    porcentagem_oficiais = (oficiaisQtd*100)/militaresQtd;
-                    porcentagem_oficiais = porcentagem_oficiais.toFixed(2);
+                    //Calcular porcentagens
+                    porcentagem_militares = 100;
+                    if (quantidade_oficiais > 0) {
+                        porcentagem_oficiais = (quantidade_oficiais*100)/quantidade_militares;
+                        porcentagem_oficiais = porcentagem_oficiais.toFixed(2);
+                    }
+                    if (quantidade_pracas > 0) {
+                        porcentagem_pracas = (quantidade_pracas*100)/quantidade_militares;
+                        porcentagem_pracas = porcentagem_pracas.toFixed(2);
+                    }
                 }
-                if (pracasQtd > 0) {
-                    porcentagem_pracas = (pracasQtd*100)/militaresQtd;
-                    porcentagem_pracas = porcentagem_pracas.toFixed(2);
-                }
-            }
 
-            resolve();
+                resolve();
+            });
+        }).then(function () {
+            //Títulos
+            var title = dashboard_name;
+            var subtitle = quantidade_militares+' Militares: '+quantidade_oficiais+' Oficiais('+float2moeda(porcentagem_pracas)+'%) e '+quantidade_pracas+' Praças('+float2moeda(porcentagem_oficiais)+'%)';
+
+            //Series
+            var series = [porcentagem_militares, porcentagem_oficiais, porcentagem_pracas];
+
+            //Labels
+            var labels = ['Militares', 'Oficiais', 'Praças'];
+
+            //Total Label
+            var total_label = 'Militares';
+
+            //Total return
+            var total_return = quantidade_militares;
+
+            //Gráfico
+            apexchartsRadialBar({title:title, subtitle:subtitle, series:series, height:330, labels:labels, total_label:total_label, total_return:total_return, valor_tipo:3, divId:'divDashboard7'});
         });
-    }).then(function () {
-        var menu = [
-            {onclick: 'abrirModalPeriodosOrgaos()', nome: 'Filtro'},
-            {onclick: 'dashboard7()', nome: 'Atualizar'}
-            ];
-
-        var dados = [
-            {descricao: 'Militares', valor: militaresQtd, id: 'radialchart7-1', porcentagem: porcentagem_militares, cor: '#556ee6'},
-            {descricao: 'Oficiais', valor: oficiaisQtd, id: 'radialchart7-2', porcentagem: porcentagem_oficiais, cor: '#34c38f'},
-            {descricao: 'Praças', valor: pracasQtd, id: 'radialchart7-3', porcentagem: porcentagem_pracas, cor: '#f46a6a'}
-        ];
-
-        var titulo_tooltip = dashboard_name+' : '+dashboard_descricao;
-        var titulo = dashboard_name+'<br>'+'<span class="small text-muted">'+getReferencia(1, ressarcimento_periodo1)+' até '+getReferencia(1, ressarcimento_periodo2)+'</span>';
-
-        cg_card_modelo_3({titulo_tooltip:titulo_tooltip, titulo:titulo, height:285, dados:dados, menu:menu, div_id:'divDashboard7'}).then(function() {
-            cg_card_modelo_3_render(dados);
-            showTooltips();
-        });
-    });
+    }
 }
 
 function dashboard8() {
-    //URL
-    var url = window.location.protocol+'//'+window.location.host+'/';
-    if (window.location.hostname.indexOf('cbmerj.rj.gov') != -1) {url += 'dgf_sistema/';}
+    //Verifica se o elemento existe
+    let dashboard_checkbox = document.getElementById('dashboard8_id');
+    if (dashboard_checkbox) {
+        //URL
+        var url = window.location.protocol+'//'+window.location.host+'/';
+        if (window.location.hostname.indexOf('cbmerj.rj.gov') != -1) {url += 'dgf_sistema/';}
 
-    //Iniciando dados
-    var dashboard_id = document.getElementById('dashboard8_id').value;
-    var dashboard_name = document.getElementById('dashboard8_name').value;
-    var dashboard_descricao = document.getElementById('dashboard8_descricao').value;
-    var dashboard_modulo = document.getElementById('dashboard8_modulo').value;
-    var dashboard_icone = document.getElementById('dashboard8_icone').value;
+        //Iniciando dados
+        var dashboard_id = document.getElementById('dashboard8_id').value;
+        var dashboard_name = document.getElementById('dashboard8_name').value;
+        var dashboard_descricao = document.getElementById('dashboard8_descricao').value;
+        var dashboard_agrupamento = document.getElementById('dashboard8_agrupamento').value;
+        var dashboard_icone = document.getElementById('dashboard8_icone').value;
 
-    var series = [];
-    var yaxis_min = 0;
-    var yaxis_max = 0;
+        var series_data = [];
+        var xaxis_categories = [];
 
-    //Valores hiddens
-    var ressarcimento_periodo1 = document.getElementById('ressarcimento_periodo1').value;
-    var ressarcimento_periodo2 = document.getElementById('ressarcimento_periodo2').value;
-    var ressarcimento_orgao_id = document.getElementById('ressarcimento_orgao_id').value;
+        //Valores hiddens
+        var dashboards_modal_filtro_1_periodo1 = document.getElementById('dashboards_modal_filtro_1_periodo1').value;
+        var dashboards_modal_filtro_1_periodo2 = document.getElementById('dashboards_modal_filtro_1_periodo2').value;
+        var dashboards_modal_filtro_1_orgao_id = document.getElementById('dashboards_modal_filtro_1_orgao_id').value;
 
-    //Return
-    if (ressarcimento_periodo1 == '' || ressarcimento_periodo2) {return false;}
+        //Return
+        if (dashboards_modal_filtro_1_periodo1 == '' || dashboards_modal_filtro_1_periodo2 == '') {return false;}
 
-    //Buscar Dados
-    return new Promise(function(resolve, reject) {
-        $.get(url+'dashboards/dashboard8/'+ressarcimento_periodo1+'/'+ressarcimento_periodo2+'/'+ressarcimento_orgao_id, function (data) {
-            if (data.success) {
-                series = data.success.series;
-                yaxis_max = data.success.yaxis_max;
+        //Buscar Dados
+        return new Promise(function(resolve, reject) {
+            $.get(url+'dashboards/dashboard8/'+dashboards_modal_filtro_1_periodo1+'/'+dashboards_modal_filtro_1_periodo2+'/'+dashboards_modal_filtro_1_orgao_id, function (data) {
+                if (data.success) {
+                    series_data = data.success.series_data;
+                    xaxis_categories = data.success.xaxis_categories;
+                }
+
+                resolve();
+            });
+        }).then(function () {
+            //Títulos
+            var title = dashboard_name;
+            var subtitle = '';
+
+            //Colors
+            var colors = new Array();
+            for(i=1; i<=series_data.length; i++) {
+                colors.push(gerarCor(i));
             }
 
-            resolve();
+            //Gráfico
+            apexchartsBar({title:title, subtitle:subtitle, series_data:series_data, colors:colors, height:330, xaxis_categories:xaxis_categories, valor_tipo:1, divId:'divDashboard8'});
         });
-    }).then(function () {
-        var menu = [
-            {onclick: 'abrirModalPeriodosOrgaos()', nome: 'Filtro'},
-            {onclick: 'dashboard8()', nome: 'Atualizar'}
-            ];
-
-        series = series;
-
-        //Colors
-        var colors = new Array();
-        for(i=1; i<=series.length; i++) {
-            colors.push(gerarCor(i));
-        }
-
-        var xaxis_categories = ['', ''];
-
-        var titulo_tooltip = dashboard_name+' : '+dashboard_descricao;
-        var titulo = dashboard_name+'<br>'+'<span class="small text-muted">'+getReferencia(1, ressarcimento_periodo1)+' até '+getReferencia(1, ressarcimento_periodo2)+'</span>';
-
-        cg_graf_modelo_1({titulo_tooltip:titulo_tooltip, titulo:titulo, height:150, menu:menu, graf_id:'grafDashboard8', div_id:'divDashboard8'}).then(function() {
-            cg_graf_modelo_1_render({chart_height:285, plotOptions_columnWidth:70, plotOptions_columnWidth_formatter:'R$', plotOptions_dataLabels_position:'top', dataLabels_enabled:true, dataLabels_formatter:'R$', dataLabels_offsetY:25, dataLabels_style_fontSize:'12', dataLabels_style_colors:'#000', tooltip_formatter:'R$', stroke_show:false, stroke_width:3, series:series, colors:colors, xaxis:true, xaxis_categories:xaxis_categories, xaxis_position:'top', yaxis:true, title: '', yaxis_labels_formatter:'', graf_id:'grafDashboard8'});
-            showTooltips();
-        });
-    });
+    }
 }
 
 function dashboard9() {
-    //URL
-    var url = window.location.protocol+'//'+window.location.host+'/';
-    if (window.location.hostname.indexOf('cbmerj.rj.gov') != -1) {url += 'dgf_sistema/';}
+    //Verifica se o elemento existe
+    let dashboard_checkbox = document.getElementById('dashboard9_id');
+    if (dashboard_checkbox) {
+        //URL
+        var url = window.location.protocol+'//'+window.location.host+'/';
+        if (window.location.hostname.indexOf('cbmerj.rj.gov') != -1) {url += 'dgf_sistema/';}
 
-    //Iniciando dados
-    var dashboard_id = document.getElementById('dashboard9_id').value;
-    var dashboard_name = document.getElementById('dashboard9_name').value;
-    var dashboard_descricao = document.getElementById('dashboard9_descricao').value;
-    var dashboard_modulo = document.getElementById('dashboard9_modulo').value;
-    var dashboard_icone = document.getElementById('dashboard9_icone').value;
+        //Iniciando dados
+        var dashboard_id = document.getElementById('dashboard9_id').value;
+        var dashboard_name = document.getElementById('dashboard9_name').value;
+        var dashboard_descricao = document.getElementById('dashboard9_descricao').value;
+        var dashboard_agrupamento = document.getElementById('dashboard9_agrupamento').value;
+        var dashboard_icone = document.getElementById('dashboard9_icone').value;
 
-    var series = [];
-    var labels = [];
-    var colors = [];
+        var quantidade_orgaos = 0;
+        var series = [];
+        var labels = [];
 
-    //Valores hiddens
-    var ressarcimento_periodo1 = document.getElementById('ressarcimento_periodo1').value;
-    var ressarcimento_periodo2 = document.getElementById('ressarcimento_periodo2').value;
-    var ressarcimento_orgao_id = document.getElementById('ressarcimento_orgao_id').value;
+        //Valores hiddens
+        var dashboards_modal_filtro_1_periodo1 = document.getElementById('dashboards_modal_filtro_1_periodo1').value;
+        var dashboards_modal_filtro_1_periodo2 = document.getElementById('dashboards_modal_filtro_1_periodo2').value;
+        var dashboards_modal_filtro_1_orgao_id = document.getElementById('dashboards_modal_filtro_1_orgao_id').value;
 
-    //Return
-    if (ressarcimento_periodo1 == '' || ressarcimento_periodo2) {return false;}
+        //Return
+        if (dashboards_modal_filtro_1_periodo1 == '' || dashboards_modal_filtro_1_periodo2 == '') {return false;}
 
-    //Buscar Dados
-    return new Promise(function(resolve, reject) {
-        $.get(url+'dashboards/dashboard9/'+ressarcimento_periodo1+'/'+ressarcimento_periodo2+'/'+ressarcimento_orgao_id, function (data) {
-            if (data.success) {
-                series = data.success.series;
-                labels = data.success.labels;
-                colors = data.success.colors;
-            }
+        //Buscar Dados
+        return new Promise(function(resolve, reject) {
+            $.get(url+'dashboards/dashboard9/'+dashboards_modal_filtro_1_periodo1+'/'+dashboards_modal_filtro_1_periodo2+'/'+dashboards_modal_filtro_1_orgao_id, function (data) {
+                if (data.success) {
+                    quantidade_orgaos = data.success.quantidade_orgaos;
+                    series = data.success.series;
+                    labels = data.success.labels;
+                }
 
-            resolve();
+                resolve();
+            });
+        }).then(function () {
+            //Títulos
+            var title = dashboard_name;
+            var subtitle = 'Órgãos: '+quantidade_orgaos;
+
+            //Gráfico
+            apexchartsPie({title:title, subtitle:subtitle, series:series, height:330, labels:labels, valor_tipo:3, divId:'divDashboard9'});
         });
-    }).then(function () {
-        var menu = [
-            {onclick: 'abrirModalPeriodosOrgaos()', nome: 'Filtro'},
-            {onclick: 'dashboard9()', nome: 'Atualizar'}
-            ];
-
-        series = series;
-        labels = labels;
-        colors = colors;
-
-        var titulo_tooltip = dashboard_name+' : '+dashboard_descricao;
-        var titulo = dashboard_name+'<br>'+'<span class="small text-muted">'+getReferencia(1, ressarcimento_periodo1)+' até '+getReferencia(1, ressarcimento_periodo2)+'</span>';
-
-        cg_graf_modelo_2({titulo_tooltip:titulo_tooltip, titulo:titulo, height:150, menu:menu, graf_id:'grafDashboard9', div_id:'divDashboard9'}).then(function() {
-            cg_graf_modelo_2_render({chart_height:285, series:series, labels:labels, colors:colors, legend_show:true, legend_position:'bottom', legend_fontSize:12, responsive_breakpoint:600, responsive_options_chart_height:240, responsive_options_chart_legend:true, graf_id:'grafDashboard9'});
-            showTooltips();
-        });
-    });
+    }
 }
 
 function dashboard10() {
-    //URL
-    var url = window.location.protocol+'//'+window.location.host+'/';
-    if (window.location.hostname.indexOf('cbmerj.rj.gov') != -1) {url += 'dgf_sistema/';}
+    //Verifica se o elemento existe
+    let dashboard_checkbox = document.getElementById('dashboard10_id');
+    if (dashboard_checkbox) {
+        //URL
+        var url = window.location.protocol+'//'+window.location.host+'/';
+        if (window.location.hostname.indexOf('cbmerj.rj.gov') != -1) {url += 'dgf_sistema/';}
 
-    //Iniciando dados
-    var dashboard_id = document.getElementById('dashboard10_id').value;
-    var dashboard_name = document.getElementById('dashboard10_name').value;
-    var dashboard_descricao = document.getElementById('dashboard10_descricao').value;
-    var dashboard_modulo = document.getElementById('dashboard10_modulo').value;
-    var dashboard_icone = document.getElementById('dashboard10_icone').value;
+        //Iniciando dados
+        var dashboard_id = document.getElementById('dashboard10_id').value;
+        var dashboard_name = document.getElementById('dashboard10_name').value;
+        var dashboard_descricao = document.getElementById('dashboard10_descricao').value;
+        var dashboard_agrupamento = document.getElementById('dashboard10_agrupamento').value;
+        var dashboard_icone = document.getElementById('dashboard10_icone').value;
 
-    var series = [];
-    var labels = [];
-    var colors = [];
+        var quantidade_orgaos = 0;
+        var series = [];
+        var labels = [];
 
-    //Valores hiddens
-    var ressarcimento_periodo1 = document.getElementById('ressarcimento_periodo1').value;
-    var ressarcimento_periodo2 = document.getElementById('ressarcimento_periodo2').value;
-    var ressarcimento_orgao_id = document.getElementById('ressarcimento_orgao_id').value;
+        //Valores hiddens
+        var dashboards_modal_filtro_1_periodo1 = document.getElementById('dashboards_modal_filtro_1_periodo1').value;
+        var dashboards_modal_filtro_1_periodo2 = document.getElementById('dashboards_modal_filtro_1_periodo2').value;
+        var dashboards_modal_filtro_1_orgao_id = document.getElementById('dashboards_modal_filtro_1_orgao_id').value;
 
-    //Return
-    if (ressarcimento_periodo1 == '' || ressarcimento_periodo2) {return false;}
+        //Return
+        if (dashboards_modal_filtro_1_periodo1 == '' || dashboards_modal_filtro_1_periodo2 == '') {return false;}
 
-    //Buscar Dados
-    return new Promise(function(resolve, reject) {
-        $.get(url+'dashboards/dashboard10/'+ressarcimento_periodo1+'/'+ressarcimento_periodo2+'/'+ressarcimento_orgao_id, function (data) {
-            if (data.success) {
-                series = data.success.series;
-                labels = data.success.labels;
-                colors = data.success.colors;
-            }
+        //Buscar Dados
+        return new Promise(function(resolve, reject) {
+            $.get(url+'dashboards/dashboard10/'+dashboards_modal_filtro_1_periodo1+'/'+dashboards_modal_filtro_1_periodo2+'/'+dashboards_modal_filtro_1_orgao_id, function (data) {
+                if (data.success) {
+                    quantidade_orgaos = data.success.quantidade_orgaos;
+                    series = data.success.series;
+                    labels = data.success.labels;
+                }
 
-            resolve();
+                resolve();
+            });
+        }).then(function () {
+            //Títulos
+            var title = dashboard_name;
+            var subtitle = 'Orgãos: '+quantidade_orgaos;
+
+            //Gráfico
+            apexchartsDonut({title:title, subtitle:subtitle, series:series, height:330, labels:labels, valor_tipo:3, divId:'divDashboard10'});
         });
-    }).then(function () {
-        var menu = [
-            {onclick: 'abrirModalPeriodosOrgaos()', nome: 'Filtro'},
-            {onclick: 'dashboard10()', nome: 'Atualizar'}
-            ];
-
-        series = series;
-        labels = labels;
-        colors = colors;
-
-        var titulo_tooltip = dashboard_name+' : '+dashboard_descricao;
-        var titulo = dashboard_name+'<br>'+'<span class="small text-muted">'+getReferencia(1, ressarcimento_periodo1)+' até '+getReferencia(1, ressarcimento_periodo2)+'</span>';
-
-        cg_graf_modelo_3({titulo_tooltip:titulo_tooltip, titulo:titulo, height:150, menu:menu, graf_id:'grafDashboard10', div_id:'divDashboard10'}).then(function() {
-            cg_graf_modelo_3_render({chart_height:285, series:series, labels:labels, colors:colors, legend_show:true, legend_position:'bottom', legend_fontSize:12, responsive_breakpoint:600, responsive_options_chart_height:240, responsive_options_chart_legend:true, graf_id:'grafDashboard10'});
-            showTooltips();
-        });
-    });
+    }
 }
 
 function dashboard11() {
-    //URL
-    var url = window.location.protocol+'//'+window.location.host+'/';
-    if (window.location.hostname.indexOf('cbmerj.rj.gov') != -1) {url += 'dgf_sistema/';}
+    //Verifica se o elemento existe
+    let dashboard_checkbox = document.getElementById('dashboard11_id');
+    if (dashboard_checkbox) {
+        //URL
+        var url = window.location.protocol+'//'+window.location.host+'/';
+        if (window.location.hostname.indexOf('cbmerj.rj.gov') != -1) {url += 'dgf_sistema/';}
 
-    //Iniciando dados
-    var dashboard_id = document.getElementById('dashboard11_id').value;
-    var dashboard_name = document.getElementById('dashboard11_name').value;
-    var dashboard_descricao = document.getElementById('dashboard11_descricao').value;
-    var dashboard_modulo = document.getElementById('dashboard11_modulo').value;
-    var dashboard_icone = document.getElementById('dashboard11_icone').value;
+        //Iniciando dados
+        var dashboard_id = document.getElementById('dashboard11_id').value;
+        var dashboard_name = document.getElementById('dashboard11_name').value;
+        var dashboard_descricao = document.getElementById('dashboard11_descricao').value;
+        var dashboard_agrupamento = document.getElementById('dashboard11_agrupamento').value;
+        var dashboard_icone = document.getElementById('dashboard11_icone').value;
 
-    var series = [];
-    var colors = [];
-    var xaxis_categories = [];
-
-    var titulo1 = ''; //Bottom
-    var titulo2 = ''; //Left
-    var titulo3 = ''; //Top
-
-    //Valores hiddens
-    var ressarcimento_periodo1 = document.getElementById('ressarcimento_periodo1').value;
-    var ressarcimento_periodo2 = document.getElementById('ressarcimento_periodo2').value;
-    var ressarcimento_orgao_id = document.getElementById('ressarcimento_orgao_id').value;
-
-    //Return
-    if (ressarcimento_periodo1 == '' || ressarcimento_periodo2) {return false;}
-
-    //Buscar Dados
-    return new Promise(function(resolve, reject) {
-        $.get(url+'dashboards/dashboard11/'+ressarcimento_periodo1+'/'+ressarcimento_periodo2+'/'+ressarcimento_orgao_id, function (data) {
-            if (data.success) {
-                series = data.success.series;
-                colors = data.success.colors;
-                xaxis_categories = data.success.xaxis_categories;
-
-                titulo1 = data.success.titulo1;
-                titulo2 = data.success.titulo2;
-                titulo3 = data.success.titulo3;
-            }
-
-            resolve();
-        });
-    }).then(function () {
-        var menu = [
-            {onclick: 'abrirModalPeriodosOrgaos()', nome: 'Filtro'},
-            {onclick: 'dashboard11()', nome: 'Atualizar'}
-            ];
-
-        series = series;
-        colors = colors;
-        xaxis_categories = xaxis_categories;
-
-        titulo1 = titulo1;
-        titulo2 = titulo2;
-        titulo3 = titulo3;
-
-        var stroke_width = [1, 1];
-
+        var series_data_valores_devidos = [];
+        var series_data_valores_pagos = [];
+        var xaxis_categories = [];
         var yaxis_min = 0;
         var yaxis_max = 0;
 
-        var grid_row_colors = ['transparent', 'transparent'];
-        var dataLabels_enabled = false;
-        var dataLabels_style_colors = ["#000000"];
+        //Valores hiddens
+        var dashboards_modal_filtro_1_periodo1 = document.getElementById('dashboards_modal_filtro_1_periodo1').value;
+        var dashboards_modal_filtro_1_periodo2 = document.getElementById('dashboards_modal_filtro_1_periodo2').value;
+        var dashboards_modal_filtro_1_orgao_id = document.getElementById('dashboards_modal_filtro_1_orgao_id').value;
 
-        var titulo_tooltip = dashboard_name+' : '+dashboard_descricao;
-        var titulo = dashboard_name+'<br>'+'<span class="small text-muted">'+getReferencia(1, ressarcimento_periodo1)+' até '+getReferencia(1, ressarcimento_periodo2)+'</span>';
+        //Return
+        if (dashboards_modal_filtro_1_periodo1 == '' || dashboards_modal_filtro_1_periodo2 == '') {return false;}
 
-        cg_graf_modelo_4({titulo_tooltip:titulo_tooltip, titulo:titulo, height:150, menu:menu, graf_id:'grafDashboard11', div_id:'divDashboard11'}).then(function() {
-            cg_graf_modelo_4_render({chart_height:285, colors:colors, series:series, dataLabels_enabled:dataLabels_enabled, dataLabels_style_colors:dataLabels_style_colors, dataLabels_formatter:'R$', tooltip_formatter:'R$', stroke_width:stroke_width, grid_row_colors:grid_row_colors, xaxis_categories:xaxis_categories, xaxis_title_text:titulo1, yaxis_title_text:titulo2, yaxis_min:yaxis_min, yaxis_max:yaxis_max, title_text:titulo3, graf_id:'grafDashboard11'});
-            showTooltips();
+        //Buscar Dados
+        return new Promise(function(resolve, reject) {
+            $.get(url+'dashboards/dashboard11/'+dashboards_modal_filtro_1_periodo1+'/'+dashboards_modal_filtro_1_periodo2+'/'+dashboards_modal_filtro_1_orgao_id, function (data) {
+                if (data.success) {
+                    series_data_valores_devidos = data.success.series_data_valores_devidos;
+                    series_data_valores_pagos = data.success.series_data_valores_pagos;
+                    xaxis_categories = data.success.xaxis_categories;
+                    yaxis_min = data.success.yaxis_min;
+                    yaxis_max = data.success.yaxis_max;
+                }
+
+                resolve();
+            });
+        }).then(function () {
+            //Títulos
+            var title = dashboard_name;
+            var subtitle = '';
+
+            //Montando a Series
+            var series = [{name: "Valor Devido", data: series_data_valores_devidos}, {name: "Valor Pago", data: series_data_valores_pagos}];
+
+            //Colors
+            var colors = new Array();
+            for(i=1; i<=series.length; i++) {
+                colors.push(gerarCor(i));
+            }
+
+            //xaxis_title_text
+            var xaxis_title_text = 'Referências';
+
+            //yaxis_title_text
+            var yaxis_title_text = 'Valores';
+
+            //Gráfico
+            apexchartsLine({title:title, subtitle:subtitle, colors:colors, series:series, height:330, xaxis_categories:xaxis_categories, xaxis_title_text:xaxis_title_text, yaxis_title_text:yaxis_title_text, valor_tipo:1, divId:'divDashboard11'});
+
+            // var options = {
+            //     title: {text: title, align: 'center'},
+            //     subtitle: {text: subtitle, align: 'center'},
+            //     series: [{name: "Valor Devido", data: series_data_valores_devidos}, {name: "Valor Pago", data: series_data_valores_pagos}],
+            //     chart: {height: 330, type: 'line', dropShadow: {enabled: true, color: '#000', top: 18, left: 7, blur: 10, opacity: 0.2}, toolbar: {show: false}},
+            //     colors: ['#77B6EA', '#545454'],
+            //     dataLabels: {enabled: false},
+            //     stroke: {width: [3, 3], curve: "smooth"},
+            //     grid: {borderColor: '#e7e7e7', row: {colors: ['transparent', 'transparent'], opacity: 0.5}},
+            //     markers: {style: "inverted", size: 4},
+            //     xaxis: {categories: xaxis_categories, title: {text: 'Referências'}},
+            //     yaxis: {title: {text: ''}, min: yaxis_min, max: yaxis_max},
+            //     legend: {position: 'top', horizontalAlign: 'right', floating: true, offsetY: -25, offsetX: -5},
+            //     tooltip: {y: {title: {formatter(serieName) {return serieName+': R$'}}, formatter: function(val) {return float2moeda(val)}}}
+            // };
+            //
+            // var chart = new ApexCharts(document.querySelector('#divDashboard11'), options);
+            // chart.render();
+
+
+
         });
-    });
+    }
+}
+
+function dashboard12() {
+    //Verifica se o elemento existe
+    let dashboard_checkbox = document.getElementById('dashboard12_id');
+    if (dashboard_checkbox) {
+        //URL
+        var url = window.location.protocol+'//'+window.location.host+'/';
+        if (window.location.hostname.indexOf('cbmerj.rj.gov') != -1) {url += 'dgf_sistema/';}
+
+        //Iniciando dados
+        var dashboard_id = document.getElementById('dashboard12_id').value;
+        var dashboard_name = document.getElementById('dashboard12_name').value;
+        var dashboard_descricao = document.getElementById('dashboard12_descricao').value;
+        var dashboard_agrupamento = document.getElementById('dashboard12_agrupamento').value;
+        var dashboard_icone = document.getElementById('dashboard12_icone').value;
+
+        var total_repasses = 0;
+        var total_despesas = 0;
+
+        //Valores hiddens
+        var dashboards_modal_filtro_2_data1 = document.getElementById('dashboards_modal_filtro_2_data1').value;
+        var dashboards_modal_filtro_2_data2 = document.getElementById('dashboards_modal_filtro_2_data2').value;
+        var dashboards_modal_filtro_2_subconta_id = document.getElementById('dashboards_modal_filtro_2_subconta_id').value;
+
+        //Obter a Subconta escolhida
+        var selectElement = document.getElementById('dashboards_modal_filtro_2_subconta_id');
+        var selectedIndex = selectElement.selectedIndex;
+        var selectedOption = selectElement.options[selectedIndex];
+        var subconta_escolhida = selectedOption.innerHTML;
+
+        //Return
+        if (dashboards_modal_filtro_2_data1 == '' || dashboards_modal_filtro_2_data2 == '') {return false;}
+
+        //Buscar Dados
+        return new Promise(function(resolve, reject) {
+            $.get(url+'dashboards/dashboard12/'+dashboards_modal_filtro_2_data1+'/'+dashboards_modal_filtro_2_data2+'/'+dashboards_modal_filtro_2_subconta_id, function (data) {
+                if (data.success) {
+                    total_repasses = data.success.total_repasses;
+                    total_despesas = data.success.total_despesas;
+                }
+
+                resolve();
+            });
+        }).then(function () {
+            //Dados
+            var dados = [];
+            dados.push({col:'col-6', titulo:'Repasses', valor:'R$ '+float2moeda(total_repasses)});
+            dados.push({col:'col-6', titulo:'Despesas', valor:'R$ '+float2moeda(total_despesas)});
+
+            //Menu
+            var menu = [];
+            menu.push({onclick:'abrirDashboardsModalFiltro2()', nome:'Filtro'});
+
+            cardPrincipalAgrupamento({icone:dashboard_icone, texto_1:dashboard_agrupamento, texto_2:formatarData(2, dashboards_modal_filtro_2_data1)+' até '+formatarData(2, dashboards_modal_filtro_2_data2), texto_3:subconta_escolhida, dados:dados, menu:menu, divId:'divDashboard12'});
+        });
+    }
+}
+
+function dashboard13() {
+    //Verifica se o elemento existe
+    let dashboard_checkbox = document.getElementById('dashboard13_id');
+    if (dashboard_checkbox) {
+        //URL
+        var url = window.location.protocol+'//'+window.location.host+'/';
+        if (window.location.hostname.indexOf('cbmerj.rj.gov') != -1) {url += 'dgf_sistema/';}
+
+        //Iniciando dados
+        var dashboard_id = document.getElementById('dashboard13_id').value;
+        var dashboard_name = document.getElementById('dashboard13_name').value;
+        var dashboard_descricao = document.getElementById('dashboard13_descricao').value;
+        var dashboard_agrupamento = document.getElementById('dashboard13_agrupamento').value;
+        var dashboard_icone = document.getElementById('dashboard13_icone').value;
+
+        var valor_total = 0;
+        var series = [];
+        var labels = [];
+
+        //Valores hiddens
+        var dashboards_modal_filtro_2_data1 = document.getElementById('dashboards_modal_filtro_2_data1').value;
+        var dashboards_modal_filtro_2_data2 = document.getElementById('dashboards_modal_filtro_2_data2').value;
+        var dashboards_modal_filtro_2_subconta_id = document.getElementById('dashboards_modal_filtro_2_subconta_id').value;
+
+        //Return
+        if (dashboards_modal_filtro_2_data1 == '' || dashboards_modal_filtro_2_data2 == '') {return false;}
+
+        //Buscar Dados
+        return new Promise(function(resolve, reject) {
+            $.get(url+'dashboards/dashboard13/'+dashboards_modal_filtro_2_data1+'/'+dashboards_modal_filtro_2_data2+'/'+dashboards_modal_filtro_2_subconta_id, function (data) {
+                if (data.success) {
+                    valor_total = data.success.repasses_total;
+                    series = data.success.repasses_series;
+                    labels = data.success.repasses_labels;
+                }
+
+                resolve();
+            });
+        }).then(function () {
+            //Títulos
+            var title = dashboard_name;
+            var subtitle = 'R$ '+float2moeda(valor_total);
+
+            //Gráfico
+            apexchartsPie({title:title, subtitle:subtitle, series:series, height:330, labels:labels, valor_tipo:1, divId:'divDashboard13'});
+        });
+    }
+}
+
+function dashboard14() {
+    //Verifica se o elemento existe
+    let dashboard_checkbox = document.getElementById('dashboard14_id');
+    if (dashboard_checkbox) {
+        //URL
+        var url = window.location.protocol+'//'+window.location.host+'/';
+        if (window.location.hostname.indexOf('cbmerj.rj.gov') != -1) {url += 'dgf_sistema/';}
+
+        //Iniciando dados
+        var dashboard_id = document.getElementById('dashboard14_id').value;
+        var dashboard_name = document.getElementById('dashboard14_name').value;
+        var dashboard_descricao = document.getElementById('dashboard14_descricao').value;
+        var dashboard_agrupamento = document.getElementById('dashboard14_agrupamento').value;
+        var dashboard_icone = document.getElementById('dashboard14_icone').value;
+
+        var valor_total = 0;
+        var series = [];
+        var labels = [];
+
+        //Valores hiddens
+        var dashboards_modal_filtro_2_data1 = document.getElementById('dashboards_modal_filtro_2_data1').value;
+        var dashboards_modal_filtro_2_data2 = document.getElementById('dashboards_modal_filtro_2_data2').value;
+        var dashboards_modal_filtro_2_subconta_id = document.getElementById('dashboards_modal_filtro_2_subconta_id').value;
+
+        //Return
+        if (dashboards_modal_filtro_2_data1 == '' || dashboards_modal_filtro_2_data2 == '') {return false;}
+
+        //Buscar Dados
+        return new Promise(function(resolve, reject) {
+            $.get(url+'dashboards/dashboard14/'+dashboards_modal_filtro_2_data1+'/'+dashboards_modal_filtro_2_data2+'/'+dashboards_modal_filtro_2_subconta_id, function (data) {
+                if (data.success) {
+                    valor_total = data.success.despesas_total;
+                    series = data.success.despesas_series;
+                    labels = data.success.despesas_labels;
+                }
+
+                resolve();
+            });
+        }).then(function () {
+            //Títulos
+            var title = dashboard_name;
+            var subtitle = 'R$ '+float2moeda(valor_total);
+
+            //Gráfico
+            apexchartsPie({title:title, subtitle:subtitle, series:series, height:330, labels:labels, valor_tipo:1, divId:'divDashboard14'});
+        });
+    }
+}
+
+function dashboard15() {
+    //Verifica se o elemento existe
+    let dashboard_checkbox = document.getElementById('dashboard15_id');
+    if (dashboard_checkbox) {
+        //URL
+        var url = window.location.protocol+'//'+window.location.host+'/';
+        if (window.location.hostname.indexOf('cbmerj.rj.gov') != -1) {url += 'dgf_sistema/';}
+
+        //Iniciando dados
+        var dashboard_id = document.getElementById('dashboard15_id').value;
+        var dashboard_name = document.getElementById('dashboard15_name').value;
+        var dashboard_descricao = document.getElementById('dashboard15_descricao').value;
+        var dashboard_agrupamento = document.getElementById('dashboard15_agrupamento').value;
+        var dashboard_icone = document.getElementById('dashboard15_icone').value;
+
+        var valor_total = 0;
+        var series = [];
+        var labels = [];
+
+        //Valores hiddens
+        var dashboards_modal_filtro_2_data1 = document.getElementById('dashboards_modal_filtro_2_data1').value;
+        var dashboards_modal_filtro_2_data2 = document.getElementById('dashboards_modal_filtro_2_data2').value;
+        var dashboards_modal_filtro_2_subconta_id = document.getElementById('dashboards_modal_filtro_2_subconta_id').value;
+
+        //Return
+        if (dashboards_modal_filtro_2_data1 == '' || dashboards_modal_filtro_2_data2 == '') {return false;}
+
+        //Buscar Dados
+        return new Promise(function(resolve, reject) {
+            $.get(url+'dashboards/dashboard15/'+dashboards_modal_filtro_2_data1+'/'+dashboards_modal_filtro_2_data2+'/'+dashboards_modal_filtro_2_subconta_id, function (data) {
+                if (data.success) {
+                    valor_total = data.success.transferencias_realizadas_total;
+                    series = data.success.transferencias_realizadas_series;
+                    labels = data.success.transferencias_realizadas_labels;
+                }
+
+                resolve();
+            });
+        }).then(function () {
+            //Títulos
+            var title = dashboard_name;
+            var subtitle = 'R$ '+float2moeda(valor_total);
+
+            //Gráfico
+            apexchartsPie({title:title, subtitle:subtitle, series:series, height:330, labels:labels, valor_tipo:1, divId:'divDashboard15'});
+        });
+    }
+}
+
+function dashboard16() {
+    //Verifica se o elemento existe
+    let dashboard_checkbox = document.getElementById('dashboard16_id');
+    if (dashboard_checkbox) {
+        //URL
+        var url = window.location.protocol+'//'+window.location.host+'/';
+        if (window.location.hostname.indexOf('cbmerj.rj.gov') != -1) {url += 'dgf_sistema/';}
+
+        //Iniciando dados
+        var dashboard_id = document.getElementById('dashboard16_id').value;
+        var dashboard_name = document.getElementById('dashboard16_name').value;
+        var dashboard_descricao = document.getElementById('dashboard16_descricao').value;
+        var dashboard_agrupamento = document.getElementById('dashboard16_agrupamento').value;
+        var dashboard_icone = document.getElementById('dashboard16_icone').value;
+
+        var valor_total = 0;
+        var series = [];
+        var labels = [];
+
+        //Valores hiddens
+        var dashboards_modal_filtro_2_data1 = document.getElementById('dashboards_modal_filtro_2_data1').value;
+        var dashboards_modal_filtro_2_data2 = document.getElementById('dashboards_modal_filtro_2_data2').value;
+        var dashboards_modal_filtro_2_subconta_id = document.getElementById('dashboards_modal_filtro_2_subconta_id').value;
+
+        //Return
+        if (dashboards_modal_filtro_2_data1 == '' || dashboards_modal_filtro_2_data2 == '') {return false;}
+
+        //Buscar Dados
+        return new Promise(function(resolve, reject) {
+            $.get(url+'dashboards/dashboard16/'+dashboards_modal_filtro_2_data1+'/'+dashboards_modal_filtro_2_data2+'/'+dashboards_modal_filtro_2_subconta_id, function (data) {
+                if (data.success) {
+                    valor_total = data.success.transferencias_recebidas_total;
+                    series = data.success.transferencias_recebidas_series;
+                    labels = data.success.transferencias_recebidas_labels;
+                }
+
+                resolve();
+            });
+        }).then(function () {
+            //Títulos
+            var title = dashboard_name;
+            var subtitle = 'R$ '+float2moeda(valor_total);
+
+            //Gráfico
+            apexchartsPie({title:title, subtitle:subtitle, series:series, height:330, labels:labels, valor_tipo:1, divId:'divDashboard16'});
+        });
+    }
+}
+
+function dashboard17() {
+    //Verifica se o elemento existe
+    let dashboard_checkbox = document.getElementById('dashboard17_id');
+    if (dashboard_checkbox) {
+        //URL
+        var url = window.location.protocol+'//'+window.location.host+'/';
+        if (window.location.hostname.indexOf('cbmerj.rj.gov') != -1) {url += 'dgf_sistema/';}
+
+        //Iniciando dados
+        var dashboard_id = document.getElementById('dashboard17_id').value;
+        var dashboard_name = document.getElementById('dashboard17_name').value;
+        var dashboard_descricao = document.getElementById('dashboard17_descricao').value;
+        var dashboard_agrupamento = document.getElementById('dashboard17_agrupamento').value;
+        var dashboard_icone = document.getElementById('dashboard17_icone').value;
+
+        var valor_total = 0;
+        var series = [];
+        var labels = [];
+
+        //Valores hiddens
+        var dashboards_modal_filtro_2_data1 = document.getElementById('dashboards_modal_filtro_2_data1').value;
+        var dashboards_modal_filtro_2_data2 = document.getElementById('dashboards_modal_filtro_2_data2').value;
+        var dashboards_modal_filtro_2_subconta_id = document.getElementById('dashboards_modal_filtro_2_subconta_id').value;
+
+        //Return
+        if (dashboards_modal_filtro_2_data1 == '' || dashboards_modal_filtro_2_data2 == '') {return false;}
+
+        //Buscar Dados
+        return new Promise(function(resolve, reject) {
+            $.get(url+'dashboards/dashboard17/'+dashboards_modal_filtro_2_data1+'/'+dashboards_modal_filtro_2_data2+'/'+dashboards_modal_filtro_2_subconta_id, function (data) {
+                if (data.success) {
+                    valor_total = data.success.resultado_total;
+                    series = data.success.resultado_series;
+                    labels = data.success.resultado_labels;
+                }
+
+                resolve();
+            });
+        }).then(function () {
+            //Títulos
+            var title = dashboard_name;
+            var subtitle = 'R$ '+float2moeda(valor_total);
+
+            //Gráfico
+            apexchartsPie({title:title, subtitle:subtitle, series:series, height:330, labels:labels, valor_tipo:1, divId:'divDashboard17'});
+        });
+    }
 }
 //Funções de chamada dos Dashboards - Fim'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 //Funções de chamada dos Dashboards - Fim'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''

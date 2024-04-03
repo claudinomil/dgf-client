@@ -24,22 +24,32 @@ class DashboardController extends Controller
 
         //Dados recebidos com sucesso
         if ($this->code == 2000) {
-            $ressarcimento_referencias = $this->content['ressarcimento_referencias'];
-            $ressarcimento_periodo1 = $this->content['ressarcimento_periodo1'];
-            $ressarcimento_periodo2 = $this->content['ressarcimento_periodo2'];
-            $ressarcimento_orgaos = $this->content['ressarcimento_orgaos'];
+            //Agrupamentos
+            $agrupamentos = $this->content['agrupamentos'];
+
+            //dashboards_modal_filtro_1
+            $dashboards_modal_filtro_1_referencias = $this->content['ressarcimento_referencias'];
+            $dashboards_modal_filtro_1_orgaos = $this->content['ressarcimento_orgaos'];
+
+            //dashboards_modal_filtro_2
+            $dashboards_modal_filtro_2_subcontas = $this->content['subcontas'];
         } else {
-            $ressarcimento_referencias = [];
-            $ressarcimento_periodo1 = '';
-            $ressarcimento_periodo2 = '';
-            $ressarcimento_orgaos = [];
+            //Agrupamentos
+            $agrupamentos = [];
+
+            //dashboards_modal_filtro_1
+            $dashboards_modal_filtro_1_referencias = [];
+            $dashboards_modal_filtro_1_orgaos = [];
+
+            //dashboards_modal_filtro_2
+            $dashboards_modal_filtro_2_subcontas = [];
         }
 
         return view('dashboards.index', [
-            'ressarcimento_referencias' => $ressarcimento_referencias,
-            'ressarcimento_periodo1' => $ressarcimento_periodo1,
-            'ressarcimento_periodo2' => $ressarcimento_periodo2,
-            'ressarcimento_orgaos' => $ressarcimento_orgaos
+            'agrupamentos' => $agrupamentos,
+            'dashboards_modal_filtro_1_referencias' => $dashboards_modal_filtro_1_referencias,
+            'dashboards_modal_filtro_1_orgaos' => $dashboards_modal_filtro_1_orgaos,
+            'dashboards_modal_filtro_2_subcontas' => $dashboards_modal_filtro_2_subcontas,
         ]);
     }
 
@@ -209,6 +219,118 @@ class DashboardController extends Controller
         if ($request->ajax()) {
             //Buscando dados Api_Data()
             $this->responseApi(1, 10, 'dashboards/dashboard11/'.$periodo1.'/'.$periodo2.'/'.$orgao_id, '', '', '');
+
+            //Registro recebido com sucesso
+            if ($this->code == 2000) {
+                return response()->json(['success' => $this->content]);
+            } else {
+                return response()->json(['success' => []]);
+            }
+        }
+    }
+
+    public function dashboard12(Request $request, $data1, $data2, $subconta_id)
+    {
+        //Requisição Ajax
+        if ($request->ajax()) {
+            //Buscando dados Api_Data()
+            $this->responseApi(1, 10, 'dashboards/dashboard12/'.$data1.'/'.$data2.'/'.$subconta_id, '', '', '');
+
+            //Registro recebido com sucesso
+            if ($this->code == 2000) {
+                return response()->json(['success' => $this->content]);
+            } else {
+                return response()->json(['success' => []]);
+            }
+        }
+    }
+
+    public function dashboard13(Request $request, $data1, $data2, $subconta_id)
+    {
+        //Requisição Ajax
+        if ($request->ajax()) {
+            //Buscando dados Api_Data()
+            $this->responseApi(1, 10, 'dashboards/dashboard13/'.$data1.'/'.$data2.'/'.$subconta_id, '', '', '');
+            //dd($this->content);
+            //Registro recebido com sucesso
+            if ($this->code == 2000) {
+                return response()->json(['success' => $this->content]);
+            } else {
+                return response()->json(['success' => []]);
+            }
+        }
+    }
+
+    public function dashboard14(Request $request, $data1, $data2, $subconta_id)
+    {
+        //Requisição Ajax
+        if ($request->ajax()) {
+            //Buscando dados Api_Data()
+            $this->responseApi(1, 10, 'dashboards/dashboard14/'.$data1.'/'.$data2.'/'.$subconta_id, '', '', '');
+
+            //Registro recebido com sucesso
+            if ($this->code == 2000) {
+                return response()->json(['success' => $this->content]);
+            } else {
+                return response()->json(['success' => []]);
+            }
+        }
+    }
+
+    public function dashboard15(Request $request, $data1, $data2, $subconta_id)
+    {
+        //Requisição Ajax
+        if ($request->ajax()) {
+            //Buscando dados Api_Data()
+            $this->responseApi(1, 10, 'dashboards/dashboard15/'.$data1.'/'.$data2.'/'.$subconta_id, '', '', '');
+
+            //Registro recebido com sucesso
+            if ($this->code == 2000) {
+                return response()->json(['success' => $this->content]);
+            } else {
+                return response()->json(['success' => []]);
+            }
+        }
+    }
+
+    public function dashboard16(Request $request, $data1, $data2, $subconta_id)
+    {
+        //Requisição Ajax
+        if ($request->ajax()) {
+            //Buscando dados Api_Data()
+            $this->responseApi(1, 10, 'dashboards/dashboard16/'.$data1.'/'.$data2.'/'.$subconta_id, '', '', '');
+
+            //Registro recebido com sucesso
+            if ($this->code == 2000) {
+                return response()->json(['success' => $this->content]);
+            } else {
+                return response()->json(['success' => []]);
+            }
+        }
+    }
+
+    public function dashboard17(Request $request, $data1, $data2, $subconta_id)
+    {
+        //Requisição Ajax
+        if ($request->ajax()) {
+            //Buscando dados Api_Data()
+            $this->responseApi(1, 10, 'dashboards/dashboard17/'.$data1.'/'.$data2.'/'.$subconta_id, '', '', '');
+
+            //Registro recebido com sucesso
+            if ($this->code == 2000) {
+                return response()->json(['success' => $this->content]);
+            } else {
+                return response()->json(['success' => []]);
+            }
+        }
+    }
+
+    public function dashboards_ids(Request $request, $agrupamento_id)
+    {
+        //Requisição Ajax
+        if ($request->ajax()) {
+            //Buscando dados Api_Data()
+            $this->responseApi(1, 10, 'dashboards/dashboards_ids/'.$agrupamento_id, '', '', '');
 
             //Registro recebido com sucesso
             if ($this->code == 2000) {

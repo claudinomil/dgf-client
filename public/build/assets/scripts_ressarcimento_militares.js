@@ -1,25 +1,4 @@
 $(document).ready(function () {
-    if ($('#frm_ressarcimento_militares').length) {
-        $('#frm_ressarcimento_militares').validate({
-            rules: {
-                referencia: {
-                    required: true
-                }
-            },
-            errorElement: 'span',
-            errorPlacement: function (error, element) {
-                error.addClass('invalid-feedback');
-                element.closest('.form-group').append(error);
-            },
-            highlight: function (element, errorClass, validClass) {
-                $(element).addClass('is-invalid');
-            },
-            unhighlight: function (element, errorClass, validClass) {
-                $(element).removeClass('is-invalid');
-            }
-        });
-    }
-
     //URL
     var url = window.location.protocol+'//'+window.location.host+'/';
     if (window.location.hostname.indexOf('cbmerj.rj.gov') != -1) {url += 'dgf_sistema/';}

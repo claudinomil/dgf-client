@@ -1,307 +1,629 @@
-$(document).ready(function () {
+document.addEventListener("DOMContentLoaded", function(event) {
+    relatorios();
+});
+
+//Montar Divs com opções de Relatórios
+function relatorios() {
     //URL
     var url = window.location.protocol+'//'+window.location.host+'/';
     if (window.location.hostname.indexOf('cbmerj.rj.gov') != -1) {url += 'dgf_sistema/';}
 
-    //Acessos
-    $.get(url+'relatorios/acessos', function (data) {
-        if (data.success) {
-            var acessos = data.success;
-            acessos.forEach(function (item) {
-                //Montando HTML - Itens do Menu
-                $('#dropdown-menu_itens').append('<a class="dropdown-item" href="#" id="menu_relatorio_'+item.relatorio_id+'">'+item.relatorio_name+'</a>');
+    $.get(url+'relatorios/relatorios', function (data) {
+        //relatorios
+        var relatorios = '';
 
-                //Montando chamadas para abrir card de filtro do relatorio
-                $('#menu_relatorio_'+item.relatorio_id).click(function () {
-                    //Configurar Relatórios
-                    configurar_relatorios(item.relatorio_id, item.relatorio_name);
+        if (data.success) {
+            //Dados
+            var agrupamentos = data.success.agrupamentos;
+            var grupo_relatorios = data.success.grupo_relatorios;
+
+            agrupamentos.forEach(function (agrupamento) {
+                relatorios += '<div class="col-12 col-md-4">';
+                relatorios += ' <div class="card">';
+                relatorios += '     <div class="card-body">';
+                relatorios += '         <div class="text-center">';
+                relatorios += '             <div class="mb-3">';
+                relatorios += '                 <i class="'+agrupamento['icone']+' text-primary display-6"></i>';
+                relatorios += '             </div>';
+                relatorios += '             <h5>'+agrupamento['name']+'</h5>';
+                relatorios += '         </div>';
+                relatorios += '         <div class="table-responsive mt-4">';
+                relatorios += '             <table class="table align-middle">';
+                relatorios += '                 <tbody>';
+
+                var num = 0;
+
+                grupo_relatorios.forEach(function (grupo_relatorio) {
+                    if (agrupamento['id'] == grupo_relatorio['agrupamento_id']) {
+                        num++;
+
+                        relatorios += '             <tr>';
+                        relatorios += '                 <th>';
+                        relatorios += '                     <div class="d-flex align-items-center">'+num+'</div>';
+                        relatorios += '                 </th>';
+                        relatorios += '                 <td>';
+                        relatorios += '                     <div class="d-flex align-items-center">' + grupo_relatorio['relatorio_name'] + '</div>';
+                        relatorios += '                 </td>';
+                        relatorios += '                 <td style="text-align: right">';
+                        relatorios += '                     <button type="button" class="btn btn-light btn-sm w-xs" onclick="relatorio' + grupo_relatorio['relatorio_id'] + '(1, \''+grupo_relatorio['relatorio_name']+'\');">Filtro</button>';
+                        relatorios += '                 </td>';
+                        relatorios += '             </tr>';
+                    }
                 });
+
+                relatorios += '                 </tbody>';
+                relatorios += '             </table>';
+                relatorios += '         </div>';
+                relatorios += '     </div>';
+                relatorios += ' </div>';
+                relatorios += '</div>';
             });
+
+            document.getElementById('divRelatorios').innerHTML = relatorios;
+        } else {
+            alert('Relatórios não encontrado.');
         }
     });
+}
 
-    //Botão Executar Relatório id=1
-    $('#filtro_relatorio_1_executar').click(function (e) {
-        e.preventDefault();
+function relatorio1(op=1, relatorio_name='') {
+    if (op == 1) {
+        //Título Modal
+        document.getElementById('modal_relatorio1_titulo').innerHTML = relatorio_name;
 
-        executar_relatorio_1();
-    });
+        //Abrir Modal
+        new bootstrap.Modal(document.getElementById('modal_relatorio1')).show();
+    } else {
+        //URL
+        var url = window.location.protocol+'//'+window.location.host+'/';
+        if (window.location.hostname.indexOf('cbmerj.rj.gov') != -1) {url += 'dgf_sistema/';}
 
-    //Botão Executar Relatório id=2
-    $('#filtro_relatorio_2_executar').click(function (e) {
-        e.preventDefault();
+        return new Promise(function(resolve, reject) {
+            //Colocar Processando...
+            $('#modal_relatorio1_footer_1').hide();
+            $('#modal_relatorio1_footer_2').show();
 
-        executar_relatorio_2();
-    });
+            //Dados
+            $.get(url+'relatorios/relatorio1/'+$('#modal_relatorio1_grupo_id').val(), function (data) {
+                if (data.success) {
+                    resolve(data.success);
+                } else {
+                    alert(data.error);
+                    resolve([]);
+                }
+            });
+        }).then(function (data) {
+            //Dados da tabela Cabeçalho
+            let dadosTableCabecalho = [['NOME']];
 
-    //Botão Executar Relatório id=3
-    $('#filtro_relatorio_3_executar').click(function (e) {
-        e.preventDefault();
+            //Dados da tabela Linhas
+            var dadosTableLinhas = [];
 
-        executar_relatorio_3();
-    });
+            data['relatorio_registros'].forEach(function (item) {
+                dadosTableLinhas.push([item.name]);
+            });
 
-    //Botão Executar Relatório id=4
-    $('#filtro_relatorio_4_executar').click(function (e) {
-        e.preventDefault();
+            //Gerar PDF
+            gerarPdfTabela({
+                p_header:true,
+                p_topo_1:false,
+                p_topo_2:true,
+                p_nome:data['relatorio_nome'],
+                p_parametros:true,
+                p_parametros_texto:data['relatorio_parametros'],
+                p_dadosTableCabecalho:dadosTableCabecalho,
+                p_dadosTableLinhas:dadosTableLinhas,
+                p_footer:true,
+                p_data:data['relatorio_data'],
+                p_hora:data['relatorio_hora']
+            });
 
-        executar_relatorio_4();
-    });
+            //Retirar Processando...
+            $('#modal_relatorio1_footer_2').hide();
+            $('#modal_relatorio1_footer_1').show();
 
-    //Botão Executar Relatório id=5
-    $('#filtro_relatorio_5_executar').click(function (e) {
-        e.preventDefault();
-
-        executar_relatorio_5();
-    });
-
-    //Configurar Relatórios
-    configurar_relatorios();
-});
-
-/*
-* Limpa Div's de Filtros e Visualizações
-* Abre Card Filtro do Relatório pedido pelo usuário
-* Se não tiver Card Filtro para o Relatório pedido enviar direto para Execução do Relatório
- */
-function configurar_relatorios(relatorio_id=0, relatorio_name='') {
-    //Filtro Relatórios (Hide)
-    $('#filtro_relatorios').hide();
-    $('#filtro_relatorio_1').hide();
-    $('#filtro_relatorio_2').hide();
-    $('#filtro_relatorio_3').hide();
-    $('#filtro_relatorio_4').hide();
-    $('#filtro_relatorio_5').hide();
-
-    //Visualizar Relatórios
-    $('#visualizar_relatorios').hide();
-
-    if (relatorio_id != 0) {
-        //Verificar se existe card com filtro para o relatorio
-        const elemento = document.querySelector('#filtro_relatorio_'+relatorio_id+'_card');
-        const existe = document.body.contains(elemento);
-
-        if (existe) {
-            //Filtro Relatórios
-            $('#filtro_relatorios').show();
-            $('#filtro_relatorio_'+relatorio_id).show();
-            $('#filtro_relatorio_'+relatorio_id+'_titulo').html('Filtro - '+relatorio_name);
-
-            //Visualizar Relatórios
-            $('#visualizar_relatorio_titulo').html('Visualizar - '+relatorio_name);
-        } else {}
-
+            //Fechar Modal
+            document.getElementById('modal_relatorio1_cancelar').click();
+        });
     }
 }
 
-function executar_relatorio_1() {
-    //URL
-    var url = window.location.protocol+'//'+window.location.host+'/';
-    if (window.location.hostname.indexOf('cbmerj.rj.gov') != -1) {url += 'dgf_sistema/';}
+function relatorio2(op=1, relatorio_name='') {
+    if (op == 1) {
+        //Título Modal
+        document.getElementById('modal_relatorio2_titulo').innerHTML = relatorio_name;
 
-    //Variaveis
-    let caminho_pdf = '';
+        //Abrir Modal
+        new bootstrap.Modal(document.getElementById('modal_relatorio2')).show();
+    } else {
+        //URL
+        var url = window.location.protocol+'//'+window.location.host+'/';
+        if (window.location.hostname.indexOf('cbmerj.rj.gov') != -1) {url += 'dgf_sistema/';}
 
-    return new Promise(function(resolve, reject) {
-        //Colocar Processando...
-        $('#filtro_relatorio_1_footer_1').hide();
-        $('#filtro_relatorio_1_footer_2').show();
+        return new Promise(function(resolve, reject) {
+            //Colocar Processando...
+            $('#modal_relatorio2_footer_1').hide();
+            $('#modal_relatorio2_footer_2').show();
 
-        //Dados
-        $.get(url+'relatorios/executar_relatorio_1/'+$('#filtro_relatorio_1_grupo_id').val(), function (data) {
-            if (data.success) {
-                caminho_pdf = data.caminho_pdf;
-            }
+            //Dados
+            $.get(url+'relatorios/relatorio2/'+$('#modal_relatorio2_grupo_id').val()+'/'+$('#modal_relatorio2_situacao_id').val(), function (data) {
+                if (data.success) {
+                    resolve(data.success);
+                } else {
+                    alert(data.error);
+                    resolve([]);
+                }
+            });
+        }).then(function (data) {
+            //Dados da tabela Cabeçalho
+            let dadosTableCabecalho = [['USUÀRIO','E-MAIL','MILITAR','GRUPO','SITUAÇÃO']];
 
-            resolve();
+            //Dados da tabela Linhas
+            var dadosTableLinhas = [];
+
+            data['relatorio_registros'].forEach(function (item) {
+                dadosTableLinhas.push([item.name,item.email,item.militar_rg+' - '+item.militar_posto_graduacao,item.grupo,item.situacao]);
+            });
+
+            //Gerar PDF
+            gerarPdfTabela({
+                p_orientation:'p',
+                p_header:true,
+                p_topo_1:false,
+                p_topo_2:true,
+                p_nome:data['relatorio_nome'],
+                p_parametros:true,
+                p_parametros_texto:data['relatorio_parametros'],
+                p_dadosTableCabecalho:dadosTableCabecalho,
+                p_dadosTableLinhas:dadosTableLinhas,
+                p_footer:true,
+                p_data:data['relatorio_data'],
+                p_hora:data['relatorio_hora']
+            });
+
+            //Retirar Processando...
+            $('#modal_relatorio2_footer_2').hide();
+            $('#modal_relatorio2_footer_1').show();
+
+            //Fechar Modal
+            document.getElementById('modal_relatorio2_cancelar').click();
         });
-    }).then(function () {
-        $('#visualizar_relatorio_iframe_pdf').attr('src', caminho_pdf);
-
-        //Retirar Processando...
-        $('#filtro_relatorio_1_footer_2').hide();
-        $('#filtro_relatorio_1_footer_1').show();
-
-        //Filtro Relatórios
-        $('#filtro_relatorios').hide();
-        $('#filtro_relatorio_1').hide();
-
-        //Visualizar Relatórios
-        $('#visualizar_relatorios').show();
-    });
+    }
 }
 
-function executar_relatorio_2() {
-    //URL
-    var url = window.location.protocol+'//'+window.location.host+'/';
-    if (window.location.hostname.indexOf('cbmerj.rj.gov') != -1) {url += 'dgf_sistema/';}
+function relatorio3(op=1, relatorio_name='') {
+    if (op == 1) {
+        //Título Modal
+        document.getElementById('modal_relatorio3_titulo').innerHTML = relatorio_name;
 
-    //Variaveis
-    let caminho_pdf = '';
+        //Abrir Modal
+        new bootstrap.Modal(document.getElementById('modal_relatorio3')).show();
+    } else {
+        //URL
+        var url = window.location.protocol+'//'+window.location.host+'/';
+        if (window.location.hostname.indexOf('cbmerj.rj.gov') != -1) {url += 'dgf_sistema/';}
 
-    return new Promise(function(resolve, reject) {
-        //Colocar Processando...
-        $('#filtro_relatorio_2_footer_1').hide();
-        $('#filtro_relatorio_2_footer_2').show();
+        return new Promise(function(resolve, reject) {
+            //Colocar Processando...
+            $('#modal_relatorio3_footer_1').hide();
+            $('#modal_relatorio3_footer_2').show();
 
-        //Dados
-        $.get(url+'relatorios/executar_relatorio_2/'+$('#filtro_relatorio_2_grupo_id').val()+'/'+$('#filtro_relatorio_2_situacao_id').val(), function (data) {
-            if (data.success) {
-                caminho_pdf = data.caminho_pdf;
-            }
+            //Acertos nos inputs
+            var modal_relatorio3_data = 'xxxyyyzzz';
+            if ($('#modal_relatorio3_data').val() != '') {modal_relatorio3_data = formatarData(1, $('#modal_relatorio3_data').val());}
 
-            resolve();
+            var modal_relatorio3_dado = 'xxxyyyzzz';
+            if ($('#modal_relatorio3_dado').val() != '') {modal_relatorio3_dado = $('#modal_relatorio3_dado').val();}
+
+            //Dados
+            $.get(url+'relatorios/relatorio3/'+modal_relatorio3_data+'/'+$('#modal_relatorio3_user_id').val()+'/'+$('#modal_relatorio3_submodulo_id').val()+'/'+$('#modal_relatorio3_operacao_id').val()+'/'+modal_relatorio3_dado, function (data) {
+                if (data.success) {
+                    resolve(data.success);
+                } else {
+                    alert(data.error);
+                    resolve([]);
+                }
+            });
+        }).then(function (data) {
+            //Dados da tabela Cabeçalho
+            let dadosTableCabecalho = [['DATA','USUÁRIO','SUBMÓDULO','OPERAÇÃO','DADOS']];
+
+            //Dados da tabela Linhas
+            var dadosTableLinhas = [];
+
+            data['relatorio_registros'].forEach(function (item) {
+                //Retirar as Tags Html para melhorar a visualização na Table'''''
+                var dados = item.dados;
+                dados = dados.replaceAll('<br>', '\n');
+                dados = dados.replaceAll('<b>', '');
+                dados = dados.replaceAll('</b>', '');
+                dados = dados.replaceAll('<b class="text-success">', '');
+                dados = dados.replaceAll("<b class='text-success'>", '');
+                dados = dados.replaceAll('<b class="text-danger">', '');
+                dados = dados.replaceAll("<b class='text-danger'>", '');
+                dados = dados.replaceAll("<font class='text-success'>", '');
+                dados = dados.replaceAll('<font class="text-success">', '');
+                dados = dados.replaceAll("<font class='text-danger'>", '');
+                dados = dados.replaceAll('<font class="text-danger">', '');
+                dados = dados.replaceAll('</font>', '');
+                //'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+                dadosTableLinhas.push([item.date,item.user,item.submodulo,item.operacao,dados]);
+            });
+
+            //Gerar PDF
+            gerarPdfTabela({
+                p_orientation:'l',
+                p_header:true,
+                p_topo_1:false,
+                p_topo_2:true,
+                p_nome:data['relatorio_nome'],
+                p_parametros:true,
+                p_parametros_texto:data['relatorio_parametros'],
+                p_dadosTableCabecalho:dadosTableCabecalho,
+                p_dadosTableLinhas:dadosTableLinhas,
+                p_footer:true,
+                p_data:data['relatorio_data'],
+                p_hora:data['relatorio_hora']
+            });
+
+            //Retirar Processando...
+            $('#modal_relatorio3_footer_2').hide();
+            $('#modal_relatorio3_footer_1').show();
+
+            //Fechar Modal
+            document.getElementById('modal_relatorio3_cancelar').click();
         });
-    }).then(function () {
-        $('#visualizar_relatorio_iframe_pdf').attr('src', caminho_pdf);
-
-        //Retirar Processando...
-        $('#filtro_relatorio_2_footer_2').hide();
-        $('#filtro_relatorio_2_footer_1').show();
-
-        //Filtro Relatórios
-        $('#filtro_relatorios').hide();
-        $('#filtro_relatorio_2').hide();
-
-        //Visualizar Relatórios
-        $('#visualizar_relatorios').show();
-    });
+    }
 }
 
-function executar_relatorio_3() {
-    //URL
-    var url = window.location.protocol+'//'+window.location.host+'/';
-    if (window.location.hostname.indexOf('cbmerj.rj.gov') != -1) {url += 'dgf_sistema/';}
+function relatorio4(op=1, relatorio_name='') {
+    if (op == 1) {
+        //Título Modal
+        document.getElementById('modal_relatorio4_titulo').innerHTML = relatorio_name;
 
-    //Variaveis
-    let caminho_pdf = '';
+        //Abrir Modal
+        new bootstrap.Modal(document.getElementById('modal_relatorio4')).show();
+    } else {
+        //URL
+        var url = window.location.protocol+'//'+window.location.host+'/';
+        if (window.location.hostname.indexOf('cbmerj.rj.gov') != -1) {url += 'dgf_sistema/';}
 
-    return new Promise(function(resolve, reject) {
-        //Colocar Processando...
-        $('#filtro_relatorio_3_footer_1').hide();
-        $('#filtro_relatorio_3_footer_2').show();
+        return new Promise(function(resolve, reject) {
+            //Colocar Processando...
+            $('#modal_relatorio4_footer_1').hide();
+            $('#modal_relatorio4_footer_2').show();
 
-        //Acertos nos inputs
-        let filtro_relatorio_3_data = 'xxxyyyzzz';
-        if ($('#filtro_relatorio_3_data').val() != '') {filtro_relatorio_3_data = formatarData(1, $('#filtro_relatorio_3_data').val());}
+            //Acertos nos inputs
+            var modal_relatorio4_data = 'xxxyyyzzz';
+            if ($('#modal_relatorio4_data').val() != '') {modal_relatorio4_data = formatarData(1, $('#modal_relatorio4_data').val());}
 
-        let filtro_relatorio_3_dado = 'xxxyyyzzz';
-        if ($('#filtro_relatorio_3_dado').val() != '') {filtro_relatorio_3_dado = $('#filtro_relatorio_3_dado').val();}
+            var modal_relatorio4_title = 'xxxyyyzzz';
+            if ($('#modal_relatorio4_title').val() != '') {modal_relatorio4_title = $('#modal_relatorio4_title').val();}
 
-        //Dados
-        $.get(url+'relatorios/executar_relatorio_3/'+filtro_relatorio_3_data+'/'+$('#filtro_relatorio_3_user_id').val()+'/'+$('#filtro_relatorio_3_submodulo_id').val()+'/'+$('#filtro_relatorio_3_operacao_id').val()+'/'+filtro_relatorio_3_dado, function (data) {
-            if (data.success) {
-                caminho_pdf = data.caminho_pdf;
-            }
+            var modal_relatorio4_notificacao = 'xxxyyyzzz';
+            if ($('#modal_relatorio4_notificacao').val() != '') {modal_relatorio4_notificacao = $('#modal_relatorio4_notificacao').val();}
 
-            resolve();
+            //Dados
+            $.get(url+'relatorios/relatorio4/'+modal_relatorio4_data+'/'+modal_relatorio4_title+'/'+modal_relatorio4_notificacao+'/'+$('#modal_relatorio4_user_id').val(), function (data) {
+                if (data.success) {
+                    resolve(data.success);
+                } else {
+                    alert(data.error);
+                    resolve([]);
+                }
+            });
+        }).then(function (data) {
+            //Dados da tabela Cabeçalho
+            let dadosTableCabecalho = [['DATA','HORA','TÍTULO','NOTIFICAÇÃO','USUÁRIO']];
+
+            //Dados da tabela Linhas
+            var dadosTableLinhas = [];
+
+            data['relatorio_registros'].forEach(function (item) {
+                dadosTableLinhas.push([item.date,item.time,item.title,item.notificacao,item.user]);
+            });
+
+            //Gerar PDF
+            gerarPdfTabela({
+                p_orientation:'p',
+                p_header:true,
+                p_topo_1:false,
+                p_topo_2:true,
+                p_nome:data['relatorio_nome'],
+                p_parametros:true,
+                p_parametros_texto:data['relatorio_parametros'],
+                p_dadosTableCabecalho:dadosTableCabecalho,
+                p_dadosTableLinhas:dadosTableLinhas,
+                p_footer:true,
+                p_data:data['relatorio_data'],
+                p_hora:data['relatorio_hora']
+            });
+
+            //Retirar Processando...
+            $('#modal_relatorio4_footer_2').hide();
+            $('#modal_relatorio4_footer_1').show();
+
+            //Fechar Modal
+            document.getElementById('modal_relatorio4_cancelar').click();
         });
-    }).then(function () {
-        $('#visualizar_relatorio_iframe_pdf').attr('src', caminho_pdf);
-
-        //Retirar Processando...
-        $('#filtro_relatorio_3_footer_2').hide();
-        $('#filtro_relatorio_3_footer_1').show();
-
-        //Filtro Relatórios
-        $('#filtro_relatorios').hide();
-        $('#filtro_relatorio_3').hide();
-
-        //Visualizar Relatórios
-        $('#visualizar_relatorios').show();
-    });
+    }
 }
 
-function executar_relatorio_4() {
-    //URL
-    var url = window.location.protocol+'//'+window.location.host+'/';
-    if (window.location.hostname.indexOf('cbmerj.rj.gov') != -1) {url += 'dgf_sistema/';}
+function relatorio5(op=1, relatorio_name='') {
+    if (op == 1) {
+        //Título Modal
+        document.getElementById('modal_relatorio5_titulo').innerHTML = relatorio_name;
 
-    //Variaveis
-    let caminho_pdf = '';
+        //Abrir Modal
+        new bootstrap.Modal(document.getElementById('modal_relatorio5')).show();
+    } else {
+        //URL
+        var url = window.location.protocol+'//'+window.location.host+'/';
+        if (window.location.hostname.indexOf('cbmerj.rj.gov') != -1) {url += 'dgf_sistema/';}
 
-    return new Promise(function(resolve, reject) {
-        //Colocar Processando...
-        $('#filtro_relatorio_4_footer_1').hide();
-        $('#filtro_relatorio_4_footer_2').show();
+        return new Promise(function(resolve, reject) {
+            //Colocar Processando...
+            $('#modal_relatorio5_footer_1').hide();
+            $('#modal_relatorio5_footer_2').show();
 
-        //Acertos nos inputs
-        let filtro_relatorio_4_data = 'xxxyyyzzz';
-        if ($('#filtro_relatorio_4_data').val() != '') {filtro_relatorio_4_data = formatarData(1, $('#filtro_relatorio_4_data').val());}
+            //Acertos nos inputs
+            var modal_relatorio5_name = 'xxxyyyzzz';
+            if ($('#modal_relatorio5_name').val() != '') {modal_relatorio5_name = $('#modal_relatorio5_name').val();}
 
-        let filtro_relatorio_4_title = 'xxxyyyzzz';
-        if ($('#filtro_relatorio_4_title').val() != '') {filtro_relatorio_4_title = $('#filtro_relatorio_4_title').val();}
+            var modal_relatorio5_descricao = 'xxxyyyzzz';
+            if ($('#modal_relatorio5_descricao').val() != '') {modal_relatorio5_descricao = $('#modal_relatorio5_descricao').val();}
 
-        let filtro_relatorio_4_notificacao = 'xxxyyyzzz';
-        if ($('#filtro_relatorio_4_notificacao').val() != '') {filtro_relatorio_4_notificacao = $('#filtro_relatorio_4_notificacao').val();}
+            var modal_relatorio5_url = 'xxxyyyzzz';
+            if ($('#modal_relatorio5_url').val() != '') {modal_relatorio5_url = $('#modal_relatorio5_url').val();}
 
-        //Dados
-        $.get(url+'relatorios/executar_relatorio_4/'+filtro_relatorio_4_data+'/'+filtro_relatorio_4_title+'/'+filtro_relatorio_4_notificacao+'/'+$('#filtro_relatorio_4_user_id').val(), function (data) {
-            if (data.success) {
-                caminho_pdf = data.caminho_pdf;
-            }
+            //Dados
+            $.get(url+'relatorios/relatorio5/'+modal_relatorio5_name+'/'+modal_relatorio5_descricao+'/'+modal_relatorio5_url+'/'+$('#modal_relatorio5_user_id').val(), function (data) {
+                if (data.success) {
+                    resolve(data.success);
+                } else {
+                    alert(data.error);
+                    resolve([]);
+                }
+            });
+        }).then(function (data) {
+            //Dados da tabela Cabeçalho
+            let dadosTableCabecalho = [['NOME','DESCRIÇÃO','URL','USUÁRIO']];
 
-            resolve();
+            //Dados da tabela Linhas
+            var dadosTableLinhas = [];
+
+            data['relatorio_registros'].forEach(function (item) {
+                dadosTableLinhas.push([item.name,item.descricao,item.url,item.user]);
+            });
+
+            //Gerar PDF
+            gerarPdfTabela({
+                p_orientation:'p',
+                p_header:true,
+                p_topo_1:false,
+                p_topo_2:true,
+                p_nome:data['relatorio_nome'],
+                p_parametros:true,
+                p_parametros_texto:data['relatorio_parametros'],
+                p_dadosTableCabecalho:dadosTableCabecalho,
+                p_dadosTableLinhas:dadosTableLinhas,
+                p_footer:true,
+                p_data:data['relatorio_data'],
+                p_hora:data['relatorio_hora']
+            });
+
+            //Retirar Processando...
+            $('#modal_relatorio5_footer_2').hide();
+            $('#modal_relatorio5_footer_1').show();
+
+            //Fechar Modal
+            document.getElementById('modal_relatorio5_cancelar').click();
         });
-    }).then(function () {
-        $('#visualizar_relatorio_iframe_pdf').attr('src', caminho_pdf);
-
-        //Retirar Processando...
-        $('#filtro_relatorio_4_footer_2').hide();
-        $('#filtro_relatorio_4_footer_1').show();
-
-        //Filtro Relatórios
-        $('#filtro_relatorios').hide();
-        $('#filtro_relatorio_4').hide();
-
-        //Visualizar Relatórios
-        $('#visualizar_relatorios').show();
-    });
+    }
 }
 
-function executar_relatorio_5() {
-    //URL
-    var url = window.location.protocol+'//'+window.location.host+'/';
-    if (window.location.hostname.indexOf('cbmerj.rj.gov') != -1) {url += 'dgf_sistema/';}
+function relatorio6(op=1, relatorio_name='') {
+    if (op == 1) {
+        //Título Modal
+        document.getElementById('modal_relatorio6_titulo').innerHTML = relatorio_name;
 
-    //Variaveis
-    let caminho_pdf = '';
+        //Abrir Modal
+        new bootstrap.Modal(document.getElementById('modal_relatorio6')).show();
+    } else {
+        //URL
+        var url = window.location.protocol+'//'+window.location.host+'/';
+        if (window.location.hostname.indexOf('cbmerj.rj.gov') != -1) {url += 'dgf_sistema/';}
 
-    return new Promise(function(resolve, reject) {
-        //Colocar Processando...
-        $('#filtro_relatorio_5_footer_1').hide();
-        $('#filtro_relatorio_5_footer_2').show();
+        return new Promise(function(resolve, reject) {
+            //Colocar Processando...
+            $('#modal_relatorio6_footer_1').hide();
+            $('#modal_relatorio6_footer_2').show();
 
-        //Acertos nos inputs
-        let filtro_relatorio_5_name = 'xxxyyyzzz';
-        if ($('#filtro_relatorio_5_name').val() != '') {filtro_relatorio_5_name = $('#filtro_relatorio_5_name').val();}
+            //Dados
+            $.get(url+'relatorios/relatorio6/'+$('#modal_relatorio6_referencia').val()+'/'+$('#modal_relatorio6_orgao_id').val(), function (data) {
+                if (data.success) {
+                    resolve(data.success);
+                } else {
+                    alert(data.error);
+                    resolve([]);
+                }
+            });
+        }).then(function (data) {
+            //Dados da tabela Cabeçalho
+            let dadosTableCabecalho = [['ÓRGÃO','MILITAR','ID FUNC.','POSTO/GRAD','QUADRO']];
 
-        let filtro_relatorio_5_descricao = 'xxxyyyzzz';
-        if ($('#filtro_relatorio_5_descricao').val() != '') {filtro_relatorio_5_descricao = $('#filtro_relatorio_5_descricao').val();}
+            //Dados da tabela Linhas
+            var dadosTableLinhas = [];
 
-        let filtro_relatorio_5_url = 'xxxyyyzzz';
-        if ($('#filtro_relatorio_5_url').val() != '') {filtro_relatorio_5_url = $('#filtro_relatorio_5_url').val();}
+            data['relatorio_registros'].forEach(function (item) {
+                dadosTableLinhas.push([item.orgao_nome,item.militar_nome,item.militar_identidade_funcional,item.militar_posto_graduacao,item.militar_quadro]);
+            });
 
-        //Dados
-        $.get(url+'relatorios/executar_relatorio_5/'+filtro_relatorio_5_name+'/'+filtro_relatorio_5_descricao+'/'+filtro_relatorio_5_url+'/'+$('#filtro_relatorio_5_user_id').val(), function (data) {
-            if (data.success) {
-                caminho_pdf = data.caminho_pdf;
-            }
+            //Gerar PDF
+            gerarPdfTabela({
+                p_orientation:'p',
+                p_header:true,
+                p_topo_1:false,
+                p_topo_2:true,
+                p_nome:data['relatorio_nome'],
+                p_parametros:true,
+                p_parametros_texto:data['relatorio_parametros'],
+                p_dadosTableCabecalho:dadosTableCabecalho,
+                p_dadosTableLinhas:dadosTableLinhas,
+                p_footer:true,
+                p_data:data['relatorio_data'],
+                p_hora:data['relatorio_hora']
+            });
 
-            resolve();
+            //Retirar Processando...
+            $('#modal_relatorio6_footer_2').hide();
+            $('#modal_relatorio6_footer_1').show();
+
+            //Fechar Modal
+            document.getElementById('modal_relatorio6_cancelar').click();
         });
-    }).then(function () {
-        $('#visualizar_relatorio_iframe_pdf').attr('src', caminho_pdf);
+    }
+}
 
-        //Retirar Processando...
-        $('#filtro_relatorio_5_footer_2').hide();
-        $('#filtro_relatorio_5_footer_1').show();
+function relatorio7(op=1, relatorio_name='') {
+    if (op == 1) {
+        //Título Modal
+        document.getElementById('modal_relatorio7_titulo').innerHTML = relatorio_name;
 
-        //Filtro Relatórios
-        $('#filtro_relatorios').hide();
-        $('#filtro_relatorio_5').hide();
+        //Abrir Modal
+        new bootstrap.Modal(document.getElementById('modal_relatorio7')).show();
+    } else {
+        //URL
+        var url = window.location.protocol+'//'+window.location.host+'/';
+        if (window.location.hostname.indexOf('cbmerj.rj.gov') != -1) {url += 'dgf_sistema/';}
 
-        //Visualizar Relatórios
-        $('#visualizar_relatorios').show();
-    });
+        return new Promise(function(resolve, reject) {
+            //Colocar Processando...
+            $('#modal_relatorio7_footer_1').hide();
+            $('#modal_relatorio7_footer_2').show();
+
+            //Dados
+            $.get(url+'relatorios/relatorio7/'+$('#modal_relatorio7_referencia').val()+'/'+$('#modal_relatorio7_orgao_id').val(), function (data) {
+                if (data.success) {
+                    resolve(data.success);
+                } else {
+                    alert(data.error);
+                    resolve([]);
+                }
+            });
+        }).then(function (data) {
+            //Dados da tabela Cabeçalho
+            let dadosTableCabecalho = [['ÓRGÃO','VENCIMENTOS BRUTOS','ENCARGOS SOCIAIS E PATRONAIS','RESSARCIMENTO']];
+
+            //Dados da tabela Linhas
+            var dadosTableLinhas = [];
+
+            data['relatorio_registros'].forEach(function (item) {
+                dadosTableLinhas.push([item.orgao_name,float2moeda(item.vencimentos_brutos),float2moeda(item.encargos_sociais_e_patronais),float2moeda(item.ressarcimento)]);
+            });
+
+            //Definir as configurações de estilo para cada célula
+            const columnStyles = {
+                1: { halign: 'right' },
+                2: { halign: 'right' },
+                3: { halign: 'right' }
+            };
+
+            //Gerar PDF
+            gerarPdfTabela({
+                p_orientation:'p',
+                p_header:true,
+                p_topo_1:false,
+                p_topo_2:true,
+                p_nome:data['relatorio_nome'],
+                p_parametros:true,
+                p_parametros_texto:data['relatorio_parametros'],
+                p_dadosTableCabecalho:dadosTableCabecalho,
+                p_dadosTableLinhas:dadosTableLinhas,
+                p_columnStyles:columnStyles,
+                p_footer:true,
+                p_data:data['relatorio_data'],
+                p_hora:data['relatorio_hora']
+            });
+
+            //Retirar Processando...
+            $('#modal_relatorio7_footer_2').hide();
+            $('#modal_relatorio7_footer_1').show();
+
+            //Fechar Modal
+            document.getElementById('modal_relatorio7_cancelar').click();
+        });
+    }
+}
+
+function relatorio8(op=1, relatorio_name='') {
+    if (op == 1) {
+        //Título Modal
+        document.getElementById('modal_relatorio8_titulo').innerHTML = relatorio_name;
+
+        //Abrir Modal
+        new bootstrap.Modal(document.getElementById('modal_relatorio8')).show();
+    } else {
+        //URL
+        var url = window.location.protocol+'//'+window.location.host+'/';
+        if (window.location.hostname.indexOf('cbmerj.rj.gov') != -1) {url += 'dgf_sistema/';}
+
+        return new Promise(function(resolve, reject) {
+            //Colocar Processando...
+            $('#modal_relatorio8_footer_1').hide();
+            $('#modal_relatorio8_footer_2').show();
+
+            //Dados
+            $.get(url+'relatorios/relatorio8/'+$('#modal_relatorio8_referencia').val()+'/'+$('#modal_relatorio8_orgao_id').val()+'/'+$('#modal_relatorio8_saldo').val(), function (data) {
+                if (data.success) {
+                    resolve(data.success);
+                } else {
+                    alert(data.error);
+                    resolve([]);
+                }
+            });
+        }).then(function (data) {
+            //Dados da tabela Cabeçalho
+            let dadosTableCabecalho = [['ÓRGÃO','RESSARCIMENTO','RECEBIMENTO','SALDO']];
+
+            //Dados da tabela Linhas
+            var dadosTableLinhas = [];
+
+            data['relatorio_registros'].forEach(function (item) {
+                dadosTableLinhas.push([item.orgao_name,float2moeda(item.ressarcimento),float2moeda(item.recebimento),float2moeda(item.saldo)]);
+            });
+
+            //Definir as configurações de estilo para cada célula
+            const columnStyles = {
+                1: { halign: 'right' },
+                2: { halign: 'right' },
+                3: { halign: 'right' }
+            };
+
+            //Gerar PDF
+            gerarPdfTabela({
+                p_orientation:'p',
+                p_header:true,
+                p_topo_1:false,
+                p_topo_2:true,
+                p_nome:data['relatorio_nome'],
+                p_parametros:true,
+                p_parametros_texto:data['relatorio_parametros'],
+                p_dadosTableCabecalho:dadosTableCabecalho,
+                p_dadosTableLinhas:dadosTableLinhas,
+                p_columnStyles:columnStyles,
+                p_footer:true,
+                p_data:data['relatorio_data'],
+                p_hora:data['relatorio_hora']
+            });
+
+            //Retirar Processando...
+            $('#modal_relatorio8_footer_2').hide();
+            $('#modal_relatorio8_footer_1').show();
+
+            //Fechar Modal
+            document.getElementById('modal_relatorio8_cancelar').click();
+        });
+    }
 }

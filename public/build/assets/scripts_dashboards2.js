@@ -78,7 +78,7 @@ function cardModelo3() {
         {descricao: 'Praças', valor: 999, id: 'radialchart-3', porcentagem: 73, cor: '#f46a6a'}
     ];
 
-    cg_card_modelo_3({titulo_tooltip:'Título tooltip', titulo:'Claudino Card 3', height:234, dados:dados, menu:menu, div_id:'db_card_modelo_3'}).then(function() {
+    cg_card_modelo_3({titulo_tooltip:'Título tooltip', titulo:'Claudino Card 3', principal:'Principal', principal_valor:'99.999,99', principal_texto:'Principal Texto', height:234, dados:dados, menu:menu, div_id:'db_card_modelo_3'}).then(function() {
         cg_card_modelo_3_render(dados);
     });
 }

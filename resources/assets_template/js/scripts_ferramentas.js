@@ -14,7 +14,7 @@ $(document).ready(function () {
                 icon: {
                     required: true
                 },
-                viewing_order: {
+                ordem_visualizacao: {
                     required: true,
                     number: true,
                     step: 1

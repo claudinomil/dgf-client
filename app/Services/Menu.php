@@ -32,12 +32,6 @@ class Menu
             $menu .= "<ul class='navbar-nav'>";
         }
 
-        //Mega Menu
-        if ($tp == 3) {
-            $menu .= "<ul class='list-unstyled megamenu-list'>
-                        <div class='row'>";
-        }
-
         //varrer Módulos
         foreach ($modulos as $modulo) {
             $modOk = 1;
@@ -108,15 +102,6 @@ class Menu
                         if ($tp == 2) {
                             $menu .= "<a href='" . route($submodulo['menu_route'] . '.index') . "' class='dropdown-item' key='t-" . $submodulo['menu_route'] . "'><i class='" . $submodulo['menu_icon'] . " me-1'></i>" . $submodulo['menu_text'] . "</a>";
                         }
-
-                        //Mega Menu
-                        if ($tp == 3) {
-                            $menu .= "<div class='col-md-2'>
-                                        <li>
-                                            <a href='" . route($submodulo['menu_route'] . '.index') . "' key='t-" . $submodulo['menu_route'] . "'><i class='" . $submodulo['menu_icon'] . " me-1'></i>" . $submodulo['menu_text'] . "</a>
-                                        </li>
-                                    </div>";
-                        }
                     }
                 }
             }
@@ -150,11 +135,6 @@ class Menu
         //Menu Horizontal
         if ($tp == 2) {
             $menu .= "</ul>";
-        }
-
-        //Mega Menu
-        if ($tp == 3) {
-            $menu .= "</div></ul>";
         }
 
         return $menu;

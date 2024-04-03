@@ -3642,7 +3642,7 @@ table.dataTable.dtr-inline.collapsed > tbody > tr > td.dtr-control:before {
 .apexcharts-legend-text {
   color: #c3cbe4 !important;
   font-family: var(--bs-font-sans-serif) !important;
-  font-size: 13px !important;
+  font-size: 10px !important;
 }
 
 .apexcharts-pie-label {

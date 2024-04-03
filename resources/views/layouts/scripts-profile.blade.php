@@ -7,6 +7,10 @@
             }
         });
 
+        //URL
+        var url = window.location.protocol+'//'+window.location.host+'/';
+        if (window.location.hostname.indexOf('cbmerj.rj.gov') != -1) {url += 'dgf_sistema/';}
+
         //Update Avatar'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
         $('#buttonUploadAvatar').click(function () {
             //Preparar
@@ -32,7 +36,7 @@
 
             $.ajax({
                 type:'POST',
-                url: '/users/upload/avatar',
+                url: url+'/users/upload/avatar',
                 data: formData,
                 cache: false,
                 contentType: false,
@@ -109,7 +113,7 @@
 
             $.ajax({
                 type:'POST',
-                url: '/users/edit/email',
+                url: url+'/users/edit/email',
                 data: formData,
                 cache: false,
                 contentType: false,
@@ -191,7 +195,7 @@
 
             $.ajax({
                 type:'POST',
-                url: '/users/edit/password',
+                url: url+'/users/edit/password',
                 data: formData,
                 cache: false,
                 contentType: false,
