@@ -190,7 +190,7 @@ class RessarcimentoMilitarController extends Controller
                         //Verifique o tamanho do arquivo
                         if ($arquivoTamanho <= $tamanho_maximo) {
                             //Configurações do PHP INI (Alterando temporariamente)
-                            ini_set('max_execution_time', 1200);
+                            ini_set('max_execution_time', 2400);
                             ini_set('memory_limit', '1024M');
 
                             //Verificar a quantidade de orgaos antes da Importação

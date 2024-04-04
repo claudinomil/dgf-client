@@ -234,7 +234,7 @@ class RessarcimentoPagamentoController extends Controller
                         //Verifique o tamanho do arquivo
                         if ($arquivoTamanho <= $tamanho_maximo) {
                             //Configurações do PHP INI (Alterando temporariamente)
-                            ini_set('max_execution_time', 1200);
+                            ini_set('max_execution_time', 2400);
                             ini_set('memory_limit', '1024M');
 
                             //Lendo arquivo
@@ -258,7 +258,7 @@ class RessarcimentoPagamentoController extends Controller
 
                                 //Verificar se é a planilha correta (nome das colunas comparado com cabecalho)
                                 if ($linha == 0) { //fazer uma única vez
-                                    $colunas_planilha_correta = ['ID_FUNCIONAL', 'VINCULO', 'RG', 'COD_CARGO', 'NOME_CARGO', 'POSTO_GRAD', 'NIVEL', 'NOME_COMPLETO', 'SITPAG', 'DT_INGRESSO', 'DT_NASCIM', 'DT_APOSENT', 'SEXO', 'COD_UA', 'UA', 'CPF', 'PASEP', 'BANCO', 'AGENCIA', 'CC', 'DEPEND', 'IR_DEPENDENTE', 'COTISTA', 'BRUTO', 'DESCONTO', 'LIQUIDO', 'SOLDO', 'HOSPITAL10', 'RIOPREVID_22', 'ET_FERIAS', 'ET_DEST', 'AJ_FARD', 'HABILIT_PROFISS', 'GRET', 'AUX_MORADIA', 'GPE', 'GEE_CAPACITA', 'DEC_14407', 'FÉRIAS', 'RAIOX', 'TRIÊNIO', 'AUX_INVALID', 'TEMPO_CERTO', 'FDO_SAUDE', 'ABONO_PERMANENCIA', 'DED_IR', 'IR_VALOR', 'AUX_TRANSPORTE', 'GRAM', 'AUX_FARD', 'CIDADE'];
+                                    $colunas_planilha_correta = ['ID_FUNCIONAL', 'VINCULO', 'RG', 'COD_CARGO', 'NOME_CARGO', 'POSTO_GRAD', 'NIVEL', 'NOME_COMPLETO', 'SITPAG', 'DT_INGRESSO', 'DT_NASCIM', 'DT_APOSENT', 'SEXO', 'COD_UA', 'UA', 'CPF', 'PASEP', 'BANCO', 'AGENCIA', 'CC', 'DEPEND', 'IR_DEPENDENTE', 'COTISTA', 'BRUTO', 'DESCONTO', 'LIQUIDO', 'SOLDO', 'HOSPITAL10', 'RIOPREVID_22', 'ET_FERIAS', 'ET_DEST', 'AJ_FARD', 'HABILIT_PROFISS', 'GRET', 'AUX_MORADIA', 'GPE', 'GEE_CAPACITA', 'DEC_14407', 'FERIAS', 'RAIOX', 'TRIENIO', 'AUX_INVALID', 'TEMPO_CERTO', 'FDO_SAUDE', 'ABONO_PERMANENCIA', 'DED_IR', 'IR_VALOR', 'AUX_TRANSPORTE', 'GRAM', 'AUX_FARD', 'CIDADE'];
 
                                     foreach ($colunas_planilha_correta as $coluna) {
                                         $coluna_ok = false;
