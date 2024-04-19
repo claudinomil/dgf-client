@@ -23,7 +23,7 @@ function relatorios() {
                 relatorios += '     <div class="card-body">';
                 relatorios += '         <div class="text-center">';
                 relatorios += '             <div class="mb-3">';
-                relatorios += '                 <i class="'+agrupamento['icone']+' text-primary display-6"></i>';
+                relatorios += '                 <i class="bx bx-printer text-primary display-6"></i>';
                 relatorios += '             </div>';
                 relatorios += '             <h5>'+agrupamento['name']+'</h5>';
                 relatorios += '         </div>';

@@ -1,5 +1,5 @@
 <div class="dropdown d-none d-lg-inline-block ms-1">
-    <button type="button" class="btn header-item noti-icon waves-effect" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    <button type="button" class="btn header-item noti-icon waves-effect" title="Ferramentas" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         <i class="bx bx-customize"></i>
         <span class="badge bg-primary rounded-pill">{{count(session('se_userLoggedFerramentas'))}}</span>
     </button>

@@ -61,7 +61,15 @@ class LoginController extends Controller
             if (isset($response['error'])) {
                 $error = $response['message'];
 
-                return view('auth.login', compact('error'));
+                //Verificar para onde retorno
+                if (isset($request['ctrl_welcome'])) {
+                    $usuarioLogado = 0;
+
+                    return view('welcome', compact('error', 'usuarioLogado'));
+
+                } else {
+                    return view('auth.login', compact('error'));
+                }
             }
 
             //Gravar access_token em ums session
@@ -75,7 +83,8 @@ class LoginController extends Controller
             session(['se_userLoggedData' => $this->content[0]]);
 
             //Redirecionar Usuário para início do Sistema
-            return redirect('dashboards');
+            //return redirect('dashboards');
+            return redirect('');
         }
 
         //Usuário não confirmado
@@ -90,7 +99,14 @@ class LoginController extends Controller
         if ($this->code == 2002) {
             $error = $this->message;
 
-            return view('auth.login', compact('error'));
+            //Verificar para onde retorno
+            if (isset($request['ctrl_welcome'])) {
+                $usuarioLogado = 0;
+
+                return view('welcome', compact('error', 'usuarioLogado'));
+            } else {
+                return view('auth.login', compact('error'));
+            }
         }
     }
 
@@ -99,6 +115,7 @@ class LoginController extends Controller
         //Buscando dados Api_Data() - Fazer Logout
         $this->responseApi(1, 7, '', '', '', '');
 
-        return view('welcome');
+        //return view('welcome');
+        return redirect('');
     }
 }

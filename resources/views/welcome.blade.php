@@ -2,8 +2,13 @@
 <html lang="pt-BR">
     <head>
         <meta charset="utf-8" />
-        <title>Sistema DGF</title>
+        <title> {{env('APP_NAME')}} | @yield('page_title')</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <!-- CSRF-TOKEN -->
+        <meta name="csrf-token" content="{{ csrf_token() }}" />
+
+        <!-- App favicon -->
         <link rel="shortcut icon" href="{{ asset('build/assets/images/image_favicon.png') }}">
 
         <!-- CSS Files -->
@@ -26,14 +31,35 @@
                 <nav id="navbar" class="navbar">
                     <ul>
                         <li><a class="nav-link scrollto active" href="#section_home" id="menuHome">Home</a></li>
-                        <li><a class="nav-link scrollto" href="#section_sistema" id="menuSistema">Sistema</a></li>
-                        <li><a class="nav-link scrollto" href="#section_dashboard" id="menuDashboard">Dashboard</a></li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="menuUsuario" role="button" data-bs-toggle="dropdown" aria-expanded="false">Usuário</a>
-                            <ul class="dropdown-menu" aria-labelledby="menuUsuario">
-                                <li><a class="dropdown-item scrollto text-success" href="#section_login" id="menuLogin">Login</a></li>
-                                <li><hr class="dropdown-divider" id="menuDivider"></li>
-                                <li><a class="dropdown-item scrollto text-danger" href="#section_home" id="menuLogout">Logout</a></li>
+
+                        @if($usuarioLogado == 1)
+                            <li class="dropdown">
+                                <a class="scrollto" href="#section_dashboard" id="menuDashboard"><span>Dashboard</span> <i class="bx bx-chevron-down"></i></a>
+                                <ul>
+                                    @foreach ($agrupamentos as $agrupamento)
+                                        <li><a class="nav-link scrollto linkDashboard" href="#section_dashboard" onclick="atualizarDashboardsAgrupamentos({{$agrupamento['id']}});">{{$agrupamento['name']}}</a></li>
+                                    @endforeach
+                                </ul>
+                            </li>
+                        @endif
+
+                        <li class="dropdown">
+                            <a class="scrollto" href="#section_login">
+                                <span>
+                                    @if($usuarioLogado == 1)
+                                        <img class="rounded-circle header-profile-user" width="25px" src="{{session('se_userLoggedData.avatar')}}">
+                                        &nbsp;&nbsp;{{ucwords(strtolower(session('se_userLoggedData.name')))}}
+                                    @else
+                                        Usuário
+                                    @endif
+                                </span> <i class="bx bx-chevron-down"></i>
+                            </a>
+                            <ul>
+                                @if($usuarioLogado == 0)
+                                    <li><a class="nav-link scrollto" href="#section_login">Login</a></li>
+                                @elseif($usuarioLogado == 1)
+                                    <li><a class="nav-link scrollto" href="#section_home" onclick="document.getElementById('frm_logout').submit();" id="menuLogout">Logout</a></li>
+                                @endif
                             </ul>
                         </li>
                     </ul>
@@ -50,8 +76,12 @@
                         <h1>Sistema e Dashboard</h1>
                         <h2>Entre no Sistema SAC ou visualize o Dashboard para Administração e Controle da Diretoria Geral de Finanças</h2>
                         <div class="d-flex justify-content-center justify-content-lg-start">
-                            <a href="#section_sistema" class="btn-watch-video scrollto"><i class="bx bx-layout"></i><span>Sistema</span></a>
-                            <a href="#section_dashboard" class="btn-watch-video scrollto"><i class="bx bxs-dashboard"></i><span>Dashboard</span></a>
+                            @if($usuarioLogado == 0)
+                                <a href="#section_login" class="btn-watch-video scrollto"><i class="bx bx-user"></i><span>Faça seu Login</span></a>
+                            @elseif($usuarioLogado == 1)
+                                <a href="{{route('dashboards.index')}}" class="btn-watch-video scrollto"><i class="bx bx-layout"></i><span>Sistema</span></a>
+                                <a href="#section_dashboard" class="btn-watch-video scrollto"><i class="bx bxs-dashboard"></i><span>Dashboard</span></a>
+                            @endif
                         </div>
                     </div>
                     <div class="col-lg-6 order-1 order-lg-2 home-img" data-aos="zoom-in" data-aos-delay="200">
@@ -62,82 +92,181 @@
         </section>
 
         <main id="main">
-            <!-- Sistema Section -->
-            <section id="section_sistema" class="sistema section-bg">
-                <div class="container" data-aos="fade-up">
-                    <div class="section-title">
-                        <h2>Sistema</h2>
-                        <p>Um relatório é um conjunto de informações utilizado para reportar resultados parciais ou totais de uma determinada atividade, experimento, projeto, ação, pesquisa, ou outro evento que esteja acabado ou em andamento.</p>
-                    </div>
-
-                    <div class="row" id="relatoriosModelos"></div>
-
-                    <div class="row p-1 mt-2" id="relatoriosVisualisar" style="display: none;"></div>
-
-                    <div class="col-12 col-md-12 p-1 mt-2" id="relatoriosLoading" style="display: none;">
-                        <div class="d-flex justify-content-center">
-                            <div class="spinner-border" role="status">
-                                <span class="visually-hidden">Loading...</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
             <!-- Dashboard Section -->
-            <section id="section_dashboard" class="dashboard section-bg">
-                <div class="container" data-aos="fade-up">
-                    <div class="section-title">
-                        <h2>Dashboard</h2>
-                        <p>Dashboard é uma ferramenta que ajuda a DGF a terem acesso a informações em tempo real, com gráficos, indicadores e outros dados.</p>
-                    </div>
-
-                    <div class="row" id="dashboardModelos"></div>
-
-                    <div class="row p-1 mt-2" id="dashboardVisualisar" style="display: none;"></div>
-
-                    <div class="col-12 col-md-12 p-1 mt-2" id="dashboardLoading" style="display: none;">
-                        <div class="d-flex justify-content-center">
-                            <div class="spinner-border" role="status">
-                                <span class="visually-hidden">Loading...</span>
-                            </div>
+            @if($usuarioLogado == 1)
+                <section id="section_dashboard" class="dashboard section-bg">
+                    <div data-aos="fade-up">
+                        <div class="section-title" style="padding-bottom: 0px;">
+                            <h2>Dashboard</h2>
                         </div>
+
+                        @if($usuarioLogado == 1)
+                            <div class="mt-5" id="loadingDashboard" style="display: none;">
+                                <div class="d-flex justify-content-center">
+                                    <div class="spinner-border" role="status">
+                                        <span class="visually-hidden">Loading...</span>
+                                    </div>
+                                </div>
+                                <div class="col-12 text-center pt-2">Lendo Dados do Dashboard</div>
+                            </div>
+
+                            <div class="row">
+                                @foreach ($agrupamentos as $agrupamento)
+                                    <div class="row justify-content-center">
+                                        <div class="row divDashboardsAgrupamento" id="divDashboardsAgrupamentoId_{{$agrupamento['id']}}"></div>
+                                    </div>
+                                @endforeach
+                            </div>
+
+                            <!-- Dashboards Modal Filtro 1 -->
+                            <div class="modal fade dashboards_modal_filtro_1" tabindex="-1" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title">Filtrar</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="row">
+                                                <div class="form-group col-12 col-md-6 pb-3">
+                                                    <label class="form-label">Período 1</label>
+                                                    <select class="form-select" name="dashboards_modal_filtro_1_periodo1" id="dashboards_modal_filtro_1_periodo1">
+                                                        @foreach ($dashboards_modal_filtro_1_referencias as $dashboards_modal_filtro_1_referencia)
+                                                            <option value="{{ $dashboards_modal_filtro_1_referencia['referencia'] }}">{{ \App\Facades\SuporteFacade::getReferencia(1, $dashboards_modal_filtro_1_referencia['referencia']) }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                                <div class="form-group col-12 col-md-6 pb-3">
+                                                    <label class="form-label">Período 2</label>
+                                                    <select class="form-select" name="dashboards_modal_filtro_1_periodo2" id="dashboards_modal_filtro_1_periodo2">
+                                                        @foreach ($dashboards_modal_filtro_1_referencias as $dashboards_modal_filtro_1_referencia)
+                                                            <option value="{{ $dashboards_modal_filtro_1_referencia['referencia'] }}">{{ \App\Facades\SuporteFacade::getReferencia(1, $dashboards_modal_filtro_1_referencia['referencia']) }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                                <div class="form-group col-12 col-md-12 pb-3">
+                                                    <label class="form-label">Órgão(s)</label>
+                                                    <select class="form-select" name="dashboards_modal_filtro_1_orgao_id" id="dashboards_modal_filtro_1_orgao_id">
+                                                        <option value="0">Todos os Órgãos</option>
+
+                                                        @foreach ($dashboards_modal_filtro_1_orgaos as $dashboards_modal_filtro_1_orgao)
+                                                            <option value="{{ $dashboards_modal_filtro_1_orgao['id'] }}">{{ $dashboards_modal_filtro_1_orgao['name'] }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <div class="col-12 text-end" id="dashboards_modal_filtro_1-footer-1">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                                <button type="button" class="btn btn-primary" id="btnDashboardsModalFiltro1Executar">Filtrar</button>
+                                            </div>
+                                            <div class="col-12 text-center" id="dashboards_modal_filtro_1-footer-2" style="display: none;">
+                                                <i class="bx bx-loader bx-spin font-size-16 align-middle me-2"></i> Processando...
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Dashboards Modal Filtro 2 -->
+                            <div class="modal fade dashboards_modal_filtro_2" tabindex="-1" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title">Filtrar</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="row">
+                                                <div class="form-group col-12 col-md-6 pb-3">
+                                                    <label class="form-label">Data 1</label>
+                                                    <input type="date" class="form-control" name="dashboards_modal_filtro_2_data1" id="dashboards_modal_filtro_2_data1" value="{{date('Y-m-d', strtotime('-1 year'))}}">
+                                                </div>
+                                                <div class="form-group col-12 col-md-6 pb-3">
+                                                    <label class="form-label">Data 2</label>
+                                                    <input type="date" class="form-control" name="dashboards_modal_filtro_2_data2" id="dashboards_modal_filtro_2_data2" value="{{date('Y-m-d')}}">
+                                                </div>
+                                                <div class="form-group col-12 col-md-12 pb-3">
+                                                    <label class="form-label">Subconta(s)</label>
+                                                    <select class="form-select" name="dashboards_modal_filtro_2_subconta_id" id="dashboards_modal_filtro_2_subconta_id">
+                                                        <option value="0">Todos as Subcontas</option>
+
+                                                        @foreach ($dashboards_modal_filtro_2_subcontas as $dashboards_modal_filtro_2_subconta)
+                                                            <option value="{{ $dashboards_modal_filtro_2_subconta['id'] }}">{{ $dashboards_modal_filtro_2_subconta['subconta'] }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <div class="col-12 text-end" id="dashboards_modal_filtro_2-footer-1">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                                <button type="button" class="btn btn-primary" id="btnDashboardsModalFiltro2Executar">Filtrar</button>
+                                            </div>
+                                            <div class="col-12 text-center" id="dashboards_modal_filtro_2-footer-2" style="display: none;">
+                                                <i class="bx bx-loader bx-spin font-size-16 align-middle me-2"></i> Processando...
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        @endif
                     </div>
-                </div>
-            </section>
+                </section>
+            @endif
 
             <!-- Login -->
-            <section id="section_login" class="login  section-bg">
-                <div class="container" data-aos="fade-up">
-                    <div class="section-title">
-                        <h2>Login</h2>
-                        <p>Está é a sessão para fazer login e poder visualizar Dashboard e Relatórios. Você precisa ter uma conta e usar as credenciais do Sistema SAC da Diretoria Geral de Finanças.</p>
-                    </div>
-                    <div class="row">
-                        <div class="col-lg-7 d-flex align-items-stretch">
-                            <form method="post" class="form_login small" id="form_login">
-                                <div class="row">
-                                    <div class="form-group col-12 col-md-12">
-                                        <label>Qual o seu E-mail</label>
-                                        <input type="email" class="form-control" name="email" id="email" required>
-                                    </div>
-                                    <div class="form-group col-12 col-md-12">
-                                        <label>Qual é a sua senha</label>
-                                        <input type="password" class="form-control" name="password" id="password" required>
-                                    </div>
-                                </div>
-                                <div class="text-center pt-3">
-                                    <button type="button" class="btn btn-primary col-12" id="btnFazerLogin">Fazer Login</button>
-                                </div>
-                            </form>
+            @if($usuarioLogado == 0)
+                <section id="section_login" class="login  section-bg">
+                    <div class="container" data-aos="fade-up">
+                        <div class="section-title">
+                            <h2>Login</h2>
+                            <p>Está é a sessão para fazer login e poder visualizar Dashboard ou entrar no Sistema SAC da Diretoria Geral de Finanças.</p>
                         </div>
-                        <div class="col-lg-5 text-center" data-aos="fade-right" data-aos-delay="100">
-                            <img src="{{ asset('build/assets/images/welcome_login.png') }}" class="img-fluid" width="80%" alt="">
+                        <div class="row">
+                            <div class="col-lg-7 d-flex align-items-stretch">
+                                <form method="post" class="form_login small" action="{{ url('login') }}">
+                                    @csrf
+
+                                    <div class="row">
+                                        @if(isset($error))
+                                            @if($error !== '')
+                                                <div class="col-12  alert alert-danger mt-1">{{$error}}</div>
+                                            @endif
+                                        @endif
+
+                                        @if (Session::has('message'))
+                                            <div class="col-12 alert alert-success" role="alert">{{Session::get('message')}}</div>
+                                        @endif
+
+                                        <div class="form-group col-12 col-md-12">
+                                            <label>Qual o seu E-mail</label>
+                                            <input type="email" class="form-control" name="email" id="email" value="claudinomoraes@yahoo.com.br" required>
+                                        </div>
+                                        <div class="form-group col-12 col-md-12">
+                                            <label>Qual é a sua senha</label>
+                                            <input type="password" class="form-control" name="password" id="password" value="claudino1971" required>
+                                        </div>
+
+                                        <input type="hidden" name="ctrl_welcome" id="ctrl_welcome" value="welcome">
+                                    </div>
+                                    <div class="text-center pt-3">
+                                        <button type="submit" class="btn btn-primary col-12">Fazer Login</button>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="col-lg-5 text-center" data-aos="fade-right" data-aos-delay="100">
+                                <img src="{{ asset('build/assets/images/welcome_login.png') }}" class="img-fluid" width="80%" alt="">
+                            </div>
                         </div>
                     </div>
-                </div>
-            </section>
+                </section>
+            @endif
         </main>
+
+        <!-- Form Logout -->
+        <form action="{{route('logout')}}" method="post" id="frm_logout" style="display: none;">@csrf</form>
 
         <!-- Footer -->
         <footer id="footer">
@@ -163,7 +292,25 @@
         <!-- Template Main JS File -->
         <script src="{{ Vite::asset('resources/assets_template/js/welcome_main.js') }}"></script>
 
-        <!-- Index JS -->
-        {{--<script src="{{ Vite::asset('resources/assets_template/libs/welcome/assets/js/relatorios.js') }}"></script>--}}
+        @if(isset($error))
+            @if($error !== '')
+                <script>document.getElementById('menuLogin').click();</script>
+            @endif
+        @endif
+
+        @if($usuarioLogado == 1)
+            <!-- libs -->
+            <script type="text/javascript" src="{{ Vite::asset('resources/assets_template/libs/jquery/jquery.min.js') }}"></script>
+            <script type="text/javascript" src="{{ Vite::asset('resources/assets_template/libs/bootstrap/bootstrap.min.js') }}"></script>
+            <!-- functions.js -->
+            <script type="text/javascript" src="{{ Vite::asset('resources/assets_template/js/functions.js') }}"></script>
+            <!-- scripts_welcome.js -->
+            <script src="{{ Vite::asset('resources/assets_template/js/scripts_welcome.js')}}"></script>
+            <!-- apexcharts -->
+            <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+            <!-- functions_graficos -->
+            <script type="text/javascript" src="{{ Vite::asset('resources/assets_template/js/functions_graficos.js') }}"></script>
+        @endif
+
     </body>
 </html>

@@ -47,6 +47,8 @@ export default defineConfig({
                 {src: 'resources/assets_template/libs/datatables/datatables.min.js', dest: 'assets'},
                 {src: 'resources/assets_template/libs/apexcharts/apexcharts.min.js', dest: 'assets'},
                 {src: 'resources/assets_template/libs/jszip/jszip.min.js', dest: 'assets'},
+                {src: 'resources/assets_template/libs/jspdf/jspdf.js', dest: 'assets'},
+                {src: 'resources/assets_template/libs/jspdf/jspdf_autotable.js', dest: 'assets'},
                 {src: 'resources/assets_template/libs/pdfmake/pdfmake.min.js', dest: 'assets'},
                 {src: 'resources/assets_template/libs/jquery-mask/jquery.mask.min.js', dest: 'assets'},
 
@@ -60,6 +62,7 @@ export default defineConfig({
                 {src: 'resources/assets_template/js/main.js', dest: 'assets'},
                 {src: 'resources/assets_template/js/scripts_dashboards.js', dest: 'assets'},
                 {src: 'resources/assets_template/js/scripts_dashboards2.js', dest: 'assets'},
+                {src: 'resources/assets_template/js/scripts_welcome.js', dest: 'assets'},
                 {src: 'resources/assets_template/js/scripts_efetivo_militares.js', dest: 'assets'},
                 {src: 'resources/assets_template/js/scripts_ferramentas.js', dest: 'assets'},
                 {src: 'resources/assets_template/js/scripts_grupos.js', dest: 'assets'},
@@ -75,6 +78,11 @@ export default defineConfig({
                 {src: 'resources/assets_template/js/scripts_ressarcimento_referencias.js', dest: 'assets'},
                 {src: 'resources/assets_template/js/scripts_template_init.js', dest: 'assets'},
                 {src: 'resources/assets_template/js/scripts_users.js', dest: 'assets'},
+                {src: 'resources/assets_template/js/scripts_alimentacao_tipos.js', dest: 'assets'},
+                {src: 'resources/assets_template/js/scripts_alimentacao_planos.js', dest: 'assets'},
+                {src: 'resources/assets_template/js/scripts_alimentacao_remanejamentos.js', dest: 'assets'},
+                {src: 'resources/assets_template/js/scripts_alimentacao_unidades.js', dest: 'assets'},
+                {src: 'resources/assets_template/js/scripts_alimentacao_quantitativos.js', dest: 'assets'},
 
                 {src: 'resources/assets_template/images/users/avatar-0.png', dest: 'assets/images/users'},
                 {src: 'resources/assets_template/images/error-img.png', dest: 'assets/images'},
@@ -137,10 +145,6 @@ export default defineConfig({
 
 // *** Colocar no manifest.json ***
 //
-
-
-
-
 // "resources/assets_template/css/welcome_styles.css": {
 //     "file": "assets/welcome_styles.css",
 //     "isEntry": true,
@@ -251,6 +255,16 @@ export default defineConfig({
 //     "isEntry": true,
 //     "src": "resources/assets_template/libs/jszip/jszip.min.js"
 // },
+// "resources/assets_template/libs/jspdf/jspdf.js": {
+//     "file": "assets/jspdf.js",
+//     "isEntry": true,
+//     "src": "resources/assets_template/libs/jspdf/jspdf.js"
+// },
+// "resources/assets_template/libs/jspdf/jspdf_autotable.js": {
+//     "file": "assets/jspdf_autotable.js",
+//     "isEntry": true,
+//     "src": "resources/assets_template/libs/jspdf/jspdf_autotable.js"
+// },
 // "resources/assets_template/libs/pdfmake/pdfmake.min.js": {
 //     "file": "assets/pdfmake.min.js",
 //     "isEntry": true,
@@ -321,6 +335,11 @@ export default defineConfig({
 //     "isEntry": true,
 //     "src": "resources/assets_template/js/scripts_dashboards2.js"
 // },
+// "resources/assets_template/js/scripts_welcome.js": {
+//     "file": "assets/scripts_welcome.js",
+//     "isEntry": true,
+//     "src": "resources/assets_template/js/scripts_welcome.js"
+// },
 // "resources/assets_template/js/scripts_efetivo_militares.js": {
 //     "file": "assets/scripts_efetivo_militares.js",
 //     "isEntry": true,
@@ -335,6 +354,31 @@ export default defineConfig({
 //     "file": "assets/scripts_users.js",
 //     "isEntry": true,
 //     "src": "resources/assets_template/js/scripts_users.js"
+// },
+// "resources/assets_template/js/scripts_alimentacao_tipos.js": {
+//     "file": "assets/scripts_alimentacao_tipos.js",
+//     "isEntry": true,
+//     "src": "resources/assets_template/js/scripts_alimentacao_tipos.js"
+// },
+// "resources/assets_template/js/scripts_alimentacao_planos.js": {
+//     "file": "assets/scripts_alimentacao_planos.js",
+//     "isEntry": true,
+//     "src": "resources/assets_template/js/scripts_alimentacao_planos.js"
+// },
+// "resources/assets_template/js/scripts_alimentacao_remanejamentos.js": {
+//     "file": "assets/scripts_alimentacao_remanejamentos.js",
+//     "isEntry": true,
+//     "src": "resources/assets_template/js/scripts_alimentacao_remanejamentos.js"
+// },
+// "resources/assets_template/js/scripts_alimentacao_unidades.js": {
+//     "file": "assets/scripts_alimentacao_unidades.js",
+//     "isEntry": true,
+//     "src": "resources/assets_template/js/scripts_alimentacao_unidades.js"
+// },
+// "resources/assets_template/js/scripts_alimentacao_quantitativos.js": {
+//     "file": "assets/scripts_alimentacao_quantitativos.js",
+//     "isEntry": true,
+//     "src": "resources/assets_template/js/scripts_alimentacao_quantitativos.js"
 // },
 // "resources/assets_template/js/scripts_profiles.js": {
 //     "file": "assets/scripts_profiles.js",

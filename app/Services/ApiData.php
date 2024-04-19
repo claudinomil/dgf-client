@@ -64,6 +64,9 @@ class ApiData
                 //dd($response->json());
             }
 
+            //Welcome Permissão
+            if ($type == 100) {$response = $httpHeaders->get('users/user/welcome/permissao');}
+
             //dd($response->json());   //TRAZER ERRO NA DEPURAÇÃO
 
             return $response;

@@ -240,7 +240,7 @@ $(document).ready(function () {
                         $('#crudForm').hide();
 
                         //Table
-                        window.location.href = '/ressarcimento_recebimentos';
+                        window.location.href = url+'ressarcimento_recebimentos';
                         //tableContent('ressarcimento_recebimentos');
                     } else if (response.error) {
                         alertSwal('warning', "Recebimentos", response.error, 'true', 10000);

@@ -126,6 +126,16 @@
         "isEntry": true,
         "src": "resources/assets_template/libs/jszip/jszip.min.js"
     },
+    "resources/assets_template/libs/jspdf/jspdf.js": {
+        "file": "assets/jspdf.js",
+        "isEntry": true,
+        "src": "resources/assets_template/libs/jspdf/jspdf.js"
+    },
+    "resources/assets_template/libs/jspdf/jspdf_autotable.js": {
+        "file": "assets/jspdf_autotable.js",
+        "isEntry": true,
+        "src": "resources/assets_template/libs/jspdf/jspdf_autotable.js"
+    },
     "resources/assets_template/libs/pdfmake/pdfmake.min.js": {
         "file": "assets/pdfmake.min.js",
         "isEntry": true,
@@ -196,6 +206,11 @@
         "isEntry": true,
         "src": "resources/assets_template/js/scripts_dashboards2.js"
     },
+    "resources/assets_template/js/scripts_welcome.js": {
+        "file": "assets/scripts_welcome.js",
+        "isEntry": true,
+        "src": "resources/assets_template/js/scripts_welcome.js"
+    },
     "resources/assets_template/js/scripts_efetivo_militares.js": {
         "file": "assets/scripts_efetivo_militares.js",
         "isEntry": true,
@@ -210,6 +225,31 @@
         "file": "assets/scripts_users.js",
         "isEntry": true,
         "src": "resources/assets_template/js/scripts_users.js"
+    },
+    "resources/assets_template/js/scripts_alimentacao_tipos.js": {
+        "file": "assets/scripts_alimentacao_tipos.js",
+        "isEntry": true,
+        "src": "resources/assets_template/js/scripts_alimentacao_tipos.js"
+    },
+    "resources/assets_template/js/scripts_alimentacao_planos.js": {
+        "file": "assets/scripts_alimentacao_planos.js",
+        "isEntry": true,
+        "src": "resources/assets_template/js/scripts_alimentacao_planos.js"
+    },
+    "resources/assets_template/js/scripts_alimentacao_remanejamentos.js": {
+        "file": "assets/scripts_alimentacao_remanejamentos.js",
+        "isEntry": true,
+        "src": "resources/assets_template/js/scripts_alimentacao_remanejamentos.js"
+    },
+    "resources/assets_template/js/scripts_alimentacao_unidades.js": {
+        "file": "assets/scripts_alimentacao_unidades.js",
+        "isEntry": true,
+        "src": "resources/assets_template/js/scripts_alimentacao_unidades.js"
+    },
+    "resources/assets_template/js/scripts_alimentacao_quantitativos.js": {
+        "file": "assets/scripts_alimentacao_quantitativos.js",
+        "isEntry": true,
+        "src": "resources/assets_template/js/scripts_alimentacao_quantitativos.js"
     },
     "resources/assets_template/js/scripts_profiles.js": {
         "file": "assets/scripts_profiles.js",

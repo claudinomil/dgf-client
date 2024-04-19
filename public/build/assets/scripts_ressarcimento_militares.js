@@ -74,6 +74,16 @@ $(document).ready(function () {
                 $('#modal-importar-militares-footer-2').show();
             },
             success: function (response) {
+
+
+
+                if (response.eduardo) {
+                    alert(response.eduardo);
+                }
+
+
+
+
                 if (response.success) {
                     //Registros importados
                     var registros_importados = '<div class="col-12 text-success">Registros Importados: '+response.success.registros_importados+'</div>'

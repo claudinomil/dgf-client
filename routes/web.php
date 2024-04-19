@@ -1,14 +1,10 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\WelcomeController;
 
 //Rota inicial
-Route::get('/', function () {
-    return view('welcome');
-});
-Route::get('/welcome_novo', function () {
-    return view('welcome_novo');
-});
+Route::get('/', [WelcomeController::class, 'index'])->name('welcome.index');
 
 //Rotas de auth
 require __DIR__.'/routes_auth.php';

@@ -28,12 +28,18 @@
             <div class="d-none d-lg-block ms-2">&nbsp;</div>
         </div>
         <div class="d-flex">
+            <div class="d-lg-inline-block ms-1">
+                <button type="button" class="btn header-item noti-icon waves-effect" title="Welcome" onclick="var url = window.location.protocol+'//'+window.location.host+'/'; if (window.location.hostname.indexOf('cbmerj.rj.gov') != -1) {url += 'dgf_sistema/';} window.location.href = url;">
+                    <i class="bx bx-notepad"></i>
+                </button>
+            </div>
+
             @if (\App\Facades\Permissoes::permissao(['ferramentas_list']))
                 @include('layouts.ferramentas')
             @endif
 
             <div class="dropdown d-none d-lg-inline-block ms-1">
-                <button type="button" class="btn header-item noti-icon waves-effect" data-bs-toggle="fullscreen">
+                <button type="button" class="btn header-item noti-icon waves-effect" title="Full Screen" data-bs-toggle="fullscreen">
                     <i class="bx bx-fullscreen"></i>
                 </button>
             </div>
@@ -49,9 +55,16 @@
                     <i class="mdi mdi-chevron-down d-none d-xl-inline-block"></i>
                 </button>
                 <div class="dropdown-menu dropdown-menu-end">
-                    <a href="#" class="dropdown-item" data-bs-toggle="modal" data-bs-target=".modal-profile" onclick="userProfileData(2,{{session('se_userLoggedData.id')}});"><i class="bx bx-user font-size-16 align-middle me-1"></i> <span key="t-profile">Perfil</span></a>
+                    {{-- Menu Perfil --}}
+                    <a href="#" class="dropdown-item py-3" data-bs-toggle="modal" data-bs-target=".modal-profile" onclick="userProfileData(2,{{session('se_userLoggedData.id')}});"><i class="bx bx-user font-size-16 align-middle me-1"></i> <span key="t-profile">Perfil</span></a>
+
+                    {{-- Menu Welcome --}}
+                    <a href="{{route('welcome.index')}}" class="dropdown-item py-3"><i class="bx bx-notepad font-size-16 align-middle me-1"></i> <span>Welcome</span></a>
+
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item text-danger" href="javascript:void();" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"><i class="bx bx-power-off font-size-16 align-middle me-1 text-danger"></i> <span key="t-logout">Logout</span></a>
+
+                    {{-- Menu Logout --}}
+                    <a class="dropdown-item py-3 text-danger" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"><i class="bx bx-power-off font-size-16 align-middle me-1 text-danger"></i> <span key="t-logout">Logout</span></a>
                     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                         @csrf
                     </form>
