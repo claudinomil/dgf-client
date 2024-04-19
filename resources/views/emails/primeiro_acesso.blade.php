@@ -20,7 +20,7 @@
                 <td align="" style="color: black; font-family: arial;">
                     <h3>Dados para acesso:</h3>
                     <p>&nbsp;</p>
-                    <p>Endereço: cbmerj.rj.gov.br/dgf</p>
+                    <p>Endereço: cbmerj.rj.gov.br/dgf_sistema</p>
                     <p>Usuário: {{$email}}</p>
                     <p>Senha: {{$senha}}</p>
                 </td>
