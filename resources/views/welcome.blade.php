@@ -242,11 +242,11 @@
 
                                         <div class="form-group col-12 col-md-12">
                                             <label>Qual o seu E-mail</label>
-                                            <input type="email" class="form-control" name="email" id="email" value="claudinomoraes@yahoo.com.br" required>
+                                            <input type="email" class="form-control" name="email" id="email" required>
                                         </div>
                                         <div class="form-group col-12 col-md-12">
                                             <label>Qual é a sua senha</label>
-                                            <input type="password" class="form-control" name="password" id="password" value="claudino1971" required>
+                                            <input type="password" class="form-control" name="password" id="password" required>
                                         </div>
 
                                         <input type="hidden" name="ctrl_welcome" id="ctrl_welcome" value="welcome">

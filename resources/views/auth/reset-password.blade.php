@@ -34,7 +34,7 @@
 
                                     <div class="pt-3 mb-3">
                                         <label for="email" class="form-label">E-mail</label>
-                                        <input type="email" class="form-control" id="email" name="email" placeholder="Entre com o Usuário" required autofocus value="claudinomoraes@yahoo.com.br">
+                                        <input type="email" class="form-control" id="email" name="email" placeholder="Entre com o Usuário" required autofocus>
                                         @error('email') <div class="text-danger">{{ $message }}</div> @enderror
                                     </div>
                                     <div class="mb-3">
