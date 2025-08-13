@@ -50,7 +50,7 @@
                                 <div class="form-group col-12 col-md-6 pb-3">
                                     <label class="form-label">Referência</label>
                                     <input type="text" class="form-control" id="referencia_extenso" name="referencia_extenso" readonly>
-                                    <input type="hiddenx" id="referencia" name="referencia" min="202301" max="203012" minlength="6" maxlength="6" required="required">
+                                    <input type="hidden" id="referencia" name="referencia" min="202301" max="203012" minlength="6" maxlength="6" required="required">
                                 </div>
                                 <div class="form-group col-4 col-md-2 pb-3">
                                     <label class="form-label">Ano</label>

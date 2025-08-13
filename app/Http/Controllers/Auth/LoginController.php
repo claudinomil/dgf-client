@@ -104,7 +104,6 @@ class LoginController extends Controller
         //Buscando dados Api_Data() - Fazer Logout
         $this->responseApi(1, 7, '', '', '', '');
 
-        //return view('welcome');
-        return redirect('');
+        return redirect('/');
     }
 }

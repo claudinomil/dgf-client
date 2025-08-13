@@ -10,7 +10,7 @@ function validar_frm_grupos() {
         //Campo: name (mínimo de 3 caracteres)
         if (validacao({op:2, value:document.getElementById('name').value, minCaracteres:3}) === false) {
             validacao_ok = false;
-            mensagem += 'Nome precisa ter no mínimo 3 caracteres.' + '<br>';
+            mensagem += 'Nome precisa ter no mínimo 3 caracteres .' + '<br>';
         }
     }
 
